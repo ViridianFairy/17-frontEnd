@@ -7,9 +7,9 @@
       <transition name="slide-fade">
          <div class="alert" key="al" v-show="visible && (type.match('true')||type.match('false')||type.match('tips'))">
             <div style="margin:1.2rem 0.5rem 1.2rem 0">
-               <img v-if="type.match('true')" src="../assets/common/true.svg" />
-               <img v-if="type.match('false')" src="../assets/common/false.svg" />
-               <img v-if="type.match('tips')" src="../assets/common/tips.svg" />
+               <img v-if="type.match('true')" src="../../assets/common/true.svg" />
+               <img v-if="type.match('false')" src="../../assets/common/false.svg" />
+               <img v-if="type.match('tips')" src="../../assets/common/tips.svg" />
             </div>
             <div style="margin:2.1rem 0.5rem 0 0">
                <span :class="{greentext:type.match('true'),

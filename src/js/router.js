@@ -1,17 +1,21 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Options from '../components/Options'
+import Tasks from '../components/Tasks'
+import Banner from '../components/Banner'
 Vue.use(VueRouter);
 const routes = [
-   {
-      path:'/d',redirect:'/demo/disk'
-   },
+   /*{
+      path:'/d',redirect:'/'
+   },*/
    {
       path: "/",
       components: {
-         // left: Home,
-         // right: sideDefault,
+			top: Banner,
+         left: Options,
+         right: Tasks,
       }
-   }, //前两个是一样哒！
+   }, //一样哒！
 ];
 const router = new VueRouter({
    mode: "history",
@@ -28,5 +32,4 @@ router.beforeEach((to, from, next) => {
       next();    //如果匹配到正确跳转
    }
 });
-
 export default router;

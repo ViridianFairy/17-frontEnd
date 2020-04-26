@@ -1,7 +1,7 @@
 const baseURL = ``
 import Vue from 'vue'
 import App from './App.vue'
-import Alert from './components/alert'
+import Alert from './components/attach/alert'
 import 'ant-design-vue/dist/antd.css'
 import {Button} from 'ant-design-vue'
 import router from './js/router'

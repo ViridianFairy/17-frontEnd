@@ -18,6 +18,7 @@ import store from './js/store'
 Vue.config.productionTip = false
 // ant-design
 Vue.component(Button.name, Button)
+Vue.component(Icon.name, Icon)
 Vue.component(Input.name, Input)
 Vue.component(Collapse.name, Collapse)
 Vue.component(Avatar.name, Avatar)
@@ -37,6 +38,7 @@ Vue.use(DatePicker)
 Vue.use(Dropdown)
 Vue.use(Divider)
 Vue.use(Select)
+
 
 
 // plugins mounted

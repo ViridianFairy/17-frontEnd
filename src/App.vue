@@ -24,7 +24,7 @@ export default {
       };
    },
 	created(){
-      this.$router.push('/disk')
+		//this.$router.push('/disk')
 	},
 };
 </script>
@@ -41,10 +41,12 @@ body{
 }
 #top {
    width: 100%;
-   height: 40px;
+   height: 50px;
+   background-color: rgb(250, 248, 248);
 }
 #left {
    width: 170px;
+   background-color: #08466B;
 }
 #right {
    width: calc(100% - 170px);

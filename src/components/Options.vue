@@ -1,12 +1,11 @@
 <template>
    <div id="wrapper">
-      <section @click="$router.push('/taskPanel')">任务面板</section>
-      <section>文档协作</section>
-      <section>文件管理</section>
-      <section>日程安排</section>
-      <section>群组聊天</section>
-      <section>消息通知</section>
-      
+      <section @click="$router.push('/taskPanel')"><a-icon type="clock-circle" />任务面板</section>
+      <section><a-icon type="edit" />文档协作</section>
+      <section><a-icon type="table" />文件管理</section>
+      <section><a-icon type="schedule" />日程安排</section>
+      <section><a-icon type="team" />群组聊天</section>
+      <section><a-icon type="bell" />消息通知</section>
    </div>
 </template>
 <script>
@@ -23,9 +22,14 @@ export default {
 #wrapper{
 	/* width: 300px; */
 	font-size: 1.5rem;
-	padding-left: 0.6rem;
+   /* padding-left: 0.6rem; */
+   color:white;
+   background-color: #08466B;
 }
-section {
-   padding: 1.2rem;
+section{
+   padding: 1.5rem;
+}
+section:active{
+   background: rgb(59, 165, 236);
 }
 </style>

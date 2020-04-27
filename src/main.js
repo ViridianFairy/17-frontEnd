@@ -4,6 +4,7 @@ import App from './App.vue'
 import Alert from './components/attach/alert'
 import 'ant-design-vue/dist/antd.css'
 import {Button} from 'ant-design-vue'
+import {Icon} from 'ant-design-vue'
 import {Input} from 'ant-design-vue'
 import router from './js/router'
 import axios from 'axios'
@@ -12,6 +13,7 @@ import store from './js/store'
 Vue.config.productionTip = false
 // ant-design
 Vue.component(Button.name, Button)
+Vue.component(Icon.name, Icon)
 Vue.component(Input.name, Input)
 Vue.use(Button)
 Vue.use(Input)

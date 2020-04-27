@@ -1,7 +1,7 @@
 <template>
    <div id="wrapper">
       <img src="http://funx.pro/resource/junk/17logo.svg" >
-      <section>用户名</section>
+      <section id="user"><a-icon type="user" />用户名</section>
    </div>
 </template>
 
@@ -25,8 +25,8 @@ export default {
 	margin-left: 30px;
 	/* margin-top: 0px; */
 }
-section {
+#user{
    padding: 15px;
-   margin-left: 1220px;
+   margin-left: 1190px;
 }
 </style>

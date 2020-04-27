@@ -4,6 +4,7 @@ import Options from '../components/Options'
 import Tasks from '../components/Tasks'
 import Disk from '../components/Disk'
 import Banner from '../components/Banner'
+import Test from '../components/Test'
 Vue.use(VueRouter);
 const routes = [
    /*{
@@ -23,6 +24,14 @@ const routes = [
 			top: Banner,
          left: Options,
          right: Disk,
+      }
+   },
+	{
+      path: "/test",
+      components: {
+			top: Banner,
+         left: Options,
+         right: Test,
       }
    },
 ];

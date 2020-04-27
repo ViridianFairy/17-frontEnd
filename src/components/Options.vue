@@ -22,11 +22,14 @@ export default {
 #wrapper{
 	/* width: 300px; */
 	font-size: 1.5rem;
-   padding-left: 0.6rem;
+   /* padding-left: 0.6rem; */
    color:white;
    background-color: #08466B;
 }
-section {
-   padding: 1.2rem;
+section{
+   padding: 1.5rem;
+}
+section:active{
+   background: rgb(59, 165, 236);
 }
 </style>

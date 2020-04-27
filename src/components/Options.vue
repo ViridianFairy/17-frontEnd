@@ -21,10 +21,10 @@ export default {
 <style scoped>
 #wrapper{
 	/* width: 300px; */
-	font-size: 15px;
-	padding-left: 6px;
+	font-size: 1.5rem;
+	padding-left: 0.6rem;
 }
 section {
-   padding: 15px;
+   padding: 1.2rem;
 }
 </style>

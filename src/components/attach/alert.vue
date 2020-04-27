@@ -20,12 +20,11 @@
       <transition name="tiny">
          <div id="tiny" v-show="visible && type.match('tiny')" :style="{left:mouse.x-130 + 'px',top:mouse.y+10 + 'px'}">
          <span v-if="type.match('tiny-clipboard')">
-            <span style="white-space:pre">{{msg.split('：')[0]}}：
-</span>
+            <span style="white-space:pre">{{msg.split('：')[0]}}：</span>
             <span id="tiny-msg">{{msg.split('：')[1]}}</span>
          </span>
          <span v-else>
-            <span v-for="i in msg.split('')">{{i}}</span>
+            <span id="tiny-msg">{{msg}}</span>
          </span>   
          </div>
       </transition>

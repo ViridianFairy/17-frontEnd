@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Options from '../components/Options'
 import Tasks from '../components/Tasks'
+import Disk from '../components/Disk'
 import Banner from '../components/Banner'
 Vue.use(VueRouter);
 const routes = [
@@ -15,7 +16,15 @@ const routes = [
          left: Options,
          right: Tasks,
       }
-   }, //一样哒！
+	}, //一样哒！
+	{
+      path: "/disk",
+      components: {
+			top: Banner,
+         left: Options,
+         right: Disk,
+      }
+   },
 ];
 const router = new VueRouter({
    mode: "history",

@@ -22,11 +22,20 @@ export default {
       return {
          router: 0
       };
-   }
+   },
+	created(){
+		this.$router.push('/disk')
+	},
 };
 </script>
 
-<style scoped>
+<style>
+html{
+	font-size: 11px;
+}
+body{
+	
+}
 #main-wrapper {
    display: flex;
 }
@@ -35,9 +44,9 @@ export default {
    height: 40px;
 }
 #left {
-   width: 200px;
+   width: 170px;
 }
 #right {
-   width: calc(100% - 200px);
+   width: calc(100% - 170px);
 }
 </style>

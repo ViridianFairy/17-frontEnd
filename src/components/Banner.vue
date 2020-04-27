@@ -27,6 +27,6 @@ export default {
 }
 #user{
    padding: 15px;
-   margin-left: 1190px;
+   margin-left: 1200px;
 }
 </style>

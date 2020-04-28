@@ -9,7 +9,7 @@ import {Collapse} from 'ant-design-vue'
 import {Avatar} from 'ant-design-vue'
 import {Icon} from 'ant-design-vue'
 import {Menu} from 'ant-design-vue'
-import {DatePicker} from 'ant-design-vue'
+import {DatePicker,PageHeader} from 'ant-design-vue'
 import {Dropdown,Select,Drawer,Tag} from 'ant-design-vue'
 import router from './js/router'
 import axios from 'axios'
@@ -31,6 +31,7 @@ Vue.component(Select.name,Select)
 Vue.component(Drawer.name,Drawer)
 Vue.component(Radio.name,Radio)
 Vue.component(Tag.name,Radio)
+Vue.component(PageHeader.name,PageHeader)
 Vue.use(Button)
 Vue.use(Input)
 Vue.use(Collapse)
@@ -44,6 +45,7 @@ Vue.use(Select)
 Vue.use(Drawer)
 Vue.use(Radio)
 Vue.use(Tag)
+Vue.use(PageHeader)
 
 
 

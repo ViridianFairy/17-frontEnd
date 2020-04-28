@@ -5,6 +5,15 @@
   <div id="pending">
       <h2>待处理</h2>
   <div>
+    
+
+<div>
+     <a-button block @click="$router.push('/details')">软件工程实践</a-button>
+  </div>
+<br />
+
+  </div>
+  <div>
     <a-collapse accordion id="panel1">
       <a-collapse-panel header="✚" key="1" :showArrow="false" >
         
@@ -305,8 +314,7 @@ export default {
 .em11{
     font-style: normal;
     font-size: 16px;
-    padding-left: 11px;
-   
+    padding-left: 11px;  
 }
 #components-button-demo-button-group > h4 {
   margin: 16px 0;

@@ -3,14 +3,14 @@ import Vue from 'vue'
 import App from './App.vue'
 import Alert from './components/attach/alert'
 import 'ant-design-vue/dist/antd.css'
-import {Button, Col, Divider} from 'ant-design-vue'
+import {Button, Col, Divider, Radio} from 'ant-design-vue'
 import {Input} from 'ant-design-vue'
 import {Collapse} from 'ant-design-vue'
 import {Avatar} from 'ant-design-vue'
 import {Icon} from 'ant-design-vue'
 import {Menu} from 'ant-design-vue'
 import {DatePicker} from 'ant-design-vue'
-import {Dropdown,Select} from 'ant-design-vue'
+import {Dropdown,Select,Drawer,Tag} from 'ant-design-vue'
 import router from './js/router'
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -28,6 +28,9 @@ Vue.component(DatePicker.name, DatePicker)
 Vue.component(Dropdown.name,Dropdown)
 Vue.component(Divider.name,Divider)
 Vue.component(Select.name,Select)
+Vue.component(Drawer.name,Drawer)
+Vue.component(Radio.name,Radio)
+Vue.component(Tag.name,Radio)
 Vue.use(Button)
 Vue.use(Input)
 Vue.use(Collapse)
@@ -38,6 +41,9 @@ Vue.use(DatePicker)
 Vue.use(Dropdown)
 Vue.use(Divider)
 Vue.use(Select)
+Vue.use(Drawer)
+Vue.use(Radio)
+Vue.use(Tag)
 
 
 

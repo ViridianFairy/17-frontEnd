@@ -5,7 +5,7 @@
   <div id="pending">
       <h2>待处理</h2>
   <div>
-    <a-collapse accordion>
+    <a-collapse accordion id="panel1">
       <a-collapse-panel header="✚" key="1" :showArrow="false" >
         
     <a-input placeholder="输入任务标题" />
@@ -18,19 +18,25 @@
         <span slot="title">
         <a-icon type="user" style="fontSize:26px;color:#003366"/>
         <em class="em1">待认领</em></span>
-        <a-menu-item key="4">  
-            <a-input-search placeholder="搜索成员" style="width: 200px" @search="onSearch" />
+        <a-menu-item key="4" style="width:300px;height:300px;">  
+            
 
-        </a-menu-item>       
-        </a-sub-menu>
+               
+        </a-menu-item>
+
+
+</a-sub-menu>
+        </a-menu>
+<a-input-search placeholder="搜索成员" style="width: 200px" @search="onSearch" />
 
 <!-- 起止日期 -->
-        <a-sub-menu key="subw">
-        <span slot="title"><a-icon type="calendar" style="fontSize:26px;color:#003366"/>
-        <em class="em1">设置起止日期</em></span>
-        <a-menu-item key="3">
-            <div>
-                <a-date-picker
+        <!--a-sub-menu key="subw">
+        <span slot="title"-->
+        <p style="margin-top:10px;"><a-icon type="calendar" style="fontSize:26px;color:#003366"/>
+        <em class="em11">设置起止日期</em>
+    
+            
+                <a-date-picker style="margin-top:10px;margin-bottom:5px;"
                 :disabledDate="disabledStartDate"
                 showTime
                 format="YYYY-MM-DD HH:mm:ss"
@@ -47,46 +53,97 @@
                 :open="endOpen"
                 @openChange="handleEndOpenChange"
                 />
-            </div>
-        </a-menu-item>
-        </a-sub-menu>
-
+            
+        </p>
+       
 <!-- 提醒   -->
-        <a-sub-menu key="sub3"  subMenuCloseDelay="20">
-        <span slot="title"><a-icon type="clock-circle" style="fontSize:26px;color:#003366"/>
-        <em class="em1">提醒</em></span>  
-             
+        <!--<a-sub-menu key="sub3"  subMenuCloseDelay="20"></span> 
+        <span slot="title"-->
+         <p> <a-icon type="clock-circle" style="fontSize:26px;color:#003366"/>
+        <em class="em11">提醒</em>
+        <a><a-icon theme="filled" type="plus-circle" style="fontSize:26px;color:#003366;margin-left:13px"/>
+        </a></p>
+         <!--    
         <a-sub-menu key="sub3-1" title="提醒时间">
           <a-menu-item key="3-1-1">任务开始时</a-menu-item>
           <a-menu-item key="3-1-2">任务截止时</a-menu-item>
           <a-menu-item key="3-1-3">不提醒</a-menu-item>
-        </a-sub-menu>       
-        <a-sub-menu key="sub3-2" title="提醒对象">
-        </a-sub-menu>               
+              
+        <a-sub-menu key="sub3-2" title="提醒对象"-->
+        <p></p>              
+        <div>
+        <a-radio-group defaultValue="a" buttonStyle="solid">
+        <a-radio-button value="a">任务开始时</a-radio-button>
+        <a-radio-button value="b">任务截止时</a-radio-button>
+        <a-radio-button value="c">不提醒</a-radio-button>
+        </a-radio-group>
+         </div>
         
              
         
-        </a-sub-menu>
+        
 
 <!-- 优先级   -->
-        <a-sub-menu key="sub4"  subMenuCloseDelay="2">
+        <!-- a-sub-menu key="sub4"  subMenuCloseDelay="2">
         <span slot="title"><a-icon type="fire" style="fontSize:26px;color:#003366"/>
         <em class="em1">优先级</em></span>
         <a-menu-item key="5">普通</a-menu-item>   
         <a-menu-item key="6">紧急</a-menu-item>
         <a-menu-item key="7">非常紧急</a-menu-item>    
-        </a-sub-menu>
+        </a-sub-menu-->
+        <p></p>
+       <a-icon type="fire" style="fontSize:26px;color:#003366"/>
+        <em class="em11">优先级</em><p></p>
+        <div>
+        <a-radio-group defaultValue="a" buttonStyle="solid">
+        <a-radio-button value="normal">普通</a-radio-button>
+        <a-radio-button value="mid">紧急</a-radio-button>
+        <a-radio-button value="hard">非常紧急</a-radio-button>
+        </a-radio-group>
+         </div>
+         
 <!--  标签   -->
-        <a-sub-menu key="sub5"  subMenuCloseDelay="2">
-        <span slot="title"><a-icon type="tag" style="fontSize:26px;color:#003366"/>
-        <em class="em1">标签</em></span>
-        <a-menu-item key="6">  
-        <a-input-search placeholder="搜索标签" style="width: 200px" @search="onSearch" />
-        </a-menu-item>       
-        </a-sub-menu>
-        </a-menu>       
+   
+       <p></p>
+       <a-icon type="tag" style="fontSize:26px;color:#003366"/>
+        <em class="em11">标签</em><p></p>
+      
+
+        <div id="tags">
+        <div>
+           <template v-for="(tag, index) in tags">
+          <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
+        <a-tag :key="tag" :closable="index !== 0" @close="() => handleClose(tag)">
+          {{ `${tag.slice(0, 20)}...` }}
+        </a-tag>
+      </a-tooltip>
+      <a-tag v-else :key="tag" :closable="index !== 0" @close="() => handleClose(tag)">
+        {{ tag }}
+      </a-tag>
+    </template>
+    <a-input
+      v-if="inputVisible"
+      ref="input"
+      type="text"
+      size="default"
+      :style="{ width: '78px' }"
+      :value="inputValue"
+      @change="handleInputChange"
+      @blur="handleInputConfirm"
+      @keyup.enter="handleInputConfirm"
+    />
+    <a-tag v-else @click="showInput" style="background:#fff;height:25px; borderStyle: dashed;">
+      <a-icon type="plus" /> <em style="font-size:15px;font-style:normal">添加标签</em>
+    </a-tag>
+  </div>
+        
+      </div>
+  
+
+
+<p></p>
         <br />
-         <a-button style="font-size:16px;float:right;margin-left:20px">取消</a-button>
+         <a-button style="font-size:16px;float:right;margin-left:20px" @click="close">取消</a-button>
          <a-button style="font-size:16px;float:right">创建</a-button>
         <br /><br /> 
          <Divider />
@@ -124,6 +181,10 @@ export default {
       startValue: null,
       endValue: null,
       endOpen: false,
+      visible: false,
+      tags: ['任务'],
+      inputVisible: false,
+      inputValue: '',
     };
   },
     watch: {
@@ -134,7 +195,53 @@ export default {
       console.log('endValue', val);
     },
   },
+  
+        
   methods: {
+
+
+    close(){
+      var p=document.getElementById("panel1");
+      p.setAttribute('activeKey',' ');
+  },
+
+    handleClose(removedTag) {
+      const tags = this.tags.filter(tag => tag !== removedTag);
+      console.log(tags);
+      this.tags = tags;
+    },
+
+    showInput() {
+      this.inputVisible = true;
+      this.$nextTick(function() {
+        this.$refs.input.focus();
+      });
+    },
+
+    handleInputChange(e) {
+      this.inputValue = e.target.value;
+    },
+
+    handleInputConfirm() {
+      const inputValue = this.inputValue;
+      let tags = this.tags;
+      if (inputValue && tags.indexOf(inputValue) === -1) {
+        tags = [...tags, inputValue];
+      }
+      console.log(tags);
+      Object.assign(this, {
+        tags,
+        inputVisible: false,
+        inputValue: '',
+      });
+    },
+    log(e) {
+      console.log(e);
+    },
+    preventDefault(e) {
+      e.preventDefault();
+      console.log('Clicked! But prevent default.');
+    },
     disabledStartDate(startValue) {
       const endValue = this.endValue;
       if (!startValue || !endValue) {
@@ -157,7 +264,17 @@ export default {
     handleEndOpenChange(open) {
       this.endOpen = open;
     },
+    afterVisibleChange(val) {
+      console.log('visible', val);
+    },
+    showDrawer() {
+      this.visible = true;
+    },
+    onClose() {
+      this.visible = false;
+    },
   },
+  
 };
 
 </script>
@@ -184,6 +301,12 @@ export default {
     font-style: normal;
     font-size: 16px;
     padding-left: 0px;
+}
+.em11{
+    font-style: normal;
+    font-size: 16px;
+    padding-left: 11px;
+   
 }
 #components-button-demo-button-group > h4 {
   margin: 16px 0;

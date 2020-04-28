@@ -20,7 +20,6 @@ export default {
 
 <style scoped>
 #wrapper{
-	/* width: 300px; */
 	font-size: 1.5rem;
    /* padding-left: 0.6rem; */
    color:white;

@@ -3,7 +3,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import Alert from './components/attach/alert'
 import 'ant-design-vue/dist/antd.css'
-import {Button, Col, Divider, Radio} from 'ant-design-vue'
+import {Button, Col, Divider, Radio, Switch} from 'ant-design-vue'
 import {Input} from 'ant-design-vue'
 import {Collapse} from 'ant-design-vue'
 import {Avatar} from 'ant-design-vue'
@@ -32,6 +32,7 @@ Vue.component(Drawer.name,Drawer)
 Vue.component(Radio.name,Radio)
 Vue.component(Tag.name,Radio)
 Vue.component(PageHeader.name,PageHeader)
+Vue.component(Switch.name,Switch)
 Vue.use(Button)
 Vue.use(Input)
 Vue.use(Collapse)
@@ -46,6 +47,7 @@ Vue.use(Drawer)
 Vue.use(Radio)
 Vue.use(Tag)
 Vue.use(PageHeader)
+Vue.use(Switch)
 
 
 

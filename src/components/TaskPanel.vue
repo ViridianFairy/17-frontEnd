@@ -126,7 +126,7 @@
           {{ `${tag.slice(0, 20)}...` }}
         </a-tag>
       </a-tooltip>
-      <a-tag v-else :key="tag" :closable="index !== 0" @close="() => handleClose(tag)">
+      <a-tag v-else :key="tag" :closable="index !== 0" color="#003366" style="font-size:16px;text-align:center;height:25px" @close="() => handleClose(tag)">
         {{ tag }}
       </a-tag>
     </template>
@@ -141,7 +141,7 @@
       @blur="handleInputConfirm"
       @keyup.enter="handleInputConfirm"
     />
-    <a-tag v-else @click="showInput" style="background:#fff;height:25px; borderStyle: dashed;">
+    <a-tag v-else @click="showInput" style="background:#fff;height:25px; borderStyle: dashed;margin-top:8px">
       <a-icon type="plus" /> <em style="font-size:15px;font-style:normal">添加标签</em>
     </a-tag>
   </div>

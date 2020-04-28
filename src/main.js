@@ -7,6 +7,7 @@ import {Button} from 'ant-design-vue'
 import {Icon} from 'ant-design-vue'
 import {Input} from 'ant-design-vue'
 import {Collapse} from 'ant-design-vue'
+import {Checkbox} from 'ant-design-vue'
 import router from './js/router'
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -17,9 +18,11 @@ Vue.component(Button.name, Button)
 Vue.component(Icon.name, Icon)
 Vue.component(Input.name, Input)
 Vue.component(Collapse.name, Collapse)
+Vue.component(Checkbox.name, Checkbox)
 Vue.use(Button)
 Vue.use(Input)
 Vue.use(Collapse)
+Vue.use(Checkbox)
 // plugins mounted
 Vue.prototype.$cookies = Cookies;
 Vue.prototype.$http = axios.create({baseURL})

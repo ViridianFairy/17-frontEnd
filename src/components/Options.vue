@@ -28,6 +28,7 @@ export default {
 }
 section{
    padding: 1.5rem;
+   background-color: #08466B;
 }
 section:active{
    background: rgb(59, 165, 236);

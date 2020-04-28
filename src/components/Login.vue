@@ -6,9 +6,7 @@
          <a-icon slot="prefix" type="user" />
       </a-input>
       <br /><br />
-      <a-input placeholder="请输入密码" v-model="password" ref="passwordInput">
-         <a-icon slot="prefix" type="lock" />
-      </a-input>
+      <a-input-password placeholder="请输入密码" />
       <br /><br />
       <a-checkbox @change="autoLogin" style="float: left">自动登录</a-checkbox>
       <a-button type="link" style="float: right">忘记密码</a-button>

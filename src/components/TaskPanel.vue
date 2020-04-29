@@ -8,7 +8,7 @@
     
 
 <div>
-     <a-button block @click="$router.push('/details')">软件工程实践</a-button>
+     <a-button block @click="$router.push('/taskDetails')">软件工程实践</a-button>
   </div>
 <br />
 
@@ -150,8 +150,7 @@
   
 
 
-<p></p>
-        <br />
+<p></p><a-divider />
          <a-button style="font-size:16px;float:right;margin-left:20px" @click="close">取消</a-button>
          <a-button style="font-size:16px;float:right">创建</a-button>
         <br /><br /> 

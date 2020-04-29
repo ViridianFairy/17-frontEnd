@@ -30,29 +30,29 @@
   </p>   
   </div>   
   <div id="contextright">
-<em class="em11" style="margin-right:25px">完成情况</em>
+    
+    <!--   数据需要部分 以下为模拟  ---->
+    <em class="em11" style="margin-right:25px">完成情况</em>
     <a-switch defaultChecked @change="onChange" /><br />
 
     <!---拉取头像  --->
-<a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" style="margin-top:27px" :size="40"/>
-<br />
-<a-range-picker
+    <a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" style="margin-top:27px" :size="40"/>
+    <br />
+    <a-range-picker
       :defaultValue="[moment('2020-04-26', dateFormat), moment('2020-05-07', dateFormat)]"
       disabled
       style="margin-top:20px"
       size="large"
     />
-<br /><br />
-<div>
-<p>
-
+    <br /><br />
+    <div>
+    <p>
     <a-textarea placeholder="填写备注" autoSize  allowClear style="width:400px;" size="large"/>
-
     <br /><br />
     <a-tag color="#003366" style="font-size:18px;text-align:center;width:60px;height:26px;margin-top:5px">普通</a-tag>
     <br /><br /></p>
     <div>
-           <template v-for="(tag, index) in tags">
+    <template v-for="(tag) in tags">
           <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
         <a-tag :key="tag" @close="() => handleClose(tag)">
           {{ `${tag.slice(0, 20)}...` }}

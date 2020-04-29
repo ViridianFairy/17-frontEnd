@@ -7,6 +7,7 @@ import Banner from '../components/Banner'
 import TaskPanel from '../components/TaskPanel'
 import TaskDetails from '../components/TaskDetails'
 import Schedule from '../components/Schedule'
+import ScheduleAdd from '../components/ScheduleAdd'
 
 import Test from '../components/Test'
 Vue.use(VueRouter);
@@ -36,6 +37,14 @@ const routes = [
 			top: Banner,
          left: Options,
          right: Schedule,
+      }
+   },
+   {
+      path: "/scheduleAdd",
+      components: {
+			top: Banner,
+         left: Options,
+         right: ScheduleAdd,
       }
    },
    {

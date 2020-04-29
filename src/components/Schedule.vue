@@ -1,7 +1,7 @@
 <template>
 <div id="wrapper">
 <div id="more">
-    <a-button block size="large">添加日程</a-button>
+    <a-button block size="large" @click="$router.push('/scheduleAdd')">添加日程</a-button>
     <p><br /><br /></p>
     <a-divider>过去的日程</a-divider>
     <p><br /><br /></p>

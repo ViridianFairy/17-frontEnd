@@ -3,10 +3,14 @@ import Vue from 'vue'
 import App from './App.vue'
 import Alert from './components/attach/alert'
 import 'ant-design-vue/dist/antd.css'
-import {Button} from 'ant-design-vue'
-import {Icon} from 'ant-design-vue'
+import {Button, Col, Divider, Radio, Switch} from 'ant-design-vue'
 import {Input} from 'ant-design-vue'
 import {Collapse} from 'ant-design-vue'
+import {Avatar} from 'ant-design-vue'
+import {Icon} from 'ant-design-vue'
+import {Menu} from 'ant-design-vue'
+import {DatePicker,PageHeader} from 'ant-design-vue'
+import {Dropdown,Select,Drawer,Tag} from 'ant-design-vue'
 import router from './js/router'
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -17,9 +21,36 @@ Vue.component(Button.name, Button)
 Vue.component(Icon.name, Icon)
 Vue.component(Input.name, Input)
 Vue.component(Collapse.name, Collapse)
+Vue.component(Avatar.name, Avatar)
+Vue.component(Icon.name, Icon)
+Vue.component(Menu.name, Menu)
+Vue.component(DatePicker.name, DatePicker)
+Vue.component(Dropdown.name,Dropdown)
+Vue.component(Divider.name,Divider)
+Vue.component(Select.name,Select)
+Vue.component(Drawer.name,Drawer)
+Vue.component(Radio.name,Radio)
+Vue.component(Tag.name,Radio)
+Vue.component(PageHeader.name,PageHeader)
+Vue.component(Switch.name,Switch)
 Vue.use(Button)
 Vue.use(Input)
 Vue.use(Collapse)
+Vue.use(Avatar)
+Vue.use(Icon)
+Vue.use(Menu)
+Vue.use(DatePicker)
+Vue.use(Dropdown)
+Vue.use(Divider)
+Vue.use(Select)
+Vue.use(Drawer)
+Vue.use(Radio)
+Vue.use(Tag)
+Vue.use(PageHeader)
+Vue.use(Switch)
+
+
+
 // plugins mounted
 Vue.prototype.$cookies = Cookies;
 Vue.prototype.$http = axios.create({baseURL})

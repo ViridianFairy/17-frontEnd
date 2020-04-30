@@ -31,7 +31,20 @@
       </section>
       <section>
          <div>已完成</div>
-         
+         <a-button type="primary" loading>Loading</a-button>
+         <a-button type="primary" size="small" loading>Loading</a-button>
+         <br />
+         <a-button type="primary" :loading="loading" @mouseenter="enterLoading">mouseenter me!</a-button>
+         <a-button
+            type="primary"
+            icon="poweroff"
+            :loading="iconLoading"
+            @click="enterIconLoading"
+         >延迟1s</a-button>
+         <br />
+         <a-button type="primary" loading />
+         <a-button type="primary" shape="circle" loading />
+         <a-button type="danger" shape="round" loading />
       </section>
    </div>
 </template>

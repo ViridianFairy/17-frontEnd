@@ -6,37 +6,37 @@
       theme="dark"
       :inlineCollapsed="collapsed"
     >
-      <a-menu-item key="1">
+      <a-menu-item key="1" @click="$router.push('/taskPanel')">
         <a-icon type="clock-circle" />
         <span>任务面板</span>
       </a-menu-item>
 
-      <a-menu-item key="2">
+      <a-menu-item key="2" disabled>
         <a-icon type="bars" />
         <span>动态查看</span>
       </a-menu-item>
 
-      <a-menu-item key="3">
+      <a-menu-item key="3" disabled>
         <a-icon type="edit" />
         <span>文档协作</span>
       </a-menu-item>
 
-      <a-menu-item key="4">
+      <a-menu-item key="4" @click="$router.push('/disk')">
         <a-icon type="table" />
         <span>文件管理</span>
       </a-menu-item>
 
-      <a-menu-item key="5">
+      <a-menu-item key="5" @click="$router.push('/schedule')">
         <a-icon type="schedule" />
         <span>日程安排</span>
       </a-menu-item>
 
-      <a-menu-item key="6">
+      <a-menu-item key="6" disabled>
         <a-icon type="team" />
         <span>群组聊天</span>
       </a-menu-item>
 
-      <a-menu-item key="7">
+      <a-menu-item key="7" disabled>
         <a-icon type="bell" />
         <span>消息通知</span>
       </a-menu-item>

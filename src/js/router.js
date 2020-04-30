@@ -8,6 +8,9 @@ import TaskPanel from '../components/TaskPanel'
 import TaskDetails from '../components/TaskDetails'
 import Schedule from '../components/Schedule'
 import ScheduleAdd from '../components/ScheduleAdd'
+import Chat from '../components/Chat'
+import Login from '../components/Login'
+import Register from '../components/Register'
 
 import Test from '../components/Test'
 Vue.use(VueRouter);
@@ -53,6 +56,30 @@ const routes = [
 			top: Banner,
          left: Options,
          right: TaskPanel,
+      }
+   },
+   {
+      path: "/chat",
+      components: {
+			top: Banner,
+         left: Options,
+         right: Chat,
+      }
+   },
+   {
+      path: "/login",
+      components: {
+			top: Banner,
+         left: Options,
+         right: Login,
+      }
+   },
+   {
+      path: "/register",
+      components: {
+			top: Banner,
+         left: Options,
+         right: Register,
       }
    },
 	{

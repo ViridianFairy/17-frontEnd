@@ -23,12 +23,12 @@
 
       <a-menu-item key="4" @click="$router.push('/disk')">
         <a-icon type="table" />
-        <span @click="$router.push('/disk')">文件管理</span>
+        <span>文件管理</span>
       </a-menu-item>
 
       <a-menu-item key="5" @click="$router.push('/schedule')">
         <a-icon type="schedule" />
-        <span @click="$router.push('/schedule')">日程安排</span>
+        <span>日程安排</span>
       </a-menu-item>
 
       <a-menu-item key="6" disabled>

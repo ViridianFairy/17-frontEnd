@@ -60,7 +60,7 @@ export default {
 #more{   
     margin: 25px 40px;
     background-color:	white;
-    height: 500px;
+    /* height: 500px; */
 } 
 em{
     padding-left:40px;

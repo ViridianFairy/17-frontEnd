@@ -53,6 +53,7 @@ export default {
 <style scoped>
 #wrapper{
     margin-left: 30px;
+    margin-right: 30px;
     /* display: flex; */
 }
 #chatCreate{

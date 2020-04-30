@@ -290,20 +290,19 @@ export default {
 <style scoped>
 #pending{
     width:350px;
-    margin-left: 20px;
-    float: left;
-    
+    margin-left: 50px;    
+}
+#wrapper {
+   display: flex;
+   margin: 0 auto;
 }
 #process{
-    width:350px;
-    float: left;
-    margin-left: 70px;
-    
+    width:350px;    
+    margin-left: 50px;   
 }
 #finish{
     width:350px;
-    float: right;
-    margin-right:40px
+    margin-left: 50px;
 }
 .em1{
     font-style: normal;

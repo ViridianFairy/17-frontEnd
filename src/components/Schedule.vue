@@ -58,7 +58,7 @@ export default {
 
 <style scoped>
 #more{   
-    margin: 25px 40px;
+    margin: 20px 40px;
     background-color:	white;
     /* height: 500px; */
 } 

@@ -47,16 +47,18 @@
 
 <script>
 export default {
-  data() {
-    return {
+   name: "Options",
+   components: {},
+   data() {
+     return {
       collapsed: false,
     };
-  },
-  methods: {
+   },
+   methods: {
     toggleCollapsed() {
       this.collapsed = !this.collapsed;
     },
-  },
+   },
 };
 </script>
 

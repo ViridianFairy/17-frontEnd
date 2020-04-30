@@ -4,6 +4,11 @@ import Options from '../components/Options'
 import Tasks from '../components/Tasks'
 import Disk from '../components/Disk'
 import Banner from '../components/Banner'
+import TaskPanel from '../components/TaskPanel'
+import TaskDetails from '../components/TaskDetails'
+import Schedule from '../components/Schedule'
+import ScheduleAdd from '../components/ScheduleAdd'
+
 import Test from '../components/Test'
 Vue.use(VueRouter);
 const routes = [
@@ -26,12 +31,44 @@ const routes = [
          right: Disk,
       }
    },
+   {
+      path: "/schedule",
+      components: {
+			top: Banner,
+         left: Options,
+         right: Schedule,
+      }
+   },
+   {
+      path: "/scheduleAdd",
+      components: {
+			top: Banner,
+         left: Options,
+         right: ScheduleAdd,
+      }
+   },
+   {
+      path: "/taskPanel",
+      components: {
+			top: Banner,
+         left: Options,
+         right: TaskPanel,
+      }
+   },
 	{
       path: "/test",
       components: {
 			top: Banner,
          left: Options,
          right: Test,
+      }
+   },
+   {
+      path: "/taskDetails",
+      components: {
+			top: Banner,
+         left: Options,
+         right: TaskDetails,
       }
    },
 ];

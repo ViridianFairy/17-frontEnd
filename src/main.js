@@ -6,6 +6,8 @@ import 'ant-design-vue/dist/antd.css'
 import {Button, Col, Divider, Radio, Switch} from 'ant-design-vue'
 import {Input} from 'ant-design-vue'
 import {Collapse} from 'ant-design-vue'
+import {Checkbox} from 'ant-design-vue'
+import {Menu} from 'ant-design-vue'
 import {Avatar} from 'ant-design-vue'
 import {Icon} from 'ant-design-vue'
 import {Menu} from 'ant-design-vue'
@@ -21,6 +23,13 @@ Vue.component(Button.name, Button)
 Vue.component(Icon.name, Icon)
 Vue.component(Input.name, Input)
 Vue.component(Collapse.name, Collapse)
+Vue.component(Checkbox.name, Checkbox)
+Vue.component(Menu.name, Menu)
+Vue.use(Button)
+Vue.use(Input)
+Vue.use(Collapse)
+Vue.use(Checkbox)
+Vue.use(Menu)
 Vue.component(Avatar.name, Avatar)
 Vue.component(Icon.name, Icon)
 Vue.component(Menu.name, Menu)

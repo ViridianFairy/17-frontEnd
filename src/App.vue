@@ -46,7 +46,8 @@ body{
 }
 #left {
    width: 170px;
-   background-color: #08466B;
+   height: 560px;
+   background-color: #001529;
 }
 #right {
    width: calc(100% - 170px);

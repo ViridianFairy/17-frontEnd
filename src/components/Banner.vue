@@ -16,17 +16,15 @@ export default {
 </script>
 
 <style scoped>
-#wrapper{
-   /* width: 300px; */
-   display: flex;
-}
 #wrapper img:nth-child(1){
-	width:40px;
-	margin-left: 30px;
-	/* margin-top: 0px; */
+	width:46px;
+   float: left;
+}
+#wrapper{
+   /* display: flex; */
 }
 #user{
    padding: 15px;
-   margin-left: 1200px;
+   float:right;
 }
 </style>

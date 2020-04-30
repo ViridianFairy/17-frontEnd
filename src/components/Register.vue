@@ -14,7 +14,7 @@
       <a-button style="float: right">获取验证码</a-button>
       <br /><br /><br />
       <a-button type="primary" style="width: 50%;float: left">注册</a-button>
-      <a-button type="link" style="float: right;float: right">使用现有账号登录</a-button>
+      <a-button type="link" @click="$router.push('/login')" style="float: right;float: right">使用现有账号登录</a-button>
    </div>
 </template>
 

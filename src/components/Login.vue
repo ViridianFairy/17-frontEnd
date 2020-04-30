@@ -10,7 +10,7 @@
       <br /><br />
       <a-checkbox @change="autoLogin" style="float: left">自动登录</a-checkbox>
       <a-button type="link" style="float: right">忘记密码</a-button>
-      <a-button type="link" style="float: right">注册账户</a-button>
+      <a-button type="link" @click="$router.push('/register')" style="float: right">注册账户</a-button>
       <br /><br />
       <a-button type="primary" block>登录</a-button>
    </div>

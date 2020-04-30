@@ -31,7 +31,7 @@
         <span>日程安排</span>
       </a-menu-item>
 
-      <a-menu-item key="6" @click="$router.push('/chat')">
+      <a-menu-item key="6" disabled>
         <a-icon type="team" />
         <span>群组聊天</span>
       </a-menu-item>

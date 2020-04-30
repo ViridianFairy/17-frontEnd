@@ -10,7 +10,6 @@ import {Checkbox} from 'ant-design-vue'
 import {Menu} from 'ant-design-vue'
 import {Avatar} from 'ant-design-vue'
 import {Icon} from 'ant-design-vue'
-import {Menu} from 'ant-design-vue'
 import {DatePicker,PageHeader} from 'ant-design-vue'
 import {Dropdown,Select,Drawer,Tag} from 'ant-design-vue'
 import router from './js/router'
@@ -25,14 +24,7 @@ Vue.component(Input.name, Input)
 Vue.component(Collapse.name, Collapse)
 Vue.component(Checkbox.name, Checkbox)
 Vue.component(Menu.name, Menu)
-Vue.use(Button)
-Vue.use(Input)
-Vue.use(Collapse)
-Vue.use(Checkbox)
-Vue.use(Menu)
 Vue.component(Avatar.name, Avatar)
-Vue.component(Icon.name, Icon)
-Vue.component(Menu.name, Menu)
 Vue.component(DatePicker.name, DatePicker)
 Vue.component(Dropdown.name,Dropdown)
 Vue.component(Divider.name,Divider)

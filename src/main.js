@@ -10,7 +10,7 @@ import {Checkbox} from 'ant-design-vue'
 import {Menu} from 'ant-design-vue'
 import {Avatar} from 'ant-design-vue'
 import {Icon} from 'ant-design-vue'
-import {List} from 'ant-design-vue'
+import {List,Popover} from 'ant-design-vue'
 import {DatePicker,PageHeader} from 'ant-design-vue'
 import {Dropdown,Select,Drawer,Tag} from 'ant-design-vue'
 import router from './js/router'
@@ -36,6 +36,7 @@ Vue.component(Radio.name,Radio)
 Vue.component(Tag.name,Radio)
 Vue.component(PageHeader.name,PageHeader)
 Vue.component(Switch.name,Switch)
+Vue.component(Popover.name,Popover)
 Vue.use(Button)
 Vue.use(Input)
 Vue.use(Collapse)
@@ -52,6 +53,7 @@ Vue.use(Radio)
 Vue.use(Tag)
 Vue.use(PageHeader)
 Vue.use(Switch)
+Vue.use(Popover)
 
 
 

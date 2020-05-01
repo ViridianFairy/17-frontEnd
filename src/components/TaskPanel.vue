@@ -14,14 +14,22 @@
                   <a-input placeholder="输入任务标题" />
 
                   <!-- 菜单  -->
-                  <a-menu style="width: 350px;margin-left:-15px;margin-top:10px">
-                     <!-- 执行者  -->
+                  
+
+                <p style="margin-top:20px">
+                     <a-avatar :size="35" icon="user" />
+                     <em class="em11">用户</em>
+                  </p>
+
+
+                  <!--<a-menu style="width: 350px;margin-left:-15px;margin-top:10px">
+                  
                      <a-sub-menu key="sub1" subMenuCloseDelay="2">
                         <span slot="title">
-                           <a-icon type="user" style="fontSize:26px;color:#003366" />
-                           <em class="em1" >待认领</em>
+                            <a-avatar :size="35" icon="user" />
+                           <em class="em1" style="margin-left:10px;" >XXX</em>
                         </span>
-								<!-- style="width:300px;height:300px;" -->
+								<!-- style="width:300px;height:300px;" 
                         <a-menu-item key="4" >
 									<a @click.stop="log('1')" >啊啊啊啊1</a>
 								</a-menu-item>
@@ -34,25 +42,25 @@
 								</a-menu-item>
                      </a-sub-menu>
                   </a-menu>
-                  <a-input-search placeholder="搜索成员" style="width: 200px" @search="" />
+                  -->
 
                   <!-- 起止日期 -->
                   <!--a-sub-menu key="subw">
                   <span slot="title"-->
-                  <p style="margin-top:10px;">
-                     <a-icon type="calendar" style="fontSize:26px;color:#003366" />
-                     <em class="em11">设置起止日期</em>
-
+                 
+                     <a-icon type="calendar" style="fontSize:26px;color:#003366;margin-left:4px" />
                      <a-date-picker
-                        style="margin-top:10px;margin-bottom:5px;"
+                        style="margin-top:-10px;margin-bottom:5px;margin-left:10px;"
                         :disabledDate="disabledStartDate"
                         showTime
                         format="YYYY-MM-DD HH:mm:ss"
                         v-model="startValue"
                         placeholder="开始时间"
                         @openChange="handleStartOpenChange"
-                     />
+                     /><br />
+                     <a-icon type="calendar" style="fontSize:26px;color:#003366;margin-left:4px" />
                      <a-date-picker
+                        style="margin-top:-10px;margin-bottom:5px;margin-left:10px;"
                         :disabledDate="disabledEndDate"
                         showTime
                         format="YYYY-MM-DD HH:mm:ss"
@@ -61,22 +69,33 @@
                         :open="endOpen"
                         @openChange="handleEndOpenChange"
                      />
-                  </p>
+                
 
                   <!-- 提醒   -->
                   <!--<a-sub-menu key="sub3"  subMenuCloseDelay="20"></span> 
-                  <span slot="title"-->
-                  <p>
-                     <a-icon type="clock-circle" style="fontSize:26px;color:#003366" />
-                     <em class="em11">提醒</em>
-                     <a>
-                        <a-icon
-                           theme="filled"
-                           type="plus-circle"
-                           style="fontSize:26px;color:#003366;margin-left:13px"
-                        />
-                     </a>
-                  </p>
+                  <span slot="title"--><br />
+                  <a-menu style="width: 330px;margin-left:10x;margin-top:-5px;margin-right:-20px" subMenuCloseDelay="2">
+                       <a-sub-menu key="sub1">
+                            <span slot="title"><a-icon type="clock-circle" style="fontSize:26px;color:#003366;margin-left:-12px" />
+                            <em class="em11" style="padding-left:0">不提醒</em></span>
+                               <a-menu-item key="1" @click.stop="log('1')" style="width:200px;height:50px">
+                                 <p>提醒时间
+                                 <a-select style="width: 120px" @change="handleChange"  @click.stop="log('3')">
+                                  <a-select-option value="begin" >
+                                    任务开始时
+                                  </a-select-option>
+                                  <a-select-option value="end">
+                                    任务截止时
+                                  </a-select-option>
+                                </a-select><a-divider />
+					                      </p>
+								                </a-menu-item>                               
+                                  <a-menu-item key="5" @click.stop="log('2')">
+                                      <p>提醒对象</p>    
+                                  </a-menu-item>
+       
+                                </a-sub-menu>     
+               
                   <!--    
         <a-sub-menu key="sub3-1" title="提醒时间">
           <a-menu-item key="3-1-1">任务开始时</a-menu-item>
@@ -84,25 +103,34 @@
           <a-menu-item key="3-1-3">不提醒</a-menu-item>
               
                   <a-sub-menu key="sub3-2" title="提醒对象"-->
-                  <p></p>
-                  <div>
-                     <a-radio-group defaultValue="a" buttonStyle="solid">
-                        <a-radio-button value="a">任务开始时</a-radio-button>
-                        <a-radio-button value="b">任务截止时</a-radio-button>
-                        <a-radio-button value="c">不提醒</a-radio-button>
-                     </a-radio-group>
-                  </div>
+                  
 
                   <!-- 优先级   -->
-                  <!-- a-sub-menu key="sub4"  subMenuCloseDelay="2">
-        <span slot="title"><a-icon type="fire" style="fontSize:26px;color:#003366"/>
-        <em class="em1">优先级</em></span>
-        <a-menu-item key="5">普通</a-menu-item>   
-        <a-menu-item key="6">紧急</a-menu-item>
-        <a-menu-item key="7">非常紧急</a-menu-item>    
-                  </a-sub-menu
-                  <p></p>
-                  <a-icon type="fire" style="fontSize:26px;color:#003366" />
+                  <a-sub-menu key="sub4"  subMenuCloseDelay="2" style="margin-top:-10px">
+                  <span slot="title"><a-icon type="fire" style="fontSize:26px;color:#003366;margin-left:-12px"/>
+                  <a-tag color="green" style="font-size:16px;height:25px;margin-left:0px">
+                      普通
+                  </a-tag>                  
+                  </span>
+                  <a-menu-item key="5" @click.stop="log('3')">
+                    <a-tag color="green" style="font-size:16px;height:25px;margin-left:0px">
+                      普通
+                    </a-tag>
+                    </a-menu-item>   
+                  <a-menu-item key="6" @click.stop="log('4')">
+                    <a-tag color="orange" style="font-size:16px;height:25px;margin-left:0px">
+                      紧急
+                    </a-tag>
+                  </a-menu-item>
+                  <a-menu-item key="7" @click.stop="log('5')">
+                    <a-tag color="red" style="font-size:16px;height:25px;margin-left:0px">
+                      非常紧急
+                    </a-tag>  
+                  </a-menu-item>    
+                  </a-sub-menu>
+                  </a-menu>
+               
+                  <!--a-icon type="fire" style="fontSize:26px;color:#003366" />
                   <em class="em11">优先级</em>
                   <p></p>
                   <div>
@@ -111,17 +139,15 @@
                         <a-radio-button value="mid">紧急</a-radio-button>
                         <a-radio-button value="hard">非常紧急</a-radio-button>
                      </a-radio-group>
-                  </div>
+                  </div-->
 
                   <!--  标签   -->
 
-                  <p></p>
-                  <a-icon type="tag" style="fontSize:26px;color:#003366" />
-                  <em class="em11">标签</em>
-                  <p></p>
-
+                
+                  <a-icon type="tag" style="fontSize:26px;color:#003366;margin-left:4px" />
+                  <em class="em11" >标签</em>
                   <div id="tags">
-                     <div>
+                     <div style="margin-left:4px;margin-top:3px">
                         <template v-for="(tag, index) in tags">
                            <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
                               <a-tag
@@ -160,14 +186,21 @@
                         </a-tag>
                      </div>
                   </div>
-
-                  <p></p>
-                  <a-divider />
+                  <a-divider style="margin-top:15px"/>
+                  <p style="margin-top:-15px;font-size:16px;margin-left:5px">参与者 · 1</p>
+                  
+                     <a-avatar :size="35" icon="user" style="margin-top:-18px" />
+                     <!--a-popover title="添加参与者">
+                        
+                    
+                     </a-popover-->
+                     <a><a-icon type="plus-circle" theme="filled" style="fontSize:35px;color:#003366;margin-left:10px;"/><br />
+                     </a>
                   <a-button style="font-size:16px;float:right;margin-left:20px" @click="close">取消</a-button>
                   <a-button style="font-size:16px;float:right">创建</a-button>
                   <br />
                   <br />
-                  <a-divider />
+                
                </a-collapse-panel>
             </a-collapse>
          </div>
@@ -291,6 +324,9 @@ export default {
       },
       onClose() {
          this.visible = false;
+      },
+      handleChange(value) {
+      console.log(`selected ${value}`);
       }
    }
 };

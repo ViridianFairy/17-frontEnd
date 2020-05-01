@@ -44,6 +44,7 @@ export default {
     margin-top: 8%;
     overflow: hidden;
     text-align: center;
+	 min-width: 400px;
 }
 
 .logincontent img:nth-child(1){

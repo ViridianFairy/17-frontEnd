@@ -20,6 +20,7 @@ export default {
 #wrapper img:nth-child(1){
 	width:46px;
    float: left;
+	margin-left:calc(85px - 23px);
 }
 #wrapper{
    /* display: flex; */

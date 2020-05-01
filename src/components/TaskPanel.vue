@@ -74,7 +74,7 @@
                   <!-- 提醒   -->
                   <!--<a-sub-menu key="sub3"  subMenuCloseDelay="20"></span> 
                   <span slot="title"--><br />
-                  <a-menu style="width: 330px;margin-left:10x;margin-top:-5px;margin-right:-20px" subMenuCloseDelay="2">
+                  <a-menu style="width: 340px;margin-left:10x;margin-top:-5px;margin-right:-20px" subMenuCloseDelay="2">
                        <a-sub-menu key="sub1">
                             <span slot="title"><a-icon type="clock-circle" style="fontSize:26px;color:#003366;margin-left:-12px" />
                             <em class="em11" style="padding-left:0">不提醒</em></span>
@@ -108,38 +108,33 @@
                   <!-- 优先级   -->
                   <a-sub-menu key="sub4"  subMenuCloseDelay="2" style="margin-top:-10px">
                   <span slot="title"><a-icon type="fire" style="fontSize:26px;color:#003366;margin-left:-12px"/>
-                  <a-tag color="green" style="font-size:16px;height:25px;margin-left:0px">
+                  <a-tag v-if="taskpriority=='普通'" color="green" :visible="true" style="font-size:16px;height:25px;margin-left:0px;">
                       普通
+                  </a-tag> 
+                  <a-tag v-if="taskpriority=='紧急'" color="orange" :visible="true" style="font-size:16px;height:25px;margin-left:0px;">
+                      紧急
+                  </a-tag> 
+                  <a-tag v-if="taskpriority=='非常紧急'" color="red" :visible="true" style="font-size:16px;height:25px;margin-left:0px;">
+                      非常紧急
                   </a-tag>                  
                   </span>
-                  <a-menu-item key="5" @click.stop="log('3')">
+                  <a-menu-item key="5" @click="pt">
                     <a-tag color="green" style="font-size:16px;height:25px;margin-left:0px">
                       普通
                     </a-tag>
                     </a-menu-item>   
-                  <a-menu-item key="6" @click.stop="log('4')">
+                  <a-menu-item key="6" @click="jj">
                     <a-tag color="orange" style="font-size:16px;height:25px;margin-left:0px">
                       紧急
                     </a-tag>
                   </a-menu-item>
-                  <a-menu-item key="7" @click.stop="log('5')">
+                  <a-menu-item key="7" @click="fc">
                     <a-tag color="red" style="font-size:16px;height:25px;margin-left:0px">
                       非常紧急
                     </a-tag>  
                   </a-menu-item>    
                   </a-sub-menu>
                   </a-menu>
-               
-                  <!--a-icon type="fire" style="fontSize:26px;color:#003366" />
-                  <em class="em11">优先级</em>
-                  <p></p>
-                  <div>
-                     <a-radio-group defaultValue="a" buttonStyle="solid">
-                        <a-radio-button value="normal">普通</a-radio-button>
-                        <a-radio-button value="mid">紧急</a-radio-button>
-                        <a-radio-button value="hard">非常紧急</a-radio-button>
-                     </a-radio-group>
-                  </div-->
 
                   <!--  标签   -->
 
@@ -196,7 +191,7 @@
                      </a-popover-->
                      <a><a-icon type="plus-circle" theme="filled" style="fontSize:35px;color:#003366;margin-left:10px;"/><br />
                      </a>
-                  <a-button style="font-size:16px;float:right;margin-left:20px" @click="close">取消</a-button>
+                  <a-button style="font-size:16px;float:right;margin-left:20px" @click="onClose">取消</a-button>
                   <a-button style="font-size:16px;float:right">创建</a-button>
                   <br />
                   <br />
@@ -228,18 +223,20 @@
    </div>
 </template>
 <script>
+
 export default {
 	name:"TaskPanel",
    data() {
       return {
-         startValue: null,
-         endValue: null,
-         endOpen: false,
-         visible: false,
-         tags: ["任务"],
-         inputVisible: false,
-			inputValue: "",
-			text:"test"
+        startValue: null,
+        endValue: null,
+        endOpen: false,
+        visible: false,
+        tags: ["任务"],
+        inputVisible: false,
+        inputValue: "",
+        text:"test",
+        taskpriority:"普通",
       };
    },
    watch: {
@@ -252,6 +249,15 @@ export default {
    },
 
    methods: {
+      pt(){
+        this.taskpriority="普通";       
+      },
+      jj() {
+          this.taskpriority="紧急";
+      },
+      fc(){
+        this.taskpriority="非常紧急";
+      },
       close() {
          var p = document.getElementById("panel1");
          p.setAttribute("activeKey", " ");
@@ -340,7 +346,7 @@ export default {
 #wrapper {
    display: flex;
    margin: 0 auto;
-   margin-right: 50px;
+   
 }
 #process {
    width: 350px;

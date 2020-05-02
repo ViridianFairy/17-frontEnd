@@ -1,57 +1,51 @@
 <template>
-   <div id="wrapper">
-    
+   <div id="wrapper">   
        <div id="more">
-      <a-page-header
-    style="border-bottom: 2px solid white"
-    @back="$router.push('/taskPanel')"
-    title="任务详情"
-  />
-  <p style="margin-left:35px;margin-top:30px;font-size:25px" >任务：软件工程实践</p>
-  <div id="contextleft">
-  <p>
-    <a-icon type="file-done" style="fontSize:30px;color:#003366;margin-top:10px;vertical-align:bottom"/>
+        <p style="margin-left:35px;margin-top:30px;font-size:25px" >任务：软件工程实践</p>
+        <div id="contextleft">
+        <p>
+    <a-icon type="file-done" style="fontSize:22px;color:gray;margin-top:10px;vertical-align:bottom"/>
     <em class="em11">状态</em><br />
 
-    <a-icon type="user" style="fontSize:30px;color:#003366;margin-top:30px;vertical-align:bottom"/>
+    <a-icon type="user" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
     <em class="em11">执行者</em><br />
     
-    <a-icon type="calendar" style="fontSize:30px;color:#003366;margin-top:30px;vertical-align:bottom"/>
+    <a-icon type="calendar" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
     <em class="em11">执行时间</em><br />
 
-    <a-icon type="pushpin" style="fontSize:30px;color:#003366;margin-top:30px;vertical-align:bottom"/>
+    <a-icon type="pushpin" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
     <em class="em11">备注</em><br />
 
-    <a-icon type="fire" style="fontSize:30px;color:#003366;margin-top:30px;vertical-align:bottom"/>
+    <a-icon type="fire" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
     <em class="em11">优先级</em><br />
 
-    <a-icon type="tag" style="fontSize:30px;color:#003366;margin-top:30px;vertical-align:bottom"/>
+    <a-icon type="tag" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
     <em class="em11">标签</em><br />    
   </p>   
   </div>   
   <div id="contextright">
     
     <!--   数据需要部分 以下为模拟  ---->
-    <em class="em11" style="margin-right:25px">完成情况</em>
+    <em class="em11" style="margin-right:25px;font-size:18px;padding-left:0">完成情况</em>
     <a-switch defaultChecked @change="onChange" /><br />
 
     <!---拉取头像  --->
-    <a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" style="margin-top:27px" :size="40"/>
+    <a-avatar icon="user" style="margin-top:20px" :size="40"/>
     <br />
     <a-range-picker
       :defaultValue="[moment('2020-04-26', dateFormat), moment('2020-05-07', dateFormat)]"
       disabled
-      style="margin-top:20px"
-      size="large"
+      style="margin-top:16px"
+      
     />
     <br /><br />
     <div>
     <p>
-    <a-textarea placeholder="填写备注" autoSize  allowClear style="width:400px;" size="large"/>
+    <a-textarea placeholder="填写备注" autoSize  allowClear style="width:360px;" />
     <br /><br />
-    <a-tag color="#003366" style="font-size:18px;text-align:center;width:60px;height:26px;margin-top:5px">普通</a-tag>
+    <a-tag color="gray" style="font-size:18px;text-align:center;width:60px;height:28px">较低</a-tag>
     <br /><br /></p>
-    <div>
+    <div style="margin-top:-10px">
     <template v-for="(tag) in tags">
           <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
         <a-tag :key="tag" @close="() => handleClose(tag)">
@@ -140,11 +134,13 @@ export default {
 }
 #contextleft{
     margin: 30px 35px;
-    width:150px;
+    width:120px;
     float: left;
+    margin-top:20px;
 }
 #contextright{
-    margin: 41px 35px;
+    margin: 38px 35px;
+    margin-top:26px;
     width:500px;
     float: left;
 }
@@ -152,6 +148,6 @@ export default {
     font-style: normal;
     font-size: 18px;
     padding-left: 11px; 
-    
+    color:gray;
 }
 </style>

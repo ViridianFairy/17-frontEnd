@@ -1,18 +1,17 @@
 <template>
 <div id="wrapper">
-   <p style="margin-left:78px;margin-top:30px;font-size:25px" >创建日程</p>
-<div id="all">
+  <p style="margin-left:70px;margin-top:60px;font-size:25px" >创建日程</p>
 <div id="more">  
 <div id="iconleft">
-   <a-icon type="edit" style="fontSize:28px;color:#003366;margin:15px;"/>
-   <a-icon type="calendar" style="fontSize:28px;color:#003366;margin:15px;"/>
-   <a-icon type="clock-circle" style="fontSize:28px;color:#003366;margin:15px;"/>
-   <a-icon type="pushpin" style="fontSize:28px;color:#003366;margin:15px;"/>
-   <a-icon type="tag" style="fontSize:28px;color:#003366;margin:15px;"/>
+   <a-icon type="edit" style="fontSize:22px;color:gray;;margin:15px;"/>
+   <a-icon type="calendar" style="fontSize:22px;color:gray;margin:15px;"/>
+   <a-icon type="clock-circle" style="fontSize:22px;color:gray;margin:15px;"/>
+   <a-icon type="pushpin" style="fontSize:22px;color:gray;margin:15px;"/>
+   <a-icon type="tag" style="fontSize:22px;color:gray;margin:15px;"/>
 </div>
 <div id="contentright">
-   <a-input placeholder="填写日程内容" autoSize allowClear size="large"/>
-   <a-date-picker @change="onChange" style="margin-top:20px;" size="large" placeholder="请选择日期"/>
+   <a-input placeholder="填写日程内容" autoSize allowClear/>
+   <a-date-picker @change="onChange" style="margin-top:20px;width:500px" placeholder="请选择日期"/>
    <p></p>
    <a-date-picker
       :mode="mode1"
@@ -20,11 +19,10 @@
       @openChange="handleOpenChange1"
       @panelChange="handlePanelChange1"
       placeholder="请选择提醒时间"
-      size="large"
-      style="margin-top:5px"
+      style="margin-top:5px;width:500px"
     />
     <p></p>
-   <a-input placeholder="填写备注" autoSize allowClear size="large" style="margin-top:5px"/>
+   <a-input placeholder="填写备注" autoSize allowClear style="margin-top:5px"/>
    <p></p>
    <div id="tags">
         <div>
@@ -34,7 +32,7 @@
           {{ `${tag.slice(0, 20)}...` }}
         </a-tag>
       </a-tooltip>
-      <a-tag v-else :key="tag" :closable="index !== 0" color="#003366" style="font-size:18px;text-align:center;height:25px;margin-top:10px" @close="() => handleClose(tag)">
+      <a-tag v-else :key="tag" :closable="index !== 0" color="#003366" style="font-size:15px;text-align:center;height:25px;margin-top:10px" @close="() => handleClose(tag)">
         {{ tag }}
       </a-tag>
     </template>
@@ -50,16 +48,17 @@
       @keyup.enter="handleInputConfirm"
     />    
     <a-tag v-else @click="showInput" style="background:#fff; height:25px;borderStyle: dashed">
-      <a-icon type="plus" /> <em style="font-size:18px;font-style:normal">添加标签</em>
-    </a-tag>
+      <a-icon type="plus" /> <em style="font-size:14px;font-style:normal;color:gray">添加标签</em>
+    </a-tag>   
   </div>      
 </div>    
+<a-button @click="$router.push('/schedule')" style="float:right;margin-left:16px">取消</a-button>
+<a-button style="float:right">添加</a-button>
 </div>   
 </div>
-<a-button @click="$router.push('/schedule')" style="float:right;margin-left:30px">取消</a-button>
-<a-button style="float:right">添加</a-button>
+
 </div>
-</div>
+ 
 </template>
 
         
@@ -124,15 +123,6 @@ export default {
 
 
 <style scoped>
-#all{   
-    margin: 40px 40px;
-    background-color:	white;
-    height: 500px;  
-    width:500px;
-} 
-#more{
-   display: flex;
-}
 #iconleft{
    margin-left: 20px;
    width: 70px;
@@ -141,5 +131,14 @@ export default {
    width: 500px;
    height: 300px;
    margin-top:10px;
+}
+#more{   
+    margin: 25px 40px;
+    background-color:	white;
+    height: 600px;
+    display: flex;
+}
+#tags{
+  margin-top:-6px ;
 }
 </style>

@@ -38,11 +38,48 @@
   <div id="chatContent">
 
     <div id="chatShow">
-      
+      <div id="chatIn">
+        <a-avatar :size="50" slot="avatar" style="float:left">U</a-avatar>
+        <div id="contentIn">
+          <p>
+            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+          </p>
+        </div>
+      </div>
+
+      <div id="chatOut">
+        <a-avatar :size="50" slot="avatar" style="float:right">U</a-avatar>
+        <div id="contentOut" style="float:right;color:white">
+          <p>
+            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+          </p>
+        </div>
+      </div>
+
+      <div id="chatIn">
+        <a-avatar :size="50" slot="avatar" style="float:left">U</a-avatar>
+        <div id="contentIn">
+          <p>
+            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+          </p>
+        </div>
+      </div>
+
+      <div id="chatOut">
+        <a-avatar :size="50" slot="avatar" style="float:right">U</a-avatar>
+        <div id="contentOut" style="float:right;color:white">
+          <p style="float:right">
+            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+          </p>
+        </div>
+      </div>
+
     </div>
 
     <div id="chatInput">
-      <a-textarea style="height:130px" placeholder="" :rows="5" />
+      <a-textarea style="height:133px" placeholder="" :rows="5" />
     </div>
 
 
@@ -121,6 +158,34 @@ export default {
     height: 370px;
     background-color: #F5F5F5;
 }
+#chatIn{
+    width: 100%;
+    padding-left: 10px;
+    padding-top: 10px;
+    display: flex; 
+}
+#chatOut{
+    width: 100%;
+    padding-right: 10px;
+    padding-top: 10px;
+}
+#contentIn{
+    max-width: 70%;
+    margin-left: 10px;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: white;
+}
+#contentOut{
+    max-width: 70%;
+    margin-right: 10px;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #1890FF;
+}
+
 #chatInput{
     width: 100%;
     height: 130px;

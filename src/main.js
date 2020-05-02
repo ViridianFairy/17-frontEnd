@@ -10,6 +10,7 @@ import {Checkbox} from 'ant-design-vue'
 import {Menu} from 'ant-design-vue'
 import {Avatar} from 'ant-design-vue'
 import {Icon} from 'ant-design-vue'
+import {Popover} from 'ant-design-vue'
 import {List,Card} from 'ant-design-vue'
 import {DatePicker,PageHeader} from 'ant-design-vue'
 import {Dropdown,Select,Drawer,Tag} from 'ant-design-vue'
@@ -39,6 +40,7 @@ Vue.component(Switch.name,Switch)
 Vue.component(Tooltip.name,Tooltip)
 Vue.component(Card.name,Card)
 Vue.component(Modal.name,Modal)
+Vue.component(Popover.name, Popover)
 Vue.use(Button)
 Vue.use(Input)
 Vue.use(Collapse)
@@ -58,6 +60,7 @@ Vue.use(Switch)
 Vue.use(Tooltip)
 Vue.use(Card)
 Vue.use(Modal)
+Vue.use(Popover)
 
 
 // plugins mounted

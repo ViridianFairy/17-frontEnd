@@ -35,7 +35,7 @@
   </div>
 
   <!-- 聊天内容显示+输入框 -->
-  <div id="chatContent">
+  <div id="chatContent" style="border-right:1px solid #A9A9A9">
 
     <div id="chatShow">
       <div id="chatIn">
@@ -76,10 +76,58 @@
         </div>
       </div>
 
+      <div id="chatIn">
+        <a-avatar :size="50" slot="avatar" style="float:left">U</a-avatar>
+        <div id="contentIn">
+          <p>
+            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+          </p>
+        </div>
+      </div>
+
+      <div id="chatIn">
+        <a-avatar :size="50" slot="avatar" style="float:left">U</a-avatar>
+        <div id="contentIn">
+          <p>
+            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+          </p>
+        </div>
+      </div>
+
     </div>
 
     <div id="chatInput">
-      <a-textarea style="height:133px" placeholder="" :rows="5" />
+      <div id="chatInputText">
+        <a-textarea style="height:93px" placeholder="" :rows="5" />
+      </div>
+
+      <div id="chatInputOther">
+        <a-popover title="Title" trigger="click">
+          <template slot="content">
+            <p>Content</p>
+            <p>Content</p>
+          </template>
+          <a-button type="link">
+            <a-icon style="fontSize:28px;color:white;padding-top:7px" type="paper-clip" />
+          </a-button>
+        </a-popover>
+
+        <a-popover title="表情" trigger="click">
+          <template slot="content">
+            <p><a-icon style="fontSize:20px" type="smile" /></p>
+            <p><a-icon style="fontSize:20px" type="frown" /></p>
+            <p><a-icon style="fontSize:20px" type="meh" /></p>
+          </template>
+          <a-button type="link">
+            <a-icon style="fontSize:28px;color:white;padding-top:7px" type="smile" />
+          </a-button>
+        </a-popover>
+
+        <a-button style="float:right" size="large">发送</a-button>
+      </div>
+
     </div>
 
 
@@ -137,6 +185,8 @@ export default {
     width: calc(100% - 250px);
     text-align: center;
     font-size: 20px;
+    background-color: #001529;
+    color: white;
 }
 
 .main-content{
@@ -156,18 +206,21 @@ export default {
 #chatShow{
     width: 100%;
     height: 370px;
+    overflow: auto;
     background-color: #F5F5F5;
 }
 #chatIn{
     width: 100%;
     padding-left: 10px;
     padding-top: 10px;
+    padding-bottom: 10px;
     display: flex; 
 }
 #chatOut{
     width: 100%;
     padding-right: 10px;
     padding-top: 10px;
+    padding-bottom: 10px;
 }
 #contentIn{
     max-width: 70%;
@@ -187,8 +240,16 @@ export default {
 }
 
 #chatInput{
-    width: 100%;
     height: 130px;
+}
+#chatInputOther{
+    width: 100%;
+    height: 40px;
+    background-color: #001529;
+}
+#chatInputText{
+    width: 100%;
+    height: 90px;
 }
 </style>
  

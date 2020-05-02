@@ -42,13 +42,51 @@
                   <!-- 提醒   -->
                   <br />
                   <p>
-                     <a-icon type="clock-circle" style="fontSize:26px;color:#003366;margin-left:4px" />
-                     <a @click="setclock=1" style="text-decoration:none">
+                     <a-icon type="clock-circle" style="fontSize:26px;color:#003366;margin-left:4px" />                     
+                     <a @click="showModal">
                         <em class="em11" style="padding-left:10px" v-if="clocktype==0">不提醒</em>
                         <em class="em11" style="padding-left:10px" v-if="clocktype==1">任务开始时</em>
                         <em class="em11" style="padding-left:10px" v-if="clocktype==2">任务截止时</em>
                      </a>
-                  </p>              
+                  </p>
+                  <a-modal
+                     title="任务提醒设置"
+                     :visible="visible"
+                     :confirm-loading="confirmLoading"
+                     @ok="handleOk"
+                     @cancel="handleCancel"
+                     cancelText="取消"
+                     okText="保存"
+                     width="600px"
+                  >                           
+                  <p style="font-size:16px">
+                     提醒时间
+                     <a @click="showclock=1">
+                     <a-icon type="plus-circle" theme="filled" style="fontSize:18px;color:#003366;margin-left:370px;"/>                            
+                     添加新提醒
+                     </a>
+                  </p>
+                     <a-select v-if="showclock==1" default-value="no" style="width:160px;margin-top:-5px" @change="handleChange">
+                        <a-select-option value="begin" @click="clocktype=1">
+                           任务开始时
+                        </a-select-option>
+                        <a-select-option value="end" @click="clocktype=2">
+                           任务截止时
+                        </a-select-option>
+                        <a-select-option value="no" @click="clocktype=0">
+                           不提醒
+                        </a-select-option>
+                     </a-select>
+                     <p><br /></p>
+                  <p style="font-size:16px;margin-top:-15px">提醒对象</p>
+                     <a-avatar :size="35" icon="user" style="margin-top:-20px" />              
+                        <a-tooltip>
+                           <template slot="title">添加提醒对象</template>                   
+                           <a>
+                              <a-icon type="plus-circle" theme="filled" style="margin-top:-8px;fontSize:35px;color:#003366;margin-left:10px;"/><br />
+                           </a>
+                        </a-tooltip>
+                  </a-modal>         
                
                   <!-- 优先级   -->
                   <a-menu style="width: 340px;margin-left:10x;margin-right:-20px">                     
@@ -139,39 +177,12 @@
                      </a-tooltip>
                   <a-button style="font-size:16px;float:right;margin-left:20px" @click="onClose">取消</a-button>
                   <a-button style="font-size:16px;float:right">创建</a-button>
+
                   <br />
                   <br />               
                </a-collapse-panel>
             </a-collapse>
          </div>
-      </div>
-      <div id="setclock" v-if="setclock==1" @mouseover="setclock=1">
-         <a-card style="width:220px">
-            <p style="font-size:16px">提醒时间</p>                             
-               <a-select default-value="no" style="width:160px;margin-top:-5px" @change="handleChange">
-                  <a-select-option value="begin" @click="clocktype=1">
-                     任务开始时
-                  </a-select-option>
-                  <a-select-option value="end" @click="clocktype=2">
-                     任务截止时
-                  </a-select-option>
-                  <a-select-option value="no" @click="clocktype=0">
-                     不提醒
-                  </a-select-option>
-               </a-select>
-            <a-divider style="margin-top:15px"/>
-            <p style="font-size:16px;margin-top:-15px">提醒对象</p>
-               <a-avatar :size="35" icon="user" style="margin-top:-20px" />              
-                  <a-tooltip>
-                     <template slot="title">添加提醒对象</template>                   
-                     <a>
-                        <a-icon type="plus-circle" theme="filled" style="margin-top:-8px;fontSize:35px;color:#003366;margin-left:10px;"/><br />
-                     </a>
-                  </a-tooltip>
-                  <a-divider style="margin-top:15px"/>
-                  <a-button size="default" style="font-size:13px;float:right;margin-left:10px;margin-top:-8px" @click="setclock=0,clocktype=0">取消</a-button>
-                  <a-button style="font-size:13px;float:right;margin-top:-8px" @click="setclock=0">保存</a-button>
-         </a-card>
       </div>
       <div id="process">
          <h2>进行中</h2>
@@ -201,17 +212,19 @@ export default {
 	name:"TaskPanel",
    data() {
       return {
-        startValue: null,
-        endValue: null,
-        endOpen: false,
-        visible: false,
-        tags: ["任务"],
-        inputVisible: false,
-        inputValue: "",
-        text:"test",
-        taskpriority:"普通",
-        setclock:0,
-        clocktype:0,
+         startValue: null,
+         endValue: null,
+         endOpen: false,
+         visible: false,
+         tags: ["任务"],
+         inputVisible: false,
+         inputValue: "",
+         text:"test",
+         taskpriority:"普通",
+         clocktype:0,
+         showclock:0,
+         ModalText: 'Content of the modal',
+         confirmLoading: false,
       };
    },
    watch: {
@@ -235,7 +248,7 @@ export default {
       fc(){
         this.taskpriority="非常紧急";
       },
-      
+
       close() {
          var p = document.getElementById("panel1");
          p.setAttribute("activeKey", " ");
@@ -310,8 +323,26 @@ export default {
          this.visible = false;
       },
       handleChange(value) {
-      console.log(`selected ${value}`);
-      }
+         console.log(`selected ${value}`);
+      },
+      showModal() {
+         this.visible = true;
+      },
+      handleOk(e) {
+         this.ModalText = 'The modal will be closed after two seconds';
+         this.confirmLoading = true;
+         setTimeout(() => {
+            this.visible = false;
+            this.confirmLoading = false;
+         }, 0);        
+         this.showclock=0;
+      },
+      handleCancel(e) {
+         console.log('Clicked cancel button');
+         this.visible = false;
+         this.showclock=0;
+         this.clocktype=0;
+      },
    }
 };
 </script>

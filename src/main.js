@@ -3,7 +3,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import Alert from './components/attach/alert'
 import 'ant-design-vue/dist/antd.css'
-import {Button, Divider, Radio, Switch, Tooltip} from 'ant-design-vue'
+import {Button, Divider, Radio, Switch, Tooltip, Modal} from 'ant-design-vue'
 import {Input} from 'ant-design-vue'
 import {Collapse} from 'ant-design-vue'
 import {Checkbox} from 'ant-design-vue'
@@ -38,6 +38,7 @@ Vue.component(PageHeader.name,PageHeader)
 Vue.component(Switch.name,Switch)
 Vue.component(Tooltip.name,Tooltip)
 Vue.component(Card.name,Card)
+Vue.component(Modal.name,Modal)
 Vue.use(Button)
 Vue.use(Input)
 Vue.use(Collapse)
@@ -56,7 +57,7 @@ Vue.use(PageHeader)
 Vue.use(Switch)
 Vue.use(Tooltip)
 Vue.use(Card)
-
+Vue.use(Modal)
 
 
 // plugins mounted

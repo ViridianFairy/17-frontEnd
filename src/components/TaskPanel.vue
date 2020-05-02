@@ -169,7 +169,7 @@
                      </a>
                   </a-tooltip>
                   <a-divider style="margin-top:15px"/>
-                  <a-button size="normal" style="font-size:13px;float:right;margin-left:10px;margin-top:-8px" @click="setclock=0,clocktype=0">取消</a-button>
+                  <a-button size="default" style="font-size:13px;float:right;margin-left:10px;margin-top:-8px" @click="setclock=0,clocktype=0">取消</a-button>
                   <a-button style="font-size:13px;float:right;margin-top:-8px" @click="setclock=0">保存</a-button>
          </a-card>
       </div>

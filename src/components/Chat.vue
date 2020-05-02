@@ -194,18 +194,18 @@ export default {
 }
 #chatList{
     width: 250px;
-    height: 500px;
+    height: 520px;
 }
 #chatList-content{
 
 }
 #chatContent{
     width: calc(100% - 250px);
-    height: 500px;
+    height: 520px;
 }
 #chatShow{
     width: 100%;
-    height: 370px;
+    height: 390px;
     overflow: auto;
     background-color: #F5F5F5;
 }

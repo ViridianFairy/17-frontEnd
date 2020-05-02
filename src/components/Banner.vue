@@ -2,7 +2,7 @@
    <div id="wrapper">
       <img src="http://funx.pro/resource/junk/17logo.svg" >
       <!-- login测试用，实际不跳转至login --->
-      <a-button type="link" id="user" @click="$router.push('/login')"><a-icon type="user" />用户名</a-button>
+      <a-button style="color:black" type="link" id="user" @click="$router.push('/login')"><a-icon type="user" />用户名</a-button>
    </div>
 </template>
 

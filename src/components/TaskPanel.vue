@@ -14,13 +14,13 @@
                   <a-input placeholder="输入任务标题" />
                   <!-- 菜单  -->
                   <p style="margin-top:20px">
-                     <a-avatar :size="35" icon="user" />
+                     <a-avatar :size="30" icon="user" />
                      <em class="em11">用户</em>
                   </p>
                   <!-- 起止日期 -->                 
-                  <a-icon type="calendar" style="fontSize:26px;color:#003366;margin-left:4px" />
+                  <a-icon type="calendar" style="fontSize:20px;color:gray;margin-left:4px" />
                      <a-date-picker
-                        style="margin-top:-10px;margin-bottom:5px;margin-left:10px;"
+                        style="margin-top:-10px;margin-bottom:5px;margin-left:18px;"
                         :disabledDate="disabledStartDate"
                         showTime
                         format="YYYY-MM-DD HH:mm:ss"
@@ -28,9 +28,9 @@
                         placeholder="开始时间"
                         @openChange="handleStartOpenChange"
                      /><br />
-                  <a-icon type="calendar" style="fontSize:26px;color:#003366;margin-left:4px" />
+                  <a-icon type="calendar" style="fontSize:20px;color:gray;margin-left:4px" />
                      <a-date-picker
-                        style="margin-top:-10px;margin-bottom:5px;margin-left:10px;"
+                        style="margin-top:-10px;margin-bottom:5px;margin-left:18px;"
                         :disabledDate="disabledEndDate"
                         showTime
                         format="YYYY-MM-DD HH:mm:ss"
@@ -42,12 +42,12 @@
                   <!-- 提醒   -->
                   <br />
                   <p>
-                     <a-icon type="clock-circle" style="fontSize:26px;color:#003366;margin-left:4px" />                     
-                     <a @click="showModal">
-                        <em class="em11" style="padding-left:10px" v-if="clocktype==0">不提醒</em>
-                        <em class="em11" style="padding-left:10px" v-if="clocktype==1">任务开始时</em>
-                        <em class="em11" style="padding-left:10px" v-if="clocktype==2">任务截止时</em>
-                     </a>
+                     <a-icon type="clock-circle" style="fontSize:20px;color:gray;margin-left:4px" />                     
+                    
+                        <em class="em11" style="padding-left:18px" v-if="clocktype==0" @click="showModal">不提醒</em>
+                        <em class="em11" style="padding-left:18px" v-if="clocktype==1" @click="showModal">任务开始时</em>
+                        <em class="em11" style="padding-left:18px" v-if="clocktype==2" @click="showModal">任务截止时</em>
+                     
                   </p>
                   <a-modal
                      title="任务提醒设置"
@@ -66,7 +66,7 @@
                      添加新提醒
                      </a>
                   </p>
-                     <a-select v-if="showclock==1" default-value="no" style="width:160px;margin-top:-5px" @change="handleChange">
+                     <a-select v-if="showclock==1" style="width:160px;margin-top:-5px" @change="handleChange">
                         <a-select-option value="begin" @click="clocktype=1">
                            任务开始时
                         </a-select-option>
@@ -83,7 +83,7 @@
                         <a-tooltip>
                            <template slot="title">添加提醒对象</template>                   
                            <a>
-                              <a-icon type="plus-circle" theme="filled" style="margin-top:-8px;fontSize:35px;color:#003366;margin-left:10px;"/><br />
+                              <a-icon type="plus-circle" theme="filled" style="margin-top:-8px;fontSize:30px;color:#003366;margin-left:10px;"/><br />
                            </a>
                         </a-tooltip>
                   </a-modal>         
@@ -92,17 +92,25 @@
                   <a-menu style="width: 340px;margin-left:10x;margin-right:-20px">                     
                      <a-sub-menu key="priority" style="margin-top:-10px">
                      <span slot="title">
-                        <a-icon type="fire" style="fontSize:26px;color:#003366;margin-left:-12px"/>
-                        <a-tag v-if="taskpriority=='普通'" color="green" :visible="true" style="font-size:16px;height:25px;margin-left:0px;">
+                        <a-icon type="fire" style="fontSize:20px;color:gray;margin-left:-12px"/>
+                        <a-tag v-if="taskpriority=='较低'" color="gray" :visible="true" style="font-size:16px;height:25px;margin-left:8px;">
+                           较低
+                        </a-tag> 
+                        <a-tag v-if="taskpriority=='普通'" color="green" :visible="true" style="font-size:16px;height:25px;margin-left:8px;">
                            普通
                         </a-tag> 
-                        <a-tag v-if="taskpriority=='紧急'" color="orange" :visible="true" style="font-size:16px;height:25px;margin-left:0px;">
+                        <a-tag v-if="taskpriority=='紧急'" color="orange" :visible="true" style="font-size:16px;height:25px;margin-left:8px;">
                            紧急
                         </a-tag> 
-                        <a-tag v-if="taskpriority=='非常紧急'" color="red" :visible="true" style="font-size:16px;height:25px;margin-left:0px;">
+                        <a-tag v-if="taskpriority=='非常紧急'" color="red" :visible="true" style="font-size:16px;height:25px;margin-left:8px;">
                            非常紧急
                         </a-tag>                  
                      </span>
+                        <a-menu-item key="jd" @click="taskpriority='较低'">
+                           <a-tag color="gray" style="font-size:16px;height:25px;margin-left:0px">
+                              较低
+                           </a-tag>
+                        </a-menu-item>   
                         <a-menu-item key="pt" @click="pt">
                            <a-tag color="green" style="font-size:16px;height:25px;margin-left:0px">
                               普通
@@ -122,9 +130,9 @@
                   </a-menu>
 
                   <!--  标签   -->               
-                  <a-icon type="tag" style="fontSize:26px;color:#003366;margin-left:4px" />
-                  <em class="em11" >标签</em>
-                  <div id="tags">
+                  <a-icon type="tag" style="fontSize:20px;color:gray;margin-left:4px" />
+                  <em class="em11" style="margin-left:8px" @click="showlabel=1">标签</em>
+                  <div id="tags" v-if="showlabel==1">
                      <div style="margin-left:4px;margin-top:3px">
                         <template v-for="(tag, index) in tags">
                            <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
@@ -172,10 +180,9 @@
                            添加参与者
                         </template>                   
                         <a>
-                           <a-icon type="plus-circle" theme="filled" style="fontSize:35px;color:#003366;margin-left:10px;"/><br />
+                           <a-icon type="plus-circle" theme="filled" style="fontSize:30px;color:#003366;margin-left:10px;"/><br />
                         </a>
                      </a-tooltip>
-                  <a-button style="font-size:16px;float:right;margin-left:20px" @click="onClose">取消</a-button>
                   <a-button style="font-size:16px;float:right">创建</a-button>
 
                   <br />
@@ -220,10 +227,10 @@ export default {
          inputVisible: false,
          inputValue: "",
          text:"test",
-         taskpriority:"普通",
+         taskpriority:"较低",
          clocktype:0,
          showclock:0,
-         ModalText: 'Content of the modal',
+         showlabel:0,
          confirmLoading: false,
       };
    },
@@ -381,6 +388,7 @@ export default {
    font-style: normal;
    font-size: 16px;
    padding-left: 11px;
+   color: gray;
 }
 #components-button-demo-button-group > h4 {
    margin: 16px 0;

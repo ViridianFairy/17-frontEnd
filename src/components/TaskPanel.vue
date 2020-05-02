@@ -9,7 +9,7 @@
             <br />
          </div>
          <div>
-            <a-collapse accordion id="panel1">
+            <a-collapse accordion id="panel1" @change="setclock=0">
                <a-collapse-panel header="✚" key="1" :showArrow="false">
                   <a-input placeholder="输入任务标题" />
 
@@ -74,38 +74,18 @@
                   <!-- 提醒   -->
                   <!--<a-sub-menu key="sub3"  subMenuCloseDelay="20"></span> 
                   <span slot="title"--><br />
-                  <a-menu style="width: 340px;margin-left:10x;margin-top:-5px;margin-right:-20px" subMenuCloseDelay="2">
-                       <a-sub-menu key="sub1">
-                            <span slot="title"><a-icon type="clock-circle" style="fontSize:26px;color:#003366;margin-left:-12px" />
-                            <em class="em11" style="padding-left:0">不提醒</em></span>
-                               <a-menu-item key="1" @click.stop="log('1')" style="width:200px;height:50px">
-                                 <p>提醒时间
-                                 <a-select style="width: 120px" @change="handleChange"  @click.stop="log('3')">
-                                  <a-select-option value="begin" >
-                                    任务开始时
-                                  </a-select-option>
-                                  <a-select-option value="end">
-                                    任务截止时
-                                  </a-select-option>
-                                </a-select><a-divider />
-					                      </p>
-								                </a-menu-item>                               
-                                  <a-menu-item key="5" @click.stop="log('2')">
-                                      <p>提醒对象</p>    
-                                  </a-menu-item>
-       
-                                </a-sub-menu>     
+                <p>
+                  <a-icon type="clock-circle" style="fontSize:26px;color:#003366;margin-left:4px" />
+                  <a @click="setclock=1" style="text-decoration:none">
+                     <em class="em11" style="padding-left:10px" v-if="clocktype==0">不提醒</em>
+                     <em class="em11" style="padding-left:10px" v-if="clocktype==1">任务开始时</em>
+                     <em class="em11" style="padding-left:10px" v-if="clocktype==2">任务截止时</em>
+                  </a>
+                </p>              
                
-                  <!--    
-        <a-sub-menu key="sub3-1" title="提醒时间">
-          <a-menu-item key="3-1-1">任务开始时</a-menu-item>
-          <a-menu-item key="3-1-2">任务截止时</a-menu-item>
-          <a-menu-item key="3-1-3">不提醒</a-menu-item>
-              
-                  <a-sub-menu key="sub3-2" title="提醒对象"-->
-                  
 
                   <!-- 优先级   -->
+                  <a-menu style="width: 340px;margin-left:10x;margin-right:-20px" subMenuCloseDelay="2">                     
                   <a-sub-menu key="sub4"  subMenuCloseDelay="2" style="margin-top:-10px">
                   <span slot="title"><a-icon type="fire" style="fontSize:26px;color:#003366;margin-left:-12px"/>
                   <a-tag v-if="taskpriority=='普通'" color="green" :visible="true" style="font-size:16px;height:25px;margin-left:0px;">
@@ -182,15 +162,16 @@
                      </div>
                   </div>
                   <a-divider style="margin-top:15px"/>
-                  <p style="margin-top:-15px;font-size:16px;margin-left:5px">参与者 · 1</p>
-                  
+                  <p style="margin-top:-15px;font-size:16px;margin-left:5px">参与者 · 1</p>                
                      <a-avatar :size="35" icon="user" style="margin-top:-18px" />
-                     <!--a-popover title="添加参与者">
-                        
-                    
-                     </a-popover-->
-                     <a><a-icon type="plus-circle" theme="filled" style="fontSize:35px;color:#003366;margin-left:10px;"/><br />
+                     <a-tooltip>
+                        <template slot="title">
+                           添加参与者
+                        </template>                   
+                     <a>
+                        <a-icon type="plus-circle" theme="filled" style="fontSize:35px;color:#003366;margin-left:10px;"/><br />
                      </a>
+                     </a-tooltip>
                   <a-button style="font-size:16px;float:right;margin-left:20px" @click="onClose">取消</a-button>
                   <a-button style="font-size:16px;float:right">创建</a-button>
                   <br />
@@ -199,6 +180,34 @@
                </a-collapse-panel>
             </a-collapse>
          </div>
+      </div>
+      <div id="setclock" v-if="setclock==1" @mouseover="setclock=1">
+         <a-card style="width: 220px">
+            <p style="font-size:16px">提醒时间</p>                             
+               <a-select default-value="no" style="width: 160px;margin-top:-5px" @change="handleChange">
+                  <a-select-option value="begin" @click="clocktype=1">
+                  任务开始时
+                  </a-select-option>
+                  <a-select-option value="end" @click="clocktype=2">
+                  任务截止时
+                  </a-select-option>
+                  <a-select-option value="no" @click="clocktype=0">
+                  不提醒
+                  </a-select-option>
+               </a-select>
+               <a-divider style="margin-top:15px"/>
+            <p style="font-size:16px;margin-top:-15px">提醒对象</p>
+               <a-avatar :size="35" icon="user" style="margin-top:-20px" />              
+                  <a-tooltip>
+                     <template slot="title">添加提醒对象</template>                   
+                     <a>
+                        <a-icon type="plus-circle" theme="filled" style="margin-top:-8px;fontSize:35px;color:#003366;margin-left:10px;"/><br />
+                     </a>
+                  </a-tooltip>
+                  <a-divider style="margin-top:15px"/>
+                  <a-button size="normal" style="font-size:13px;float:right;margin-left:10px;margin-top:-8px" @click="setclock=0,clocktype=0">取消</a-button>
+                  <a-button style="font-size:13px;float:right;margin-top:-8px" @click="setclock=0">保存</a-button>
+         </a-card>
       </div>
       <div id="process">
          <h2>进行中</h2>
@@ -237,6 +246,8 @@ export default {
         inputValue: "",
         text:"test",
         taskpriority:"普通",
+        setclock:0,
+        clocktype:0,
       };
    },
    watch: {
@@ -355,6 +366,13 @@ export default {
 #finish {
    width: 350px;
    margin-left: 50px;
+}
+#setclock{
+   width:300px;
+   height: 100px;
+   margin-left:5px;
+   margin-top:340px;
+  
 }
 .em1 {
    font-style: normal;

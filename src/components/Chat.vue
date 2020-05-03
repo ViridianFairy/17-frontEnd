@@ -41,12 +41,12 @@
 
   <div v-if="showCreateList==1" id="chatCreate" style="border-right:1px solid #A9A9A9">
   <div id="chatCreate-content">
+
     <a-input-search placeholder="搜索成员" style="width: 230px;margin: auto" @search="onSearch" />
 
-    <a-tabs :size="5" default-active-key="1" @change="callback">
+    <a-tabs default-active-key="1" @change="callback">
       <a-tab-pane key="1" tab="私信">
         <p style="color:#A9A9A9">合作过的成员</p>
-
         <a-list itemLayout="horizontal" :dataSource="dataMember">
           <a-list-item slot="renderItem" slot-scope="item, index">
             <a-list-item-meta description="">
@@ -55,22 +55,34 @@
             </a-list-item-meta>
           </a-list-item>
         </a-list>
+      </a-tab-pane>
 
-      </a-tab-pane>
-      <a-tab-pane key="2" tab="项目" force-render>
-        Content of Tab Pane 2
-      </a-tab-pane>
-      <a-tab-pane key="3" tab="群组">
-        Content of Tab Pane 3
+      <a-tab-pane key="2" tab="群聊" force-render>
+
+        <a-button type="primary" @click="showModal">
+          点击创建新群聊
+        </a-button>
+        <a-locale-provider :locale="zhCN">
+        <a-modal v-model="createGroupVisible" title="创建新群聊" @ok="handleOk">
+          <a-transfer
+            :data-source="mockData"
+            show-search
+            :operations="['加入', '移除']"
+            :target-keys="targetKeys"
+            :render="item => `${item.title}`"
+            @change="handleChange"
+          >
+            <span slot="notFoundContent">
+              暂无成员
+            </span>
+          </a-transfer>
+        </a-modal>
+        </a-locale-provider>
       </a-tab-pane>
     </a-tabs>
 
   </div>
   </div>
-
-
-
-
 
 
 
@@ -203,16 +215,24 @@ const dataMember = [
     title: 'C',
   },
 ];
+import zhCN from 'ant-design-vue/es/locale-provider/zh_CN';
 export default {
     name: "Chat",
     components: {},
     data() {
         return {
+            zhCN,
             dataGroup,
             dataMember,
             showCreateButton:1,
             showCreateList:0,
+            createGroupVisible:false,
+            mockData: [],
+            targetKeys: [],
         };
+    },
+    mounted() {
+      this.getMock();
     },
     methods: {
       onSearch(value) {
@@ -220,6 +240,35 @@ export default {
       },
       callback(key) {
         console.log(key);
+      },
+      showModal() {
+        this.createGroupVisible = true;
+      },
+      handleOk(e) {
+        console.log(e);
+        this.createGroupVisible = false;
+      },
+      getMock() {
+        const targetKeys = [];
+        const mockData = [];
+        for (let i = 0; i < 5; i++) {
+          const data = {
+            key: i.toString(),
+            title: `联系人${i + 1}`,
+            //description: `description of content${i + 1}`,
+            chosen: 0,
+          };
+          if (data.chosen) {
+            targetKeys.push(data.key);
+          }
+          mockData.push(data);
+        }
+        this.mockData = mockData;
+        this.targetKeys = targetKeys;
+      },
+      handleChange(targetKeys, direction, moveKeys) {
+        console.log(targetKeys, direction, moveKeys);
+        this.targetKeys = targetKeys;
       },
   },
 };

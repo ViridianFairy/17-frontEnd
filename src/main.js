@@ -14,11 +14,14 @@ import {Popover} from 'ant-design-vue'
 import {List,Card} from 'ant-design-vue'
 import {DatePicker,PageHeader} from 'ant-design-vue'
 import {Dropdown,Select,Drawer,Tag,Tabs} from 'ant-design-vue'
+import {Transfer} from 'ant-design-vue'
+import {LocaleProvider} from 'ant-design-vue'
 import router from './js/router'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import store from './js/store'
 Vue.config.productionTip = false
+
 // ant-design
 Vue.component(Button.name, Button)
 Vue.component(Icon.name, Icon)
@@ -42,6 +45,8 @@ Vue.component(Tooltip.name,Tooltip)
 Vue.component(Card.name,Card)
 Vue.component(Modal.name,Modal)
 Vue.component(Popover.name, Popover)
+Vue.component(Transfer.name, Transfer)
+Vue.component(LocaleProvider.name, LocaleProvider)
 Vue.use(Button)
 Vue.use(Input)
 Vue.use(Collapse)
@@ -63,7 +68,8 @@ Vue.use(Tooltip)
 Vue.use(Card)
 Vue.use(Modal)
 Vue.use(Popover)
-
+Vue.use(Transfer)
+Vue.use(LocaleProvider)
 
 // plugins mounted
 Vue.prototype.$cookies = Cookies;

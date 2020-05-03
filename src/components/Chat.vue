@@ -25,7 +25,7 @@
   <!-- 聊天列表 -->
   <div v-if="showCreateList==0" id="chatList" style="border-right:1px solid #A9A9A9">
   <div id="chatList-content">
-    <a-list itemLayout="horizontal" :dataSource="data">
+    <a-list itemLayout="horizontal" :dataSource="dataGroup">
       <a-list-item slot="renderItem" slot-scope="item, index">
 
         <a-list-item-meta description="xxxxxx">
@@ -45,7 +45,17 @@
 
     <a-tabs :size="5" default-active-key="1" @change="callback">
       <a-tab-pane key="1" tab="私信">
-        Content of Tab Pane 1
+        <p style="color:#A9A9A9">合作过的成员</p>
+
+        <a-list itemLayout="horizontal" :dataSource="dataMember">
+          <a-list-item slot="renderItem" slot-scope="item, index">
+            <a-list-item-meta description="">
+              <a slot="title" href="/schedule">{{ item.title }}</a><!-- 跳转测试 -->
+              <a-avatar slot="avatar">U</a-avatar>
+            </a-list-item-meta>
+          </a-list-item>
+        </a-list>
+
       </a-tab-pane>
       <a-tab-pane key="2" tab="项目" force-render>
         Content of Tab Pane 2
@@ -171,7 +181,7 @@
 
 
 <script>
-const data = [
+const dataGroup = [
   {
     title: '一根藤上七朵花',
   },
@@ -182,12 +192,24 @@ const data = [
     title: '后端小组',
   },
 ];
+const dataMember = [
+  {
+    title: 'A',
+  },
+  {
+    title: 'B',
+  },
+  {
+    title: 'C',
+  },
+];
 export default {
     name: "Chat",
     components: {},
     data() {
         return {
-            data,
+            dataGroup,
+            dataMember,
             showCreateButton:1,
             showCreateList:0,
         };

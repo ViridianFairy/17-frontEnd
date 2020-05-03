@@ -4,8 +4,12 @@
 <div class="top">
 
   <!-- 发起聊天 -->
-  <div id="chatCreate">
-    <a-button type="link" icon="plus-circle">发起</a-button>
+  <div v-if="showCreateButton==1" id="chatCreateButton">
+    <a-button type="link" icon="plus-circle" @click="showCreateList=1;showCreateButton=0">发起</a-button>
+  </div>
+
+  <div v-if="showCreateButton==0" id="backListButton">
+    <a-button type="link" icon="left" @click="showCreateList=0;showCreateButton=1">返回</a-button>
   </div>
 
   <!-- 显示当前群聊名称 -->
@@ -19,7 +23,7 @@
 <div class="main-content">
 
   <!-- 聊天列表 -->
-  <div id="chatList" style="border-right:1px solid #A9A9A9">
+  <div v-if="showCreateList==0" id="chatList" style="border-right:1px solid #A9A9A9">
   <div id="chatList-content">
     <a-list itemLayout="horizontal" :dataSource="data">
       <a-list-item slot="renderItem" slot-scope="item, index">
@@ -33,6 +37,32 @@
     </a-list>
   </div>
   </div>
+
+
+  <div v-if="showCreateList==1" id="chatCreate" style="border-right:1px solid #A9A9A9">
+  <div id="chatCreate-content">
+    <a-input-search placeholder="搜索成员" style="width: 230px;margin: auto" @search="onSearch" />
+
+    <a-tabs :size="5" default-active-key="1" @change="callback">
+      <a-tab-pane key="1" tab="私信">
+        Content of Tab Pane 1
+      </a-tab-pane>
+      <a-tab-pane key="2" tab="项目" force-render>
+        Content of Tab Pane 2
+      </a-tab-pane>
+      <a-tab-pane key="3" tab="群组">
+        Content of Tab Pane 3
+      </a-tab-pane>
+    </a-tabs>
+
+  </div>
+  </div>
+
+
+
+
+
+
 
   <!-- 聊天内容显示+输入框 -->
   <div id="chatContent" style="border-right:1px solid #A9A9A9">
@@ -104,10 +134,9 @@
       </div>
 
       <div id="chatInputOther">
-        <a-popover title="Title" trigger="click">
+        <a-popover title="添加附件" trigger="click">
           <template slot="content">
-            <p>Content</p>
-            <p>Content</p>
+            <p></p>
           </template>
           <a-button type="link">
             <a-icon style="fontSize:28px;color:white;padding-top:7px" type="paper-clip" />
@@ -159,8 +188,18 @@ export default {
     data() {
         return {
             data,
+            showCreateButton:1,
+            showCreateList:0,
         };
     },
+    methods: {
+      onSearch(value) {
+        console.log(value);
+      },
+      callback(key) {
+        console.log(key);
+      },
+  },
 };
 </script>
 
@@ -174,11 +213,11 @@ export default {
 
 .top{
     display: flex;
-    margin-top: 10px;
+    /* margin-top: 10px; */
     width: 100%;
     height: 30px;
 }
-#chatCreate{
+#chatCreateButton,#backListButton{
     width: 250px;
 }
 #chatName{
@@ -192,12 +231,18 @@ export default {
 .main-content{
     display: flex;
 }
-#chatList{
+#chatList,#chatCreate{
     width: 250px;
     height: 520px;
+    overflow: auto;
 }
 #chatList-content{
 
+}
+#chatCreate-content{
+    width: 249px;
+    height: 520px;
+    /* background-color: #1890FF; */
 }
 #chatContent{
     width: calc(100% - 250px);

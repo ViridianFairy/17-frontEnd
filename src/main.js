@@ -13,7 +13,7 @@ import {Icon} from 'ant-design-vue'
 import {Popover} from 'ant-design-vue'
 import {List,Card} from 'ant-design-vue'
 import {DatePicker,PageHeader} from 'ant-design-vue'
-import {Dropdown,Select,Drawer,Tag} from 'ant-design-vue'
+import {Dropdown,Select,Drawer,Tag,Tabs} from 'ant-design-vue'
 import router from './js/router'
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -35,6 +35,7 @@ Vue.component(Select.name,Select)
 Vue.component(Drawer.name,Drawer)
 Vue.component(Radio.name,Radio)
 Vue.component(Tag.name,Radio)
+Vue.component(Tabs.name, Tabs)
 Vue.component(PageHeader.name,PageHeader)
 Vue.component(Switch.name,Switch)
 Vue.component(Tooltip.name,Tooltip)
@@ -55,6 +56,7 @@ Vue.use(Select)
 Vue.use(Drawer)
 Vue.use(Radio)
 Vue.use(Tag)
+Vue.use(Tabs)
 Vue.use(PageHeader)
 Vue.use(Switch)
 Vue.use(Tooltip)

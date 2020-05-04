@@ -1,7 +1,38 @@
 <template>
    <div id="wrapper">
       <img src="http://funx.pro/resource/junk/17logo.svg" >
-      <!-- login测试用，实际不跳转至login --->
+
+      <div id="dropdown">
+         <a-dropdown :trigger="['click']">
+            <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+               软工实践 <a-icon type="down" />
+            </a>
+            <a-menu slot="overlay">
+               <a-menu-item key="0" @click="showModal">
+                  创建项目
+
+                  <a-modal v-model="visible" title="创建新项目" on-ok="handleOk">
+                     <template slot="footer">
+                     <a-button key="back" @click="handleCancel">
+                        取消
+                     </a-button>
+                     <a-button key="submit" type="primary" :loading="loading" @click="handleOk">
+                        创建
+                     </a-button>
+                     </template>
+                     请输入项目名：<a-input style="width: 300px" placeholder="" />
+                  </a-modal>
+
+               </a-menu-item>
+               <a-menu-divider />
+               <a-menu-item key="1">
+                  删除项目
+               </a-menu-item>
+            </a-menu>
+         </a-dropdown>
+      </div>
+
+      <!-- login测试用 --->
       <a-button style="color:black" type="link" id="user" @click="$router.push('/login')"><a-icon type="user" />用户名</a-button>
    </div>
 </template>
@@ -11,7 +42,25 @@ export default {
    name: "Banner",
    components: {},
    data() {
-      return {};
+      return {
+         loading: false,
+         visible: false,
+      };
+   },
+   methods:{
+      showModal() {
+         this.visible = true;
+      },
+      handleOk(e) {
+         this.loading = true;
+         setTimeout(() => {
+         this.visible = false;
+         this.loading = false;
+         }, 3000);
+      },
+      handleCancel(e) {
+         this.visible = false;
+      },
    }
 };
 </script>
@@ -24,6 +73,11 @@ export default {
 }
 #wrapper{
    /* display: flex; */
+}
+#dropdown{
+   float: left;
+   margin-left: 75px;
+   padding:15px;
 }
 #user{
    padding: 15px;

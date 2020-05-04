@@ -65,13 +65,8 @@
          <a class="ant-dropdown-link" @click="e => e.preventDefault()">
             <a-icon type="user" style="margin-right:4px;"/>{{!name?'未命名':name}}
          </a>
-<<<<<<< HEAD
          <a-menu slot="overlay" style="margin-top:-10px;">
             <a-menu-item key="0" @click="showInfoModal" v-if="login">
-=======
-         <a-menu slot="overlay">
-            <a-menu-item key="2" @click="showInfoModal">
->>>>>>> d22f4c53d09b45c5b53b14db1ae4cb2a3f76de46
                查看信息
                <a-modal v-model="infoVisible" title="个人信息" ok-text="确认" cancel-text="关闭" @ok="infoHandleOk">
                   <p>Some contents...</p>
@@ -79,13 +74,8 @@
                   <p>Some contents...</p>
                </a-modal>
             </a-menu-item>
-<<<<<<< HEAD
             <a-menu-divider v-if="login"/>
             <a-menu-item key="1" style="color:red" @click="toExit" v-if="login">
-=======
-            <a-menu-divider />
-            <a-menu-item key="3" style="color:red" @click="toLogin">
->>>>>>> d22f4c53d09b45c5b53b14db1ae4cb2a3f76de46
                退出登录
             </a-menu-item>
 				<a-menu-item key="3" style="" @click="toLogin" v-if="!login">
@@ -115,15 +105,12 @@ export default {
       return {
 			infoVisible: false,
 			createVisible: false,
-<<<<<<< HEAD
 			createLoading: false,
 			curName:"",
-=======
          createLoading: false,
          exchangeVisible: false,
          exchangeLoading: false,
          value: 1,
->>>>>>> d22f4c53d09b45c5b53b14db1ae4cb2a3f76de46
 		};
 	},
 	methods: {

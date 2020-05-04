@@ -55,7 +55,10 @@ export default {
 				if(code==0){
 					this.$alert(msg,'true')
 					this.$router.push('/taskPanel').catch(()=>{})
-					
+					this.$store.commit('bannerReload',{
+						name:doc.data.data.username,
+						avatar:doc.data.data.avatar
+					})
 				}else{
 					if(typeof msg == 'object')
 						msg = getFirstMsg(msg)

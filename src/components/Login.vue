@@ -49,19 +49,21 @@ export default {
 			this.$http.post(`/api/user/login`,{
 				account_type,account,password
 			}).then(doc=>{
-
 				var code = doc.data.status
 				var msg = doc.data.msg
 				if(code==0){
 					this.$alert(msg,'true')
 					this.$router.push('/taskPanel').catch(()=>{})
+					this.$store.commit('loginReload',true)
 					this.update()
 				}else{
 					if(typeof msg == 'object')
 						msg = getFirstMsg(msg)
 					this.$alert(msg,'false')
+					this.$store.commit('loginReload',false)
 				}
 				console.log(doc)
+
 			})
 			function getFirstMsg(obj){
 				for(var i in obj){

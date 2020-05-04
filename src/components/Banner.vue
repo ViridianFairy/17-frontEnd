@@ -3,11 +3,11 @@
       <img src="http://funx.pro/resource/junk/17logo.svg" />
 
       <div id="dropdown">
-         <a-dropdown :trigger="['click']" style="color:black">
-            <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-               软工实践 <a-icon type="down" />
+         <a-dropdown :trigger="['hover']" style="color:black">
+            <a class="ant-dropdown-link" @click="e => e.preventDefault()" :disabled="!login">
+               项目：{{login?curName:'无'}} <a-icon type="down" />
             </a>
-            <a-menu slot="overlay">
+            <a-menu slot="overlay" style="margin-top:7px;">
                <a-menu-item key="0" @click="showCreateModal">
                   创建项目
                   <a-modal v-model="createVisible" title="创建新项目" on-ok="handleOk">
@@ -61,12 +61,12 @@
          </a-dropdown>
       </div>
 
-      <a-dropdown :trigger="['click']" style="color:black" id="user">
+      <a-dropdown :trigger="['hover']" style="color:black" id="user">
          <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-            <a-icon type="user" />{{!name?'未命名':name}}
+            <a-icon type="user" style="margin-right:4px;"/>{{!name?'未命名':name}}
          </a>
-         <a-menu slot="overlay">
-            <a-menu-item key="2" @click="showInfoModal">
+         <a-menu slot="overlay" style="margin-top:-10px;">
+            <a-menu-item key="0" @click="showInfoModal" v-if="login">
                查看信息
                <a-modal v-model="infoVisible" title="个人信息" ok-text="确认" cancel-text="关闭" @ok="infoHandleOk">
                   <p style="padding-left:30px">头像：<a-avatar :size="50" slot="avatar">U</a-avatar>
@@ -76,9 +76,15 @@
                   <p style="padding-left:30px">个人主页：</p>
                </a-modal>
             </a-menu-item>
-            <a-menu-divider />
-            <a-menu-item key="3" style="color:red" @click="toLogin">
+            <a-menu-divider v-if="login"/>
+            <a-menu-item key="1" style="color:red" @click="toExit" v-if="login">
                退出登录
+            </a-menu-item>
+				<a-menu-item key="3" style="" @click="toLogin" v-if="!login">
+               登录
+            </a-menu-item>
+				<a-menu-item key="4" style="" @click="toRegister" v-if="!login">
+               注册
             </a-menu-item>
          </a-menu>
       </a-dropdown>
@@ -93,11 +99,16 @@ export default {
 		name(){
          return this.$store.state.banner.name
 		},
+		login(){
+			return this.$store.state.login
+		}
 	},
    data() {
       return {
 			infoVisible: false,
 			createVisible: false,
+			createLoading: false,
+			curName:"",
          createLoading: false,
          exchangeVisible: false,
          exchangeLoading: false,
@@ -197,8 +208,23 @@ export default {
       },
       toLogin(){
          this.$router.push('/login').catch(()=>{})
-         //退出当前的登录状态
-
+      },
+      toRegister(){
+         this.$router.push('/register').catch(()=>{})
+      },
+      toExit(){
+			this.$http
+         .get(`/api/user/logout`)
+         .then(doc => {
+				var code = doc.data.status
+				var code = doc.data.msg
+				if(code == 0){
+					this.$alert(msg,'true')
+				}else{
+					this.$alert(msg,'false')
+				}
+         });
+         
       },
 	},
    mounted() {
@@ -211,11 +237,13 @@ export default {
 						name:doc.data.data.username,
 						avatar:doc.data.data.avatar
 					})
+					this.$store.commit('loginReload',true)
 					//console.log('已分发'+ doc.data.data.username)
 				}else{
 					this.$store.commit('bannerReload',{
 						name:'未登录',
 					})
+					this.$store.commit('loginReload',false)
 				}
          });
    },
@@ -230,6 +258,7 @@ export default {
 }
 #wrapper {
    /* display: flex; */
+	color:#aaa;
 }
 #dropdown {
    float: left;

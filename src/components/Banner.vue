@@ -8,15 +8,15 @@
                软工实践 <a-icon type="down" />
             </a>
             <a-menu slot="overlay">
-               <a-menu-item key="0" @click="showModal">
+               <a-menu-item key="0" @click="showCreateModal">
                   创建项目
 
-                  <a-modal v-model="visible" title="创建新项目" on-ok="handleOk">
+                  <a-modal v-model="createVisible" title="创建新项目" on-ok="handleOk">
                      <template slot="footer">
-                     <a-button key="back" @click="handleCancel">
+                     <a-button key="back" @click="createHandleCancel">
                         取消
                      </a-button>
-                     <a-button key="submit" type="primary" :loading="loading" @click="handleOk">
+                     <a-button key="submit" type="primary" :loading="createLoading" @click="createHandleOk">
                         创建
                      </a-button>
                      </template>
@@ -46,8 +46,8 @@ export default {
    data() {
       return {
          name:"未登录",
-         loading: false,
-         visible: false,
+         createLoading: false,
+         createVisible: false,
 		};
 	},
 	methods:{
@@ -59,18 +59,18 @@ export default {
             
 			}
       },
-      showModal() {
-         this.visible = true;
+      showCreateModal() {
+         this.createVisible = true;
       },
-      handleOk(e){
-         this.loading = true;
+      createHandleOk(e){
+         this.createLoading = true;
          setTimeout(() => {
-            this.visible = false;
-            this.loading = false;
+            this.createVisible = false;
+            this.createLoading = false;
          }, 3000);
       },
-      handleCancel(e) {
-         this.visible = false;
+      createHandleCancel(e) {
+         this.createVisible = false;
       },
 	},
    mounted() {

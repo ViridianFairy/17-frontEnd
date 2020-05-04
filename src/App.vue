@@ -25,7 +25,7 @@ export default {
       };
    },
 	created(){
-		//this.$router.push('/disk')
+		this.$router.push('/disk')
 	},
 };
 </script>

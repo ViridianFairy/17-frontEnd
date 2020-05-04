@@ -216,7 +216,7 @@
                   if(this.renameId==-1) return;
                   this.renameId = -1;
                   if(this.files[index].name==this.renameData) return;
-                  this.$http
+                  this.$http2
                   .post("/disk/rename",{
                      pos:this.pos, name:this.files[index].name, isFile:this.files[index].isFile ,rename:this.renameData
                   }).then(res => {
@@ -229,7 +229,7 @@
             })
          },
          createFold(){
-            this.$http
+            this.$http2
             .post("/disk/createFold",{
                pos:this.pos,
             })
@@ -244,7 +244,7 @@
          },
          delet(index){
 
-            this.$http
+            this.$http2
             .post("/disk/delete",{
                pos:this.pos,
                name:this.files[index].name,
@@ -330,7 +330,7 @@
          },
          refresh(first){
             // console.log(this.pos)
-            this.$http
+            this.$http2
             .post("/disk/getPublic",{
                pos:this.pos,
             })
@@ -362,7 +362,7 @@
             var config = {
                headers: { 'Content-Type': 'multipart/form-data' }
             }
-            this.$http.post('/disk/uploadPublic', formData, config ).then(res=>{
+            this.$http2.post('/disk/uploadPublic', formData, config ).then(res=>{
                if(res.data.success==1){
                   this.refresh()
                   console.log('成功')
@@ -398,7 +398,7 @@
                var config = {
                   headers: { 'Content-Type': 'multipart/form-data' }
                }
-               this.$http.post('/disk/uploadPublic', formData, config ).then(res=>{
+               this.$http2.post('/disk/uploadPublic', formData, config ).then(res=>{
                   count++;
                   if(res.data.success==1){
                      success_count++;

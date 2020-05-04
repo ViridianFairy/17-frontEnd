@@ -232,6 +232,16 @@
 export default {
 	name:"TaskPanel",
    
+	mounted(){
+		this.$http.post(`/api/user/register`,{
+         }).then(res => {
+				console.log(res.data)
+            if(res.data.status==1)
+               
+            
+               this.$alert(res.data.msg,'false')
+         })
+	},
    data() {
       return {
          startValue: null,

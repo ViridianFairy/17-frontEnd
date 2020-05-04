@@ -1,7 +1,7 @@
 <template>
   <div style="width: 170px">
     <a-menu
-      :defaultSelectedKeys="['1']"
+      :defaultSelectedKeys="keys"
       mode="inline"
       theme="dark"
       :inlineCollapsed="collapsed"
@@ -51,7 +51,8 @@ export default {
    components: {},
    data() {
      return {
-      collapsed: false,
+		collapsed: false,
+		keys:['4'],
     };
    },
    methods: {

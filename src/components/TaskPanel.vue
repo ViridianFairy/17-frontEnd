@@ -580,6 +580,7 @@ export default {
 #wrapper {
    display: flex;
    margin: 0 auto;
+	margin-top: 20px;
 }
 #process {
    width: 350px;

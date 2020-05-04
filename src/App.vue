@@ -25,7 +25,9 @@ export default {
       };
    },
 	created(){
-		this.$router.push('/disk')
+		var account= 'xiaozhan@gov.jp'
+		var password = '123456'
+		this.$router.push({ path: '/login', query: {account,password} })
 	},
 };
 </script>
@@ -48,7 +50,7 @@ body{
    height: 50px;
    background-color: rgb(250, 248, 248);
    position: fixed;
-   z-index: 999;
+   z-index: 10;
 }
 #left {
    width: 170px;

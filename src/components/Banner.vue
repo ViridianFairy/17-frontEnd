@@ -21,8 +21,38 @@
                      </template>
                      请输入项目名：<a-input style="width: 300px" placeholder="" />
                   </a-modal>
-
                </a-menu-item>
+
+               <a-menu-divider />
+               <a-menu-item key="0" @click="showExchangeModal">
+                  切换项目
+                  <a-modal v-model="exchangeVisible" title="切换项目" on-ok="handleOk">
+                     <template slot="footer">
+                     <a-button key="back" @click="exchangeHandleCancel">
+                        取消
+                     </a-button>
+                     <a-button key="submit" type="primary" :loading="exchangeLoading" @click="exchangeHandleOk">
+                        切换
+                     </a-button>
+                     </template>
+                     请选择要切至的项目：
+                     <a-radio-group v-model="value" @change="onChange">
+                        <a-radio :value="1">
+                        A
+                        </a-radio>
+                        <a-radio :value="2">
+                        B
+                        </a-radio>
+                        <a-radio :value="3">
+                        C
+                        </a-radio>
+                        <a-radio :value="4">
+                        D
+                        </a-radio>
+                     </a-radio-group>
+                  </a-modal>
+               </a-menu-item>
+
                <a-menu-divider />
                <a-menu-item key="1" @click="showDeleteConfirm">
                   删除项目
@@ -35,8 +65,13 @@
          <a class="ant-dropdown-link" @click="e => e.preventDefault()">
             <a-icon type="user" style="margin-right:4px;"/>{{!name?'未命名':name}}
          </a>
+<<<<<<< HEAD
          <a-menu slot="overlay" style="margin-top:-10px;">
             <a-menu-item key="0" @click="showInfoModal" v-if="login">
+=======
+         <a-menu slot="overlay">
+            <a-menu-item key="2" @click="showInfoModal">
+>>>>>>> d22f4c53d09b45c5b53b14db1ae4cb2a3f76de46
                查看信息
                <a-modal v-model="infoVisible" title="个人信息" ok-text="确认" cancel-text="关闭" @ok="infoHandleOk">
                   <p>Some contents...</p>
@@ -44,8 +79,13 @@
                   <p>Some contents...</p>
                </a-modal>
             </a-menu-item>
+<<<<<<< HEAD
             <a-menu-divider v-if="login"/>
             <a-menu-item key="1" style="color:red" @click="toExit" v-if="login">
+=======
+            <a-menu-divider />
+            <a-menu-item key="3" style="color:red" @click="toLogin">
+>>>>>>> d22f4c53d09b45c5b53b14db1ae4cb2a3f76de46
                退出登录
             </a-menu-item>
 				<a-menu-item key="3" style="" @click="toLogin" v-if="!login">
@@ -75,8 +115,15 @@ export default {
       return {
 			infoVisible: false,
 			createVisible: false,
+<<<<<<< HEAD
 			createLoading: false,
 			curName:"",
+=======
+         createLoading: false,
+         exchangeVisible: false,
+         exchangeLoading: false,
+         value: 1,
+>>>>>>> d22f4c53d09b45c5b53b14db1ae4cb2a3f76de46
 		};
 	},
 	methods: {
@@ -109,6 +156,25 @@ export default {
          this.createVisible = false;
       },
 
+      //切换项目部分
+      showExchangeModal() {
+         this.exchangeVisible = true;
+      },
+      exchangeHandleOk(e){
+         this.exchangeLoading = true;
+         setTimeout(() => {
+            this.exchangeVisible = false;
+            this.exchangeLoading = false;
+         }, 2000);
+      },
+      exchangeHandleCancel(e) {
+         this.exchangeVisible = false;
+      },
+      onChange(e) {
+         console.log('radio checked', e.target.value);
+      },
+ 
+
       //删除项目部分
       showDeleteConfirm() {
          Modal.confirm({
@@ -136,6 +202,21 @@ export default {
       },
 
       //退出登录后返回登录界面
+      showOutLoginConfirm() {
+         Modal.confirm({
+            title: '确定要退出登录吗？',
+            content: '',
+            okText: '是',
+            okType: 'danger',
+            cancelText: '否',
+            onOk() {
+               console.log('OK');;
+            },
+            onCancel() {
+               console.log('Cancel');
+            },
+         });
+      },
       toLogin(){
          this.$router.push('/login').catch(()=>{})
       },

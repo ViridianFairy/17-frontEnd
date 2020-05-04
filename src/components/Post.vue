@@ -1,7 +1,7 @@
 <template>
    <div id="wrapper">
        <p style="margin-left:35px;margin-top:25px;font-size:25px" >任务动态</p>
-       <a-divider />
+       <a-divider style="margin-top:10px"/>
       <div id="post">
           
     <a-list item-layout="horizontal" :data-source="data">
@@ -23,9 +23,9 @@
   <a-divider style="margin-top:0px"/>
   <div id="send">
       <a-textarea placeholder="@提及他人 Enter快速发布" :rows="5" style="font-size:15px;margin-top:-25px;width:1700px"/>
-    <a style="color:gray"><a-icon type="link" style="font-size:23px;margin-left:25px;margin-top:12px"/></a>
-    <a style="color:gray"><a-icon type="smile" style="font-size:23px;margin-left:20px;margin-top:12px"/></a>
-    <a-button type="link" :size="size" style="font-size:18px;float:right;margin-top:6px;margin-right:10px">
+    <a style="color:gray"><a-icon type="link" style="font-size:23px;margin-left:25px;margin-top:10px"/></a>
+    <a style="color:gray"><a-icon type="smile" style="font-size:23px;margin-left:20px;margin-bottom:-6px"/></a>
+    <a-button type="link" :size="size" style="font-size:18px;float:right;margin-top:0px;margin-right:10px">
       发布
     </a-button>
   </div>
@@ -76,11 +76,10 @@ export default {
     margin-left:40px;
     height: 340px;
     overflow-y: scroll;
-    margin-top:-32px;
+    margin-top:-25px;
 }
 #send{
-    
-    height:140px;
+    height:135px;
 
 }
 </style>

@@ -5,7 +5,7 @@
       <div id="dropdown">
          <a-dropdown :trigger="['hover']" style="color:black">
             <a class="ant-dropdown-link" @click="e => e.preventDefault()" :disabled="!login">
-               项目：{{login?curName:'无'}}
+               项目：{{login?projectName:'无'}}
                <a-icon type="down" />
             </a>
             <a-menu slot="overlay" style="margin-top:7px;">
@@ -22,7 +22,7 @@
                         >创建</a-button>
                      </template>
                      请输入项目名：
-                     <a-input style="width: 300px" placeholder v-model="newName"/>
+                     <a-input style="width: 300px" placeholder v-model="newName" />
                   </a-modal>
                </a-menu-item>
 
@@ -36,7 +36,7 @@
                            key="submit"
                            type="primary"
                            :loading="exchangeLoading"
-                           @click="exchangeHandleOk"
+                           @click="exchangeHandleOk(value)"
                         >切换</a-button>
                      </template>
                      请选择要切至的项目：
@@ -60,12 +60,21 @@
          <a-menu slot="overlay" style="margin-top:-10px;">
             <a-menu-item key="0" @click="showInfoModal" v-if="login">
                查看信息
-               <a-modal v-model="infoVisible" title="个人信息" ok-text="确认" cancel-text="关闭" @ok="infoHandleOk">
-                  <p style="padding-left:30px">头像：<a-avatar :size="50" slot="avatar">U</a-avatar>
+               <a-modal
+                  v-model="infoVisible"
+                  title="个人信息"
+                  ok-text="确认"
+                  cancel-text="关闭"
+                  @ok="infoHandleOk"
+               >
+                  <p style="padding-left:30px">
+                     头像：
+                     <a-avatar :size="50" slot="avatar" :src="userInfo.photo"></a-avatar>
+                  </p>
                   <p style="padding-left:30px">用户名：{{name}}</p>
-                  <p style="padding-left:30px">当前项目：</p>
-                  <p style="padding-left:30px">邮箱：</p>
-                  <p style="padding-left:30px">个人主页：</p>
+                  <p style="padding-left:30px">邮箱：{{userInfo.email}}</p>
+                  <p style="padding-left:30px">所在地：{{userInfo.location}}</p>
+                  <p style="padding-left:30px">个人主页：{{userInfo.website}}</p>
                </a-modal>
             </a-menu-item>
             <a-menu-divider v-if="login" />
@@ -87,6 +96,9 @@ export default {
       },
       login() {
          return this.$store.state.login;
+      },
+      projectName() {
+         return this.$store.state.project.name;
       }
    },
    data() {
@@ -94,13 +106,13 @@ export default {
          infoVisible: false,
          createVisible: false,
          createLoading: false,
-         curName: "",
          createLoading: false,
          exchangeVisible: false,
          exchangeLoading: false,
-			value: 1,
-			newName:"",
-			changeProject:[],
+         value: 1,
+         newName: "",
+         changeProject: [],
+         userInfo: { photo: "", email: "", website: "", location: "" }
       };
    },
    methods: {
@@ -122,18 +134,17 @@ export default {
          this.createVisible = true;
       },
       createHandleOk(e) {
-			this.createLoading = true;
-			this.$http.post(`/api/project`,{name:this.newName}).then(doc => {
+         this.createLoading = true;
+         this.$http.post(`/api/project`, { name: this.newName }).then(doc => {
             var code = doc.data.status;
-				var msg = doc.data.msg;
+            var msg = doc.data.msg;
             if (code != 0) {
-					this.$alert(msg,'false')
-					this.createLoading = false;
+               this.$alert(msg, "false");
+               this.createLoading = false;
             } else {
                this.createVisible = false;
-            	this.createLoading = false;
-				}
-				
+               this.createLoading = false;
+            }
          });
       },
       createHandleCancel(e) {
@@ -142,26 +153,30 @@ export default {
 
       //切换项目部分
       showExchangeModal() {
-			this.exchangeVisible = true;
-			this.$http.get(`/api/user/project`).then(doc => {
-				console.log(doc)
+         this.exchangeVisible = true;
+         this.$http.get(`/api/user/project`).then(doc => {
+            console.log(doc);
             var code = doc.data.status;
-				var msg = doc.data.msg;
-				this.changeProject = doc.data.data
+            var msg = doc.data.msg;
+            this.changeProject = doc.data.data;
             if (code != 0) {
-               
             } else {
-               
             }
          });
-			
       },
-      exchangeHandleOk(e) {
+      exchangeHandleOk(id, name) {
+         var store = window.localStorage;
          this.exchangeLoading = true;
+         this.changeProject.forEach(i => {
+            if (i.id == id) name = i.name;
+         });
+         //proj
+         this.$store.commit("projectReload", { id, name });
+         store.setItem(this.$cookies.get("session"), id);
          setTimeout(() => {
             this.exchangeVisible = false;
             this.exchangeLoading = false;
-         }, 2000);
+         }, 100);
       },
       exchangeHandleCancel(e) {
          this.exchangeVisible = false;
@@ -190,6 +205,14 @@ export default {
       //显示个人信息部分
       showInfoModal() {
          this.infoVisible = true;
+         this.$http.get(`/api/user/info`).then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+            if (code == 0) {
+               this.userInfo = doc.data.data;
+            } else {
+            }
+         });
       },
       infoHandleOk(e) {
          console.log(e);
@@ -221,8 +244,8 @@ export default {
       toExit() {
          this.$http.get(`/api/user/logout`).then(doc => {
             var code = doc.data.status;
-				var msg = doc.data.msg;
-				this.update()
+            var msg = doc.data.msg;
+            this.update();
             if (code == 0) {
                this.$alert(msg, "true");
             } else {
@@ -239,6 +262,14 @@ export default {
                   avatar: doc.data.data.avatar
                });
                this.$store.commit("loginReload", true);
+               this.$http.get(`/api/user/project`).then(doc => {
+                  if (code == 0) {
+							this.changeProject = doc.data.data;
+							var id = window.localStorage[this.$cookies.get("session")];
+							this.exchangeHandleOk(id)
+                  }
+               });
+               
                //console.log('已分发'+ doc.data.data.username)
             } else {
                this.$store.commit("bannerReload", {
@@ -250,8 +281,13 @@ export default {
       }
    },
    mounted() {
-		this.update()
-	}
+      this.update();
+	},
+	watch: {
+    	'$store.state.userUpdate': function () {
+			this.update();
+   	}
+  },
 };
 </script>
 

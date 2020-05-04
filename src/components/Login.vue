@@ -54,8 +54,9 @@ export default {
 				if(code==0){
 					this.$alert(msg,'true')
 					this.$router.push('/taskPanel').catch(()=>{})
-					this.$store.commit('loginReload',true)
-					this.update()
+					//this.$store.commit('loginReload',true)
+					//this.update()
+					this.$store.commit("userUpdate")
 				}else{
 					if(typeof msg == 'object')
 						msg = getFirstMsg(msg)
@@ -71,7 +72,7 @@ export default {
 				}
 			}
 		},
-		update(){
+		/*update(){
 			this.$http
          .get(`/api/user/info`)
          .then(doc => {
@@ -87,7 +88,7 @@ export default {
 					})
 				}
          });
-		}
+		}*/
    },
 };
 </script>

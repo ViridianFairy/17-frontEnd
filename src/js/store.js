@@ -8,6 +8,13 @@ const mutations = {
 	},
    loginReload(state, bool){
 		state.login = bool
+	},
+   projectReload(state, obj){
+		state.project.id = obj.id
+		state.project.name = obj.name
+	},
+	userUpdate(state){
+		state.userUpdate++
 	}
 }
 const state = {
@@ -15,7 +22,12 @@ const state = {
 			name:"未登录",
 			avatar:""
 		},
-		login:false
+		login:false,
+		userUpdate:0,
+		project:{
+			id:"",
+			name:""
+		}
    }
 const vuex = new Vuex.Store({
    state,

@@ -3,7 +3,7 @@
       <img src="http://funx.pro/resource/junk/17logo.svg" />
       <!-- login测试用，实际不跳转至login --->
       <a-button style="color:black" type="link" id="user" @click="">
-         <a-icon type="user" />{{name}}
+         <a-icon type="user" />{{!name?'未命名':name}}
       </a-button>
    </div>
 </template>
@@ -11,19 +11,22 @@
 <script>
 export default {
    name: "Banner",
-   components: {},
+	computed:{
+		name(){
+         return this.$store.state.banner.name
+		},
+	},
    data() {
       return {
-			name:"未登录"
+			
 		};
 	},
 	methods:{
 		jump(){
-			if(this.name == '未登录')
+			if(!this.name)
 				this.$router.push('/login').catch(()=>{})
 			else{
 				//弹框
-				
 			}
 		}
 	},
@@ -32,11 +35,16 @@ export default {
          .get(`/api/user/info`)
          .then(doc => {
 				var code = doc.data.status
-				//var msg = doc.data.msg
 				if(code == 0){
-					this.name = doc.data.data.username
+					this.$store.commit('bannerReload',{
+						name:doc.data.data.username,
+						avatar:doc.data.data.avatar
+					})
+					//console.log('已分发'+ doc.data.data.username)
 				}else{
-					this.name = '未登录'
+					this.$store.commit('bannerReload',{
+						name:'未登录',
+					})
 				}
          });
    }

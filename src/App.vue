@@ -25,9 +25,10 @@ export default {
       };
    },
 	created(){
+		//console.log(this.$store.state.banner.name)
 		var account= 'xiaozhan@gov.jp'
 		var password = '123456'
-		this.$router.push({ path: '/login', query: {account,password} })
+		this.$router.push({ path: '/login', query: {account,password} }).catch(()=>{})
 	},
 };
 </script>

@@ -1,6 +1,10 @@
 <template>
    <div id="wrapper">
-      <img src="http://funx.pro/resource/junk/17logo.svg" >
+      <img src="http://funx.pro/resource/junk/17logo.svg" />
+      <!-- login测试用，实际不跳转至login --->
+      <a-button style="color:black" type="link" id="user" @click="" />
+         <a-icon type="user" />{{!name?'未命名':name}}
+      <!-- <img src="http://funx.pro/resource/junk/17logo.svg" > -->
 
       <div id="dropdown">
          <a-dropdown :trigger="['click']">
@@ -58,13 +62,14 @@
 <script>
 export default {
    name: "Banner",
-   components: {},
+	computed:{
+		name(){
+         return this.$store.state.banner.name
+		},
+	},
    data() {
       return {
-         name:"未登录",
-         createLoading: false,
-         createVisible: false,
-         infoVisible: false,
+			
 		};
 	},
 	methods: {
@@ -73,6 +78,10 @@ export default {
 				this.$router.push('/login').catch(()=>{})
 			else{
 				//弹框
+				//  name:"未登录",
+         	// createLoading: false,
+         	// createVisible: false,
+         	// infoVisible: false,
             this.infoVisible = true;
 			}
       },
@@ -99,11 +108,16 @@ export default {
          .get(`/api/user/info`)
          .then(doc => {
 				var code = doc.data.status
-				//var msg = doc.data.msg
 				if(code == 0){
-					this.name = doc.data.data.username
+					this.$store.commit('bannerReload',{
+						name:doc.data.data.username,
+						avatar:doc.data.data.avatar
+					})
+					//console.log('已分发'+ doc.data.data.username)
 				}else{
-					this.name = '未登录'
+					this.$store.commit('bannerReload',{
+						name:'未登录',
+					})
 				}
          });
    },

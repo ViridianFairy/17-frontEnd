@@ -54,6 +54,8 @@ export default {
 				var msg = doc.data.msg
 				if(code==0){
 					this.$alert(msg,'true')
+					this.$router.push('/taskPanel').catch(()=>{})
+					
 				}else{
 					if(typeof msg == 'object')
 						msg = getFirstMsg(msg)

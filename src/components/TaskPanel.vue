@@ -15,11 +15,11 @@
                   <!-- 菜单  -->
                   <p style="margin-top:20px">
                      <a-avatar :size="30" icon="user" />
-                     <em class="em11">用户</em>
+                     <em style="font-style:normal;font-family:'Microsoft YaHei';color:gray;font-size:15px;margin-left:14.5px">用户</em>
                   </p>
                   <!-- 起止日期 -->                 
-                  <a-icon type="calendar" style="fontSize:20px;color:gray;margin-left:4px" />
-                     <a-date-picker
+                  <a-icon type="calendar" style="fontSize:20px;color:gray;margin-left:4px;margin-top:4px;vertical-align:bottom" />
+                     <!--a-date-picker
                         style="margin-top:-10px;margin-bottom:5px;margin-left:18px;"
                         :disabledDate="disabledStartDate"
                         showTime
@@ -38,17 +38,30 @@
                         v-model="endValue"
                         :open="endOpen"
                         @openChange="handleEndOpenChange"
-                     />
+                     /-->
+                     <a-date-picker style="color:gray;font-size:15px;margin-left:20px" placeholder="设置开始时间" @change="onChange1" @ok="onOk">
+                        <span>{{ dateString1 ? dateString1 : '设置开始时间' }}</span>
+                     </a-date-picker><br />
+<p style="margin-top:-20px;display:inline">
+                     <a-icon type="calendar" style="fontSize:20px;color:gray;margin-left:4px;margin-top:20px;vertical-align:bottom;" />
+                     
+                     <a-date-picker style="color:gray;font-size:15px;margin-left:20px" placeholder="设置截止时间" @change="onChange2" @ok="onOk">
+                        <span>{{ dateString2 ? dateString2 : '设置截止时间' }}</span>
+                     </a-date-picker>
+                     
                   <!-- 提醒   -->
                   <br />
-                  <p>
-                     <a-icon type="clock-circle" style="fontSize:20px;color:gray;margin-left:4px" />                     
-                    
-                        <em class="em11" style="padding-left:18px" v-if="clocktype==0" @click="showModal">不提醒</em>
-                        <em class="em11" style="padding-left:18px" v-if="clocktype==1" @click="showModal">任务开始时</em>
-                        <em class="em11" style="padding-left:18px" v-if="clocktype==2" @click="showModal">任务截止时</em>
+                  
+                     <a-icon type="clock-circle" style="fontSize:20px;color:gray;margin-left:4px;margin-top:22px;vertical-align:bottom;margin-bottom:0.1px" />                     
                      
-                  </p>
+                        <!--em class="em11" style="padding-left:20px;margin-bottom:60px" v-if="clocktype==0" @click="showModal">不提醒</em>
+                        <em class="em11" style="padding-left:20px" v-if="clocktype==1" @click="showModal">任务开始时</em>
+                        <em class="em11" style="padding-left:20px" v-if="clocktype==2" @click="showModal">任务截止时</em-->
+                     
+                  <p style="padding-left:20.5px;display:inline;color:gray;font-family:'Microsoft YaHei';font-size:15px" v-if="clocktype==0" @click="showModal">不提醒</p>
+                  <p style="padding-left:20.5px;display:inline;color:gray;font-family:'Microsoft YaHei';font-size:15px" v-if="clocktype==1" @click="showModal">任务开始时</p>
+                  <p style="padding-left:20.5px;display:inline;color:gray;font-family:'Microsoft YaHei';font-size:15px" v-if="clocktype==2" @click="showModal">任务截止时</p>
+
                   <a-modal
                      title="任务提醒设置"
                      :visible="visible"
@@ -90,39 +103,39 @@
                
                   <!-- 优先级   -->
                   <a-menu style="width: 340px;margin-left:10x;margin-right:-20px">                     
-                     <a-sub-menu key="priority" style="margin-top:-10px">
+                     <a-sub-menu key="priority" style="margin-top:8px">
                      <span slot="title">
-                        <a-icon type="fire" style="fontSize:20px;color:gray;margin-left:-12px"/>
-                        <a-tag v-if="taskpriority=='较低'" color="gray" :visible="true" style="font-size:16px;height:25px;margin-left:8px;">
+                        <a-icon type="fire" style="fontSize:20px;color:gray;margin-left:-12px;vertical-align:middle;margin-bottom:4px"/>
+                        <a-tag v-if="taskpriority=='较低'" color="gray" :visible="true" style="font-size:15px;height:22px;margin-left:10px;margin-top:13px">
                            较低
                         </a-tag> 
-                        <a-tag v-if="taskpriority=='普通'" color="green" :visible="true" style="font-size:16px;height:25px;margin-left:8px;">
+                        <a-tag v-if="taskpriority=='普通'" color="green" :visible="true" style="font-size:15px;height:22px;margin-left:10px;margin-top:14px">
                            普通
                         </a-tag> 
-                        <a-tag v-if="taskpriority=='紧急'" color="orange" :visible="true" style="font-size:16px;height:25px;margin-left:8px;">
+                        <a-tag v-if="taskpriority=='紧急'" color="orange" :visible="true" style="font-size:15px;height:22px;margin-left:10px;margin-top:14px">
                            紧急
                         </a-tag> 
-                        <a-tag v-if="taskpriority=='非常紧急'" color="red" :visible="true" style="font-size:16px;height:25px;margin-left:8px;">
+                        <a-tag v-if="taskpriority=='非常紧急'" color="red" :visible="true" style="font-size:15px;height:22px;margin-left:10px;margin-top:14px">
                            非常紧急
                         </a-tag>                  
                      </span>
                         <a-menu-item key="jd" @click="taskpriority='较低'">
-                           <a-tag color="gray" style="font-size:16px;height:25px;margin-left:0px">
+                           <a-tag color="gray" style="font-size:15px;height:22px;margin-left:0px">
                               较低
                            </a-tag>
                         </a-menu-item>   
                         <a-menu-item key="pt" @click="pt">
-                           <a-tag color="green" style="font-size:16px;height:25px;margin-left:0px">
+                           <a-tag color="green" style="font-size:15px;height:22px;margin-left:0px">
                               普通
                            </a-tag>
                         </a-menu-item>   
                         <a-menu-item key=jj @click="jj">
-                           <a-tag color="orange" style="font-size:16px;height:25px;margin-left:0px">
+                           <a-tag color="orange" style="font-size:15px;height:22px;margin-left:0px">
                               紧急
                            </a-tag>
                         </a-menu-item>
                         <a-menu-item key=fc @click="fc">
-                           <a-tag color="red" style="font-size:16px;height:25px;margin-left:0px">
+                           <a-tag color="red" style="font-size:14px;height:22px;margin-left:0px">
                               非常紧急
                            </a-tag>  
                         </a-menu-item>    
@@ -130,8 +143,9 @@
                   </a-menu>
 
                   <!--  标签   -->               
-                  <a-icon type="tag" style="fontSize:20px;color:gray;margin-left:4px" />
-                  <em class="em11" style="margin-left:8px" @click="showlabel=1">标签</em>
+                  <a-icon type="tag" style="fontSize:20px;color:gray;margin-left:4px;margin-top:14px;vertical-align:bottom;margin-bottom:0.2px" />
+
+                  <em class="em11" style="margin-left:11px;font-size:15px" @click="showlabel=1">标签</em>
                   <div id="tags" v-if="showlabel==1">
                      <div style="margin-left:4px;margin-top:3px">
                         <template v-for="(tag, index) in tags">
@@ -217,6 +231,7 @@
 
 export default {
 	name:"TaskPanel",
+   
    data() {
       return {
          startValue: null,
@@ -232,6 +247,8 @@ export default {
          showclock:0,
          showlabel:0,
          confirmLoading: false,
+         dateString1:"",
+         dateString2:""
       };
    },
    watch: {
@@ -244,6 +261,22 @@ export default {
    },
 
    methods: {
+      onChange1(value, dateString) {
+         console.log('Selected Time: ', value);
+         console.log('Formatted Selected Time: ', dateString);
+         this.dateString1=dateString;
+      },
+      onChange2(value, dateString) {
+         console.log('Selected Time: ', value);
+         console.log('Formatted Selected Time: ', dateString);
+         this.dateString2=dateString;
+      },
+      onOk(value) {
+         console.log('onOk: ', value);
+      },
+      clearTime() {
+        this.time1 = undefined;
+      },
       pt(){
         this.taskpriority="普通";       
       },
@@ -362,7 +395,6 @@ export default {
 #wrapper {
    display: flex;
    margin: 0 auto;
-   
 }
 #process {
    width: 350px;
@@ -386,9 +418,10 @@ export default {
 }
 .em11 {
    font-style: normal;
-   font-size: 16px;
+   font-size: 15px;
    padding-left: 11px;
    color: gray;
+   font-family: "Microsoft YaHei";
 }
 #components-button-demo-button-group > h4 {
    margin: 16px 0;

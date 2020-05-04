@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import {Modal} from 'ant-design-vue'
 export default {
    name: "Banner",
 	computed:{
@@ -102,12 +103,12 @@ export default {
 
       //删除项目部分
       showDeleteConfirm() {
-         this.$confirm({
-            title: 'Are you sure delete this task?',
-            content: 'Some descriptions',
-            okText: 'Yes',
+         Modal.confirm({
+            title: '确定要删除项目吗？',
+            content: '',
+            okText: '是',
             okType: 'danger',
-            cancelText: 'No',
+            cancelText: '否',
             onOk() {
                console.log('OK');
             },

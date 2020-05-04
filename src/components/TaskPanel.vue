@@ -197,7 +197,7 @@
                            <a-icon type="plus-circle" theme="filled" style="fontSize:30px;color:#003366;margin-left:10px;"/><br />
                         </a>
                      </a-tooltip>
-                  <a-button style="font-size:16px;float:right">创建</a-button>
+                  <a-button style="font-size:16px;float:right" @click="reset">创建</a-button>
 
                   <br />
                   <br />               
@@ -396,7 +396,7 @@
                            <a-icon type="plus-circle" theme="filled" style="fontSize:30px;color:#003366;margin-left:10px;"/><br />
                         </a>
                      </a-tooltip>
-                  <a-button style="font-size:16px;float:right">创建</a-button>
+                  <a-button style="font-size:16px;float:right" @click="reset">创建</a-button>
 
                   <br />
                   <br />             
@@ -410,11 +410,15 @@
 
 export default {
 	name:"TaskPanel",
+   
 	mounted(){
-		this.$http.post(`/api/project/1/task`,{
+		this.$http.post(`/api/user/register`,{
          }).then(res => {
 				console.log(res.data)
+            if(res.data.status==1)
+               
             
+               this.$alert(res.data.msg,'false')
          })
 	},
    data() {
@@ -446,6 +450,16 @@ export default {
    },
 
    methods: {
+      reset(){
+         ///在这先存储好数据再初始化 防止两次创建的时候数据联动
+         /*this.clocktype=0;
+         this.showclock=0;
+         this.showlabel=0;
+         this.dateString1="";
+         this.dateString2="";
+         this.taskpriority="较低";
+         this.tags=["任务"];*/
+      },
       onChange1(value, dateString) {
          console.log('Selected Time: ', value);
          console.log('Formatted Selected Time: ', dateString);

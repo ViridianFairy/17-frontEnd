@@ -11,7 +11,7 @@
         <span>任务面板</span>
       </a-menu-item>
 
-      <a-menu-item key="2" disabled>
+      <a-menu-item key="2"  @click="$router.push('/post')">
         <a-icon type="bars" />
         <span>动态查看</span>
       </a-menu-item>

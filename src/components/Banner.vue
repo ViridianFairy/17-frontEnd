@@ -32,8 +32,6 @@
          </a-dropdown>
       </div>
 
-      <!-- login测试用 --->
-      <!-- <a-button style="color:black" type="link" id="user" @click="jump"> -->
       <a-dropdown :trigger="['click']" style="color:black" id="user">
          <a class="ant-dropdown-link" @click="e => e.preventDefault()">
             <a-icon type="user" />{{!name?'未命名':name}}
@@ -67,13 +65,12 @@ export default {
 	},
    data() {
       return {
+			infoVisible: false,
+			createVisible: false,
 			createLoading: false,
-         createVisible: false,
-         infoVisible: false,
 		};
 	},
 	methods: {
-
       //这个jump似乎就用不到了
 		jump() {
 			if(this.name == '未登录')

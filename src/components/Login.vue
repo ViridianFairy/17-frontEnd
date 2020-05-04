@@ -55,7 +55,7 @@ export default {
 				if(code==0){
 					this.$alert(msg,'true')
 					this.$router.push('/taskPanel').catch(()=>{})
-					
+					this.update()
 				}else{
 					if(typeof msg == 'object')
 						msg = getFirstMsg(msg)
@@ -68,6 +68,23 @@ export default {
 					return i+' '+obj[i]
 				}
 			}
+		},
+		update(){
+			this.$http
+         .get(`/api/user/info`)
+         .then(doc => {
+				var code = doc.data.status
+				if(code == 0){
+					this.$store.commit('bannerReload',{
+						name:doc.data.data.username,
+						avatar:doc.data.data.avatar
+					})
+				}else{
+					this.$store.commit('bannerReload',{
+						name:'未登录',
+					})
+				}
+         });
 		}
    },
 };

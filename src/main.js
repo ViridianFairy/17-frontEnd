@@ -1,4 +1,6 @@
-const baseURL = 'http://funx.pro:3001/api'
+
+var baseURL = 'http://47.99.132.18:9999'
+
 import Vue from 'vue'
 import App from './App.vue'
 import Alert from './components/attach/alert'
@@ -21,7 +23,7 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import store from './js/store'
 Vue.config.productionTip = false
-
+// axios.defaults.withCredentials=true
 // ant-design
 Vue.component(Button.name, Button)
 Vue.component(Icon.name, Icon)
@@ -73,7 +75,9 @@ Vue.use(LocaleProvider)
 
 // plugins mounted
 Vue.prototype.$cookies = Cookies;
-Vue.prototype.$http = axios.create({baseURL})
+Vue.prototype.$http = axios.create({baseURL,"Access-Control-Allow-Origin":"*"})
+baseURL = 'http://funx.pro:3001/api'
+Vue.prototype.$http2 = axios.create({baseURL})
 //Vue.prototype.$httpTest = axios.create({'baseURL'})
 // init
 new Vue({

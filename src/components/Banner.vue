@@ -60,16 +60,12 @@
          <a-menu slot="overlay" style="margin-top:-10px;">
             <a-menu-item key="0" @click="showInfoModal" v-if="login">
                查看信息
-               <a-modal
-                  v-model="infoVisible"
-                  title="个人信息"
-                  ok-text="确认"
-                  cancel-text="关闭"
-                  @ok="infoHandleOk"
-               >
-                  <p>Some contents...</p>
-                  <p>Some contents...</p>
-                  <p>Some contents...</p>
+               <a-modal v-model="infoVisible" title="个人信息" ok-text="确认" cancel-text="关闭" @ok="infoHandleOk">
+                  <p style="padding-left:30px">头像：<a-avatar :size="50" slot="avatar">U</a-avatar>
+                  <p style="padding-left:30px">用户名：{{name}}</p>
+                  <p style="padding-left:30px">当前项目：</p>
+                  <p style="padding-left:30px">邮箱：</p>
+                  <p style="padding-left:30px">个人主页：</p>
                </a-modal>
             </a-menu-item>
             <a-menu-divider v-if="login" />

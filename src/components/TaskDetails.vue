@@ -27,7 +27,7 @@
     
     <!--   数据需要部分 以下为模拟  ---->
     <em class="em11" style="margin-right:25px;font-size:18px;padding-left:0">完成情况</em>
-    <a-switch defaultChecked @change="onChange" /><br />
+    <a-switch defaultunChecked @change="onChange" /><br />
 
     <!---拉取头像  --->
     <a-avatar icon="user" style="margin-top:20px" :size="40"/>
@@ -60,8 +60,8 @@
   <br />
 </div>
 
-<a-button style="font-size:16px;float:right;" @click="$router.push('/taskPanel')">保存</a-button>
-<a-button style="font-size:16px;margin-left:200px;magin-right:20px" @click="$router.push('/taskPanel')">返回</a-button>
+<a-button style="font-size:16px;float:right;" @click="$router.push('/taskPanel')">返回</a-button>
+<a-button style="font-size:16px;margin-left:210px" @click="$router.push('/taskPanel')">保存</a-button>
 
      </div>
 

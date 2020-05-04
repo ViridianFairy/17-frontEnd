@@ -2,18 +2,20 @@
    <div class="logincontent">
       <img src="http://funx.pro/resource/junk/17logo.svg" >
       <br /><br />
-      <a-input placeholder="邮箱" v-model="userName" ref="userNameInput" />
+      <a-input placeholder="邮箱" v-model="account" ref="userNameInput" />
       <br /><br />
-      <a-input-password placeholder="6-16位密码，区分大小写" />
+      <a-input placeholder="用户名" v-model="userName" ref="userNameInput" />
       <br /><br />
-      <a-input-password placeholder="确认密码" />
+      <a-input-password v-model="password" placeholder="6-16位密码，区分大小写" />
       <br /><br />
-      <a-input placeholder="11位手机号码" v-model="teleNumber" ref="teleNumberInput" />
+      <a-input-password v-model="password2" placeholder="确认密码" />
       <br /><br />
-      <a-input placeholder="输入验证码" v-model="verificationCode" ref="verificationCodeInput" style="width: 65%;float: left"/>
-      <a-button style="float: right">获取验证码</a-button>
+      <a-input placeholder="11位手机号码" v-model="account2" ref="teleNumberInput" disabled/>
+      <br /><br />
+      <a-input disabled placeholder="输入验证码" v-model="verificationCode" ref="verificationCodeInput" style="width: 65%;float: left"/>
+      <a-button style="float: right" disabled>获取验证码</a-button>
       <br /><br /><br />
-      <a-button type="primary" style="width: 50%;float: left">注册</a-button>
+      <a-button type="primary" style="width: 50%;float: left" @click="enter">注册</a-button>
       <a-button type="link" @click="$router.push('/login')" style="float: right;float: right">使用现有账号登录</a-button>
    </div>
 </template>
@@ -24,14 +26,60 @@ export default {
    components: {},
    data() {
       return {
-         userName: '',
+			userName: '',
+			account:'',
+			account2:'',
+			account_type:"",
+			password:"",
+			password2:"",
+			verificationCode:"",
       };
    },
    methods: {
       emitEmpty() {
          this.$refs.userNameInput.focus();
          this.userName = '';
-      },
+		},
+		enter(){
+			if(this.password != this.password2){
+				this.$alert('两次密码不一致噢','false')
+				return;
+			}
+			var account_type = 'email'
+			var account = this.account
+			var username = this.userName
+			var password = this.password
+			this.$http.post(`/api/user/register`,{
+				account_type,account,username,password
+			}).then(doc=>{
+				var code = doc.data.status
+				var msg = doc.data.msg
+				if(code==0){
+					this.$alert(msg,'true')
+					this.$router.push({ path: '/login', query: {account,password} })
+					.catch(()=>{})
+				}else{
+					if(typeof msg == 'object')
+						msg = getFirstMsg(msg)
+					this.$alert(msg,'false')
+				}
+				console.log(doc)
+			})
+			/*const CODE = {
+				'-100':'参数错误',
+				1001:"邮箱格式错误",
+				1002:"手机号格式错误",
+				1003:"密码格式错误",
+				1007:"邮箱已存在",
+				1008:"手机号已存在",
+				1009:"用户名格式错误",
+			}*/
+			function getFirstMsg(obj){
+				for(var i in obj){
+					return i+' '+obj[i]
+				}
+			}
+		}
    },
 };
 </script>
@@ -40,6 +88,7 @@ export default {
 
 <style scoped>
 .logincontent{
+	min-width: 300px;
     width: 30%;
     height: 100%;
     margin: auto;

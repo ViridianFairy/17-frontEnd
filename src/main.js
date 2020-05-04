@@ -24,6 +24,7 @@ import Cookies from 'js-cookie'
 import store from './js/store'
 Vue.config.productionTip = false
 // axios.defaults.withCredentials=true
+axios.defaults.withCredentials = true
 // ant-design
 Vue.component(Button.name, Button)
 Vue.component(Icon.name, Icon)

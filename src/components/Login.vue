@@ -38,7 +38,7 @@ export default {
 		toRegister(){
 			this.$router.push('/register').catch(()=>{})
 		},
-      emitEmpty() {
+        emitEmpty() {
          this.$refs.userNameInput.focus();
          this.userName = '';
 		},

@@ -1,13 +1,9 @@
 <template>
    <div id="wrapper">
       <img src="http://funx.pro/resource/junk/17logo.svg" />
-      <!-- login测试用，实际不跳转至login --->
-      <a-button style="color:black" type="link" id="user" @click="" />
-         <a-icon type="user" />{{!name?'未命名':name}}
-      <!-- <img src="http://funx.pro/resource/junk/17logo.svg" > -->
 
       <div id="dropdown">
-         <a-dropdown :trigger="['click']">
+         <a-dropdown :trigger="['click']" style="color:black">
             <a class="ant-dropdown-link" @click="e => e.preventDefault()">
                软工实践 <a-icon type="down" />
             </a>
@@ -40,22 +36,24 @@
       <!-- <a-button style="color:black" type="link" id="user" @click="jump"> -->
       <a-dropdown :trigger="['click']" style="color:black" id="user">
          <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-            <a-icon type="user" />{{name}}
+            <a-icon type="user" />{{!name?'未命名':name}}
          </a>
 
          <a-menu slot="overlay">
-            <a-menu-item key="0" @click="showinfoModal">
+            <a-menu-item key="0" @click="showInfoModal">
                查看信息
-
                <a-modal v-model="infoVisible" title="个人信息" ok-text="确认" cancel-text="关闭" @ok="infoHandleOk">
                   <p>Some contents...</p>
                   <p>Some contents...</p>
                   <p>Some contents...</p>
                </a-modal>
-
-
-         
-      </a-button>
+            </a-menu-item>
+            <a-menu-divider />
+            <a-menu-item key="1" style="color:red" @click="toLogin">
+               退出登录
+            </a-menu-item>
+         </a-menu>
+      </a-dropdown>
    </div>
 </template>
 
@@ -69,10 +67,19 @@ export default {
 	},
    data() {
       return {
-			
+			createLoading: false,
+         createVisible: false,
+         infoVisible: false,
 		};
 	},
 	methods: {
+      toLogin(){
+         this.$router.push('/login').catch(()=>{})
+         //退出当前的登录状态
+
+      },
+
+      //这个jump似乎就用不到了
 		jump() {
 			if(this.name == '未登录')
 				this.$router.push('/login').catch(()=>{})
@@ -85,6 +92,7 @@ export default {
             this.infoVisible = true;
 			}
       },
+      
       showCreateModal() {
          this.createVisible = true;
       },
@@ -97,6 +105,9 @@ export default {
       },
       createHandleCancel(e) {
          this.createVisible = false;
+      },
+      showInfoModal(){
+         this.infoVisible = true;
       },
       infoHandleOk(e) {
          console.log(e);

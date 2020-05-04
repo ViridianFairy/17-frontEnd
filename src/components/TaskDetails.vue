@@ -5,16 +5,16 @@
         <div id="contextleft">
         <p>
     <a-icon type="file-done" style="fontSize:22px;color:gray;margin-top:10px;vertical-align:bottom"/>
-    <em class="em11">状态</em><br />
+    <em class="em11" style="margin-left:1px">状态</em><br />
 
     <a-icon type="user" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
-    <em class="em11">执行者</em><br />
+    <em class="em11" style="margin-left:2px">执行者</em><br />
     
     <a-icon type="calendar" style="fontSize:20px;color:gray;margin-top:30px;vertical-align:bottom;margin-bottom:2.3px"/>
-    <em class="em11" style="margin-left:2.3px">执行时间</em><br />
+    <em class="em11" style="margin-left:4.5px">执行时间</em><br />
 
     <a-icon type="pushpin" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
-    <em class="em11" style="margin-left:2.3px">备注</em><br />
+    <em class="em11" style="margin-left:2px">备注</em><br />
 
     <a-icon type="fire" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
     <em class="em11" style="margin-left:2.3px">优先级</em><br />
@@ -58,10 +58,11 @@
     </template>
   </div>
   <br />
-
-<a-button style="font-size:16px;margin-left:300px;magin-top:30px" @click="$router.push('/taskPanel')">返回</a-button>
-
 </div>
+
+<a-button style="font-size:16px;float:right;" @click="$router.push('/taskPanel')">保存</a-button>
+<a-button style="font-size:16px;margin-left:200px;magin-right:20px" @click="$router.push('/taskPanel')">返回</a-button>
+
      </div>
 
        </div>
@@ -136,14 +137,14 @@ export default {
 }
 #contextleft{
     margin: 30px 35px;
-    width:120px;
+    width:130px;
     float: left;
     margin-top:20px;
 }
 #contextright{
     margin: 38px 35px;
     margin-top:26px;
-    width:500px;
+    width:363px;
     float: left;
 }
 .em11{

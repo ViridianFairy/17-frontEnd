@@ -33,13 +33,24 @@
       </div>
 
       <!-- login测试用 --->
-      <a-button style="color:black" type="link" id="user" @click="jump">
-            <a-modal v-model="infoVisible" title="个人信息" ok-text="确认" cancel-text="关闭" @ok="infoHandleOk">
-               <p>Some contents...</p>
-               <p>Some contents...</p>
-               <p>Some contents...</p>
-            </a-modal>
-         <a-icon type="user" />{{name}}
+      <!-- <a-button style="color:black" type="link" id="user" @click="jump"> -->
+      <a-dropdown :trigger="['click']" style="color:black" id="user">
+         <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+            <a-icon type="user" />{{name}}
+         </a>
+
+         <a-menu slot="overlay">
+            <a-menu-item key="0" @click="showinfoModal">
+               查看信息
+
+               <a-modal v-model="infoVisible" title="个人信息" ok-text="确认" cancel-text="关闭" @ok="infoHandleOk">
+                  <p>Some contents...</p>
+                  <p>Some contents...</p>
+                  <p>Some contents...</p>
+               </a-modal>
+
+
+         
       </a-button>
    </div>
 </template>

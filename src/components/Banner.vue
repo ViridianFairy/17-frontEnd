@@ -10,7 +10,6 @@
             <a-menu slot="overlay">
                <a-menu-item key="0" @click="showCreateModal">
                   创建项目
-
                   <a-modal v-model="createVisible" title="创建新项目" on-ok="handleOk">
                      <template slot="footer">
                      <a-button key="back" @click="createHandleCancel">
@@ -22,7 +21,6 @@
                      </template>
                      请输入项目名：<a-input style="width: 300px" placeholder="" />
                   </a-modal>
-
                </a-menu-item>
                <a-menu-divider />
                <a-menu-item key="1" @click="showDeleteConfirm">
@@ -36,9 +34,8 @@
          <a class="ant-dropdown-link" @click="e => e.preventDefault()">
             <a-icon type="user" />{{!name?'未命名':name}}
          </a>
-
          <a-menu slot="overlay">
-            <a-menu-item key="0" @click="showInfoModal">
+            <a-menu-item key="2" @click="showInfoModal">
                查看信息
                <a-modal v-model="infoVisible" title="个人信息" ok-text="确认" cancel-text="关闭" @ok="infoHandleOk">
                   <p>Some contents...</p>
@@ -47,7 +44,7 @@
                </a-modal>
             </a-menu-item>
             <a-menu-divider />
-            <a-menu-item key="1" style="color:red" @click="toLogin">
+            <a-menu-item key="3" style="color:red" @click="toLogin">
                退出登录
             </a-menu-item>
          </a-menu>
@@ -128,6 +125,21 @@ export default {
       },
 
       //退出登录后返回登录界面
+      showOutLoginConfirm() {
+         Modal.confirm({
+            title: '确定要退出登录吗？',
+            content: '',
+            okText: '是',
+            okType: 'danger',
+            cancelText: '否',
+            onOk() {
+               console.log('OK');;
+            },
+            onCancel() {
+               console.log('Cancel');
+            },
+         });
+      },
       toLogin(){
          this.$router.push('/login').catch(()=>{})
          //退出当前的登录状态

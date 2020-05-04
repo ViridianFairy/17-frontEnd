@@ -33,7 +33,12 @@
       </div>
 
       <!-- login测试用 --->
-      <a-button style="color:black" type="link" id="user" @click="">
+      <a-button style="color:black" type="link" id="user" @click="jump">
+            <a-modal v-model="infoVisible" title="个人信息" ok-text="确认" cancel-text="关闭" @ok="infoHandleOk">
+               <p>Some contents...</p>
+               <p>Some contents...</p>
+               <p>Some contents...</p>
+            </a-modal>
          <a-icon type="user" />{{name}}
       </a-button>
    </div>
@@ -48,15 +53,16 @@ export default {
          name:"未登录",
          createLoading: false,
          createVisible: false,
+         infoVisible: false,
 		};
 	},
-	methods:{
-		jump(){
+	methods: {
+		jump() {
 			if(this.name == '未登录')
 				this.$router.push('/login').catch(()=>{})
 			else{
 				//弹框
-            
+            this.infoVisible = true;
 			}
       },
       showCreateModal() {
@@ -67,10 +73,14 @@ export default {
          setTimeout(() => {
             this.createVisible = false;
             this.createLoading = false;
-         }, 3000);
+         }, 2000);
       },
       createHandleCancel(e) {
          this.createVisible = false;
+      },
+      infoHandleOk(e) {
+         console.log(e);
+         this.infoVisible = false;
       },
 	},
    mounted() {

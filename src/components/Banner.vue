@@ -25,7 +25,7 @@
 
                </a-menu-item>
                <a-menu-divider />
-               <a-menu-item key="1">
+               <a-menu-item key="1" @click="showDeleteConfirm">
                   删除项目
                </a-menu-item>
             </a-menu>
@@ -73,11 +73,6 @@ export default {
 		};
 	},
 	methods: {
-      toLogin(){
-         this.$router.push('/login').catch(()=>{})
-         //退出当前的登录状态
-
-      },
 
       //这个jump似乎就用不到了
 		jump() {
@@ -93,6 +88,7 @@ export default {
 			}
       },
       
+      //创建项目部分
       showCreateModal() {
          this.createVisible = true;
       },
@@ -106,12 +102,38 @@ export default {
       createHandleCancel(e) {
          this.createVisible = false;
       },
+
+      //删除项目部分
+      showDeleteConfirm() {
+         this.$confirm({
+            title: 'Are you sure delete this task?',
+            content: 'Some descriptions',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+               console.log('OK');
+            },
+            onCancel() {
+               console.log('Cancel');
+            },
+         });
+      },
+
+      //显示个人信息部分
       showInfoModal(){
          this.infoVisible = true;
       },
       infoHandleOk(e) {
          console.log(e);
          this.infoVisible = false;
+      },
+
+      //退出登录后返回登录界面
+      toLogin(){
+         this.$router.push('/login').catch(()=>{})
+         //退出当前的登录状态
+
       },
 	},
    mounted() {

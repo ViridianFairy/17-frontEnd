@@ -2,7 +2,7 @@
    <div id="wrapper">
       <img src="http://funx.pro/resource/junk/17logo.svg" />
 
-      <div id="dropdown">
+      <div id="dropdown1">
          <a-dropdown :trigger="['hover']" style="color:black">
             <a class="ant-dropdown-link" @click="e => e.preventDefault()" :disabled="!login">
                项目：{{login?curName:'无'}} <a-icon type="down" />
@@ -24,7 +24,7 @@
                </a-menu-item>
 
                <a-menu-divider />
-               <a-menu-item key="0" @click="showExchangeModal">
+               <a-menu-item key="1" @click="showExchangeModal">
                   切换项目
                   <a-modal v-model="exchangeVisible" title="切换项目" on-ok="handleOk">
                      <template slot="footer">
@@ -54,22 +54,89 @@
                </a-menu-item>
 
                <a-menu-divider />
-               <a-menu-item key="1" @click="showDeleteConfirm">
+               <a-menu-item key="2" @click="showDeleteConfirm">
                   删除项目
                </a-menu-item>
             </a-menu>
          </a-dropdown>
       </div>
 
+
+
+
+      <div id="dropdown2">
+         <a-dropdown :trigger="['hover']" style="color:black">
+            <a class="ant-dropdown-link" @click="e => e.preventDefault()" :disabled="!login">
+               管理 <a-icon type="down" />
+            </a>
+            <a-menu slot="overlay" style="margin-top:7px;">
+               <a-menu-item key="3" @click="showMemberModal">
+                  查看项目成员
+                  <a-modal v-model="memberVisible" title="项目成员信息" ok-text="确认" cancel-text="关闭" @ok="memberHandleOk">
+                     <p style="padding-left:30px"><a-avatar :size="30" slot="avatar">U</a-avatar>A</p>
+                     <p style="padding-left:30px"><a-avatar :size="30" slot="avatar">U</a-avatar>B</p>
+                     <p style="padding-left:30px"><a-avatar :size="30" slot="avatar">U</a-avatar>C</p>
+                  </a-modal>
+               </a-menu-item>
+
+               <a-menu-divider />
+               <a-menu-item key="4" @click="showAddMemberModal">
+                  添加/移除项目成员
+                  <a-locale-provider :locale="zhCN">
+                     <a-modal v-model="addMemberVisible" title="添加/移除项目成员" @ok="addMemberHandleOk">
+                        <a-transfer
+                           :data-source="mockData1"
+                           show-search
+                           :operations="['加入', '移除']"
+                           :target-keys="targetKeys1"
+                           :render="item => `${item.title}`"
+                           @change="addMemberHandleChange"
+                        >
+                           <span slot="notFoundContent">
+                           暂无成员
+                           </span>
+                        </a-transfer>
+                     </a-modal>
+                  </a-locale-provider>
+               </a-menu-item>
+
+               <a-menu-divider />
+               <a-menu-item key="5" @click="showAddAdminModal">
+                  添加/移除项目管理员
+                  <a-locale-provider :locale="zhCN">
+                     <a-modal v-model="addAdminVisible" title="添加/移除项目成员" @ok="addAdminHandleOk">
+                        <a-transfer
+                           :data-source="mockData2"
+                           show-search
+                           :operations="['加入', '移除']"
+                           :target-keys="targetKeys2"
+                           :render="item => `${item.title}`"
+                           @change="addAdminHandleChange"
+                        >
+                           <span slot="notFoundContent">
+                           暂无成员
+                           </span>
+                        </a-transfer>
+                     </a-modal>
+                  </a-locale-provider>
+               </a-menu-item>
+            </a-menu>
+         </a-dropdown>
+      </div>
+
+
+
+
+
       <a-dropdown :trigger="['hover']" style="color:black" id="user">
          <a class="ant-dropdown-link" @click="e => e.preventDefault()">
             <a-icon type="user" style="margin-right:4px;"/>{{!name?'未命名':name}}
          </a>
          <a-menu slot="overlay" style="margin-top:-10px;">
-            <a-menu-item key="0" @click="showInfoModal" v-if="login">
+            <a-menu-item key="6" @click="showInfoModal" v-if="login">
                查看信息
                <a-modal v-model="infoVisible" title="个人信息" ok-text="确认" cancel-text="关闭" @ok="infoHandleOk">
-                  <p style="padding-left:30px">头像：<a-avatar :size="50" slot="avatar">U</a-avatar>
+                  <p style="padding-left:30px">头像：<a-avatar :size="50" slot="avatar">U</a-avatar></p>
                   <p style="padding-left:30px">用户名：{{name}}</p>
                   <p style="padding-left:30px">当前项目：</p>
                   <p style="padding-left:30px">邮箱：</p>
@@ -77,13 +144,13 @@
                </a-modal>
             </a-menu-item>
             <a-menu-divider v-if="login"/>
-            <a-menu-item key="1" style="color:red" @click="toExit" v-if="login">
+            <a-menu-item key="7" style="color:red" @click="toExit" v-if="login">
                退出登录
             </a-menu-item>
-				<a-menu-item key="3" style="" @click="toLogin" v-if="!login">
+				<a-menu-item key="8" style="" @click="toLogin" v-if="!login">
                登录
             </a-menu-item>
-				<a-menu-item key="4" style="" @click="toRegister" v-if="!login">
+				<a-menu-item key="9" style="" @click="toRegister" v-if="!login">
                注册
             </a-menu-item>
          </a-menu>
@@ -93,6 +160,7 @@
 
 <script>
 import {Modal} from 'ant-design-vue'
+import zhCN from 'ant-design-vue/es/locale-provider/zh_CN'
 export default {
    name: "Banner",
 	computed:{
@@ -105,7 +173,7 @@ export default {
 	},
    data() {
       return {
-			infoVisible: false,
+         zhCN,
 			createVisible: false,
 			createLoading: false,
 			curName:"",
@@ -113,6 +181,14 @@ export default {
          exchangeVisible: false,
          exchangeLoading: false,
          value: 1,
+         memberVisible: false,
+         addMemberVisible: false,
+         mockData1: [],
+         targetKeys1: [],
+         addAdminVisible: false,
+         mockData2: [],
+         targetKeys2: [],
+         infoVisible: false,
 		};
 	},
 	methods: {
@@ -163,7 +239,6 @@ export default {
          console.log('radio checked', e.target.value);
       },
  
-
       //删除项目部分
       showDeleteConfirm() {
          Modal.confirm({
@@ -179,6 +254,77 @@ export default {
                console.log('Cancel');
             },
          });
+      },
+
+      //显示项目成员信息部分
+      showMemberModal(){
+         this.memberVisible = true;
+      },
+      memberHandleOk(e) {
+         console.log(e);
+         this.memberVisible = false;
+      },
+
+      //添加/移除成员部分
+      showAddMemberModal() {
+        this.addMemberVisible = true;
+      },
+      addMemberHandleOk(e) {
+        console.log(e);
+        this.addMemberVisible = false;
+      },
+      getMock1() {
+        const targetKeys1 = [];
+        const mockData1 = [];
+        for (let i = 0; i < 5; i++) {
+          const data = {
+            key: i.toString(),
+            title: `联系人${i + 1}`,
+            //description: `description of content${i + 1}`,
+            chosen: 0,
+          };
+          if (data.chosen) {
+            targetKeys1.push(data.key);
+          }
+          mockData1.push(data);
+        }
+        this.mockData1 = mockData1;
+        this.targetKeys1 = targetKeys1;
+      },
+      addMemberHandleChange(targetKeys1, direction, moveKeys) {
+        console.log(targetKeys1, direction, moveKeys);
+        this.targetKeys1 = targetKeys1;
+      },
+
+      //添加/移除管理员部分
+      showAddAdminModal() {
+        this.addAdminVisible = true;
+      },
+      addAdminHandleOk(e) {
+        console.log(e);
+        this.addAdminVisible = false;
+      },
+      getMock2() {
+        const targetKeys2 = [];
+        const mockData2 = [];
+        for (let i = 0; i < 5; i++) {
+          const data = {
+            key: i.toString(),
+            title: `联系人${i + 1}`,
+            //description: `description of content${i + 1}`,
+            chosen: 0,
+          };
+          if (data.chosen) {
+            targetKeys2.push(data.key);
+          }
+          mockData2.push(data);
+        }
+        this.mockData2 = mockData2;
+        this.targetKeys2 = targetKeys2;
+      },
+      addAdminHandleChange(targetKeys2, direction, moveKeys) {
+        console.log(targetKeys2, direction, moveKeys);
+        this.targetKeys2 = targetKeys2;
       },
 
       //显示个人信息部分
@@ -228,6 +374,8 @@ export default {
       },
 	},
    mounted() {
+      this.getMock1();
+      this.getMock2();
       this.$http
          .get(`/api/user/info`)
          .then(doc => {
@@ -260,10 +408,14 @@ export default {
    /* display: flex; */
 	color:#aaa;
 }
-#dropdown {
+#dropdown1 {
    float: left;
    margin-left: 75px;
-   padding:15px;
+   padding: 15px;
+}
+#dropdown2 {
+   float: left;
+   padding: 15px;
 }
 #user {
    padding: 15px;

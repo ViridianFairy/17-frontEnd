@@ -33,7 +33,9 @@
       </div>
 
       <!-- login测试用 --->
-      <a-button style="color:black" type="link" id="user" @click="$router.push('/login')"><a-icon type="user" />用户名</a-button>
+      <a-button style="color:black" type="link" id="user" @click="">
+         <a-icon type="user" />{{name}}
+      </a-button>
    </div>
 </template>
 
@@ -43,44 +45,66 @@ export default {
    components: {},
    data() {
       return {
+         name:"未登录",
          loading: false,
          visible: false,
-      };
-   },
-   methods:{
+		};
+	},
+	methods:{
+		jump(){
+			if(this.name == '未登录')
+				this.$router.push('/login').catch(()=>{})
+			else{
+				//弹框
+            
+			}
+      },
       showModal() {
          this.visible = true;
       },
-      handleOk(e) {
+      handleOk(e){
          this.loading = true;
          setTimeout(() => {
-         this.visible = false;
-         this.loading = false;
+            this.visible = false;
+            this.loading = false;
          }, 3000);
       },
       handleCancel(e) {
          this.visible = false;
       },
-   }
+	},
+   mounted() {
+      this.$http
+         .get(`/api/user/info`)
+         .then(doc => {
+				var code = doc.data.status
+				//var msg = doc.data.msg
+				if(code == 0){
+					this.name = doc.data.data.username
+				}else{
+					this.name = '未登录'
+				}
+         });
+   },
 };
 </script>
 
 <style scoped>
-#wrapper img:nth-child(1){
-	width:46px;
+#wrapper img:nth-child(1) {
+   width: 46px;
    float: left;
-	margin-left:calc(85px - 23px);
+   margin-left: calc(85px - 23px);
 }
-#wrapper{
+#wrapper {
    /* display: flex; */
 }
-#dropdown{
+#dropdown {
    float: left;
    margin-left: 75px;
    padding:15px;
 }
-#user{
+#user {
    padding: 15px;
-   float:right;
+   float: right;
 }
 </style>

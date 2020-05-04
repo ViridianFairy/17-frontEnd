@@ -42,7 +42,7 @@
                      <a-date-picker style="color:gray;font-size:15px;margin-left:20px" placeholder="设置开始时间" @change="onChange1" @ok="onOk">
                         <span>{{ dateString1 ? dateString1 : '设置开始时间' }}</span>
                      </a-date-picker><br />
-<p style="margin-top:-20px;display:inline">
+                     <p style="margin-top:-20px;display:inline">
                      <a-icon type="calendar" style="fontSize:20px;color:gray;margin-left:4px;margin-top:20px;vertical-align:bottom;margin-bottom:-0.1px" />
                      
                      <a-date-picker style="color:gray;font-size:15px;margin-left:20px" placeholder="设置截止时间" @change="onChange2" @ok="onOk">
@@ -145,7 +145,7 @@
                   <!--  标签   -->               
                   <a-icon type="tag" style="fontSize:20px;color:gray;margin-left:4px;margin-top:14px;vertical-align:bottom;margin-bottom:0.3px" />
 
-                  <em class="em11" style="margin-left:11px;font-size:15px" @click="showlabel=1">标签</em>
+                  <em class="em11" style="margin-left:11.5px;font-size:15px" @click="showlabel=1">标签</em>
                   <div id="tags" v-if="showlabel==1">
                      <div style="margin-left:4px;margin-top:3px">
                         <template v-for="(tag, index) in tags">

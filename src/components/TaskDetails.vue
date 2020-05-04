@@ -10,17 +10,17 @@
     <a-icon type="user" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
     <em class="em11">执行者</em><br />
     
-    <a-icon type="calendar" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
-    <em class="em11">执行时间</em><br />
+    <a-icon type="calendar" style="fontSize:20px;color:gray;margin-top:30px;vertical-align:bottom;margin-bottom:2.3px"/>
+    <em class="em11" style="margin-left:2.3px">执行时间</em><br />
 
     <a-icon type="pushpin" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
-    <em class="em11">备注</em><br />
+    <em class="em11" style="margin-left:2.3px">备注</em><br />
 
     <a-icon type="fire" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
-    <em class="em11">优先级</em><br />
+    <em class="em11" style="margin-left:2.3px">优先级</em><br />
 
     <a-icon type="tag" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
-    <em class="em11">标签</em><br />    
+    <em class="em11" style="margin-left:2.3px">标签</em><br />    
   </p>   
   </div>   
   <div id="contextright">
@@ -43,7 +43,7 @@
     <p>
     <a-textarea placeholder="填写备注" autoSize  allowClear style="width:360px;" />
     <br /><br />
-    <a-tag color="gray" style="font-size:18px;text-align:center;width:60px;height:28px">较低</a-tag>
+    <a-tag color="gray" style="font-size:18px;text-align:center;width:60px;height:25px">较低</a-tag>
     <br /><br /></p>
     <div style="margin-top:-10px">
     <template v-for="(tag) in tags">
@@ -57,7 +57,9 @@
       </a-tag>
     </template>
   </div>
+  <br />
 
+<a-button style="font-size:16px;margin-left:300px;magin-top:30px" @click="$router.push('/taskPanel')">返回</a-button>
 
 </div>
      </div>

@@ -43,7 +43,7 @@
                         <span>{{ dateString1 ? dateString1 : '设置开始时间' }}</span>
                      </a-date-picker><br />
 <p style="margin-top:-20px;display:inline">
-                     <a-icon type="calendar" style="fontSize:20px;color:gray;margin-left:4px;margin-top:20px;vertical-align:bottom;" />
+                     <a-icon type="calendar" style="fontSize:20px;color:gray;margin-left:4px;margin-top:20px;vertical-align:bottom;margin-bottom:-0.1px" />
                      
                      <a-date-picker style="color:gray;font-size:15px;margin-left:20px" placeholder="设置截止时间" @change="onChange2" @ok="onOk">
                         <span>{{ dateString2 ? dateString2 : '设置截止时间' }}</span>
@@ -52,7 +52,7 @@
                   <!-- 提醒   -->
                   <br />
                   
-                     <a-icon type="clock-circle" style="fontSize:20px;color:gray;margin-left:4px;margin-top:22px;vertical-align:bottom;margin-bottom:0.1px" />                     
+                     <a-icon type="clock-circle" style="fontSize:20px;color:gray;margin-left:4px;margin-top:22px;vertical-align:bottom;margin-bottom:0.2px" />                     
                      
                         <!--em class="em11" style="padding-left:20px;margin-bottom:60px" v-if="clocktype==0" @click="showModal">不提醒</em>
                         <em class="em11" style="padding-left:20px" v-if="clocktype==1" @click="showModal">任务开始时</em>
@@ -106,7 +106,7 @@
                      <a-sub-menu key="priority" style="margin-top:8px">
                      <span slot="title">
                         <a-icon type="fire" style="fontSize:20px;color:gray;margin-left:-12px;vertical-align:middle;margin-bottom:4px"/>
-                        <a-tag v-if="taskpriority=='较低'" color="gray" :visible="true" style="font-size:15px;height:22px;margin-left:10px;margin-top:13px">
+                        <a-tag v-if="taskpriority=='较低'" color="gray" :visible="true" style="font-size:15px;height:22px;margin-left:10px;margin-top:14px">
                            较低
                         </a-tag> 
                         <a-tag v-if="taskpriority=='普通'" color="green" :visible="true" style="font-size:15px;height:22px;margin-left:10px;margin-top:14px">
@@ -143,7 +143,7 @@
                   </a-menu>
 
                   <!--  标签   -->               
-                  <a-icon type="tag" style="fontSize:20px;color:gray;margin-left:4px;margin-top:14px;vertical-align:bottom;margin-bottom:0.2px" />
+                  <a-icon type="tag" style="fontSize:20px;color:gray;margin-left:4px;margin-top:14px;vertical-align:bottom;margin-bottom:0.3px" />
 
                   <em class="em11" style="margin-left:11px;font-size:15px" @click="showlabel=1">标签</em>
                   <div id="tags" v-if="showlabel==1">
@@ -161,7 +161,7 @@
                               :key="tag"
                               :closable="index !== 0"
                               color="#003366"
-                              style="font-size:16px;text-align:center;height:25px"
+                              style="font-size:14px;text-align:center;height:22px"
                               @close="() => handleClose(tag)"
                            >{{ tag }}</a-tag>
                         </template>
@@ -179,10 +179,10 @@
                         <a-tag
                            v-else
                            @click="showInput"
-                           style="background:#fff;height:25px; borderStyle: dashed;margin-top:8px"
+                           style="background:#fff;height:22px; borderStyle: dashed;margin-top:8px"
                         >
                            <a-icon type="plus" />
-                           <em style="font-size:15px;font-style:normal">添加标签</em>
+                           <em style="font-size:14px;font-style:normal;font-family:'Microsoft YaHei'">添加标签</em>
                         </a-tag>
                      </div>
                   </div>

@@ -23,7 +23,7 @@ import router from './js/router'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import store from './js/store'
-//import china from './js/china'
+import china from './js/china'
 Vue.config.productionTip = false
 // axios.defaults.withCredentials=true
 axios.defaults.withCredentials = true
@@ -89,7 +89,7 @@ new Vue({
 	render: h => h(App),
 	router,
 	store,
-	//china
+	china
 }).$mount('#app')
 // tips
 //Vue.prototype.$alertNum = 0;

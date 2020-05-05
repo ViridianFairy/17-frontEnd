@@ -40,7 +40,7 @@
                         >切换</a-button>
                      </template>
                      请选择要切至的项目：
-                     <a-radio-group v-model="value" @change="onChange">
+                     <a-radio-group v-model="value" @change="onGroupChange">
                         <a-radio :key="i.id" :value="i.id" v-for="i in changeProject">{{i.name}}</a-radio>
                      </a-radio-group>
                   </a-modal>
@@ -192,7 +192,7 @@ export default {
    },
    data() {
       return {
-         //addressOptions: china.addressOptions,
+         //addressOptions,
          infoVisible: false,
          createVisible: false,
          createLoading: false,
@@ -201,7 +201,7 @@ export default {
          createLoading: false,
          exchangeVisible: false,
          exchangeLoading: false,
-         value: 1,
+         //value: 1,
          newName: "",
          changeProject: [],
          userInfo: { photo: "", email: "", website: "", location: "" },
@@ -287,7 +287,7 @@ export default {
       exchangeHandleCancel(e) {
          this.exchangeVisible = false;
       },
-      onChange(e) {
+      onGroupChange(e) {
          console.log("radio checked", e.target.value);
       },
  
@@ -407,8 +407,8 @@ export default {
       changeAddress() {
          this.changingAddress = 1;
       },
-      onAddressChange(value2) {
-         console.log(value2);
+      onAddressChange(value) {
+         console.log(value);
       },
       changeWebsite() {
          this.changingWebsite = 1;

@@ -74,43 +74,27 @@
                <a-menu-divider />
                <a-menu-item key="4" @click="showAddMemberModal">
                   添加/移除项目成员
-                  <a-locale-provider :locale="zhCN">
-                     <a-modal v-model="addMemberVisible" title="添加/移除项目成员" @ok="addMemberHandleOk">
-                        <a-transfer
-                           :data-source="mockData1"
-                           show-search
-                           :operations="['加入', '移除']"
-                           :target-keys="targetKeys1"
-                           :render="item => `${item.title}`"
-                           @change="addMemberHandleChange"
-                        >
-                           <span slot="notFoundContent">
-                           暂无成员
-                           </span>
-                        </a-transfer>
-                     </a-modal>
-                  </a-locale-provider>
+                  <a-modal v-model="addMemberVisible" title="添加/移除项目成员" ok-text="确认" cancel-text="取消" @ok="addMemberHandleOk">
+                  <p>请输入要操作的成员：<a-input style="width:300px" /></p>
+                     <a-radio-group v-model="value2" @change="onMemberChange">
+                        <a-radio :value="1">按用户名</a-radio>
+                        <a-radio :value="2">按手机号</a-radio>
+                        <a-radio :value="3">按邮箱</a-radio>
+                     </a-radio-group>
+                  </a-modal>
                </a-menu-item>
 
                <a-menu-divider />
                <a-menu-item key="5" @click="showAddAdminModal">
                   添加/移除项目管理员
-                  <a-locale-provider :locale="zhCN">
-                     <a-modal v-model="addAdminVisible" title="添加/移除项目成员" @ok="addAdminHandleOk">
-                        <a-transfer
-                           :data-source="mockData2"
-                           show-search
-                           :operations="['加入', '移除']"
-                           :target-keys="targetKeys2"
-                           :render="item => `${item.title}`"
-                           @change="addAdminHandleChange"
-                        >
-                           <span slot="notFoundContent">
-                           暂无成员
-                           </span>
-                        </a-transfer>
-                     </a-modal>
-                  </a-locale-provider>
+                  <a-modal v-model="addAdminVisible" title="添加/移除项目管理员" ok-text="确认" cancel-text="取消" @ok="addAdminHandleOk">
+                  <p>请输入要操作的成员：<a-input style="width:300px" /></p>
+                     <a-radio-group v-model="value3" @change="onAdminChange">
+                        <a-radio :value="1">按用户名</a-radio>
+                        <a-radio :value="2">按手机号</a-radio>
+                        <a-radio :value="3">按邮箱</a-radio>
+                     </a-radio-group>
+                  </a-modal>
                </a-menu-item>
             </a-menu>
          </a-dropdown>
@@ -203,7 +187,6 @@ export default {
    },
    data() {
       return {
-			//addressOptions,
 			projectMember:[],
          options: china,
          infoVisible: false,
@@ -215,6 +198,8 @@ export default {
          exchangeVisible: false,
          exchangeLoading: false,
          value: 1,
+         value2: 1,
+         value3: 1,
          newName: "",
          changeProject: [],
          userInfo: { photo: "", email: "", website: "", location: "" },
@@ -308,7 +293,6 @@ export default {
       },
  
 		//删除项目部分
-		
       showDeleteConfirm() {
 			var self = this
          Modal.confirm({
@@ -365,27 +349,8 @@ export default {
         console.log(e);
         this.addMemberVisible = false;
       },
-      getMock1() {
-        const targetKeys1 = [];
-        const mockData1 = [];
-        for (let i = 0; i < 5; i++) {
-          const data = {
-            key: i.toString(),
-            title: `联系人${i + 1}`,
-            //description: `description of content${i + 1}`,
-            chosen: 0,
-          };
-          if (data.chosen) {
-            targetKeys1.push(data.key);
-          }
-          mockData1.push(data);
-        }
-        this.mockData1 = mockData1;
-        this.targetKeys1 = targetKeys1;
-      },
-      addMemberHandleChange(targetKeys1, direction, moveKeys) {
-        console.log(targetKeys1, direction, moveKeys);
-        this.targetKeys1 = targetKeys1;
+      onMemberChange(e) {
+         console.log("radio2 checked", e.target.value);
       },
 
       //添加/移除管理员部分
@@ -396,27 +361,8 @@ export default {
         console.log(e);
         this.addAdminVisible = false;
       },
-      getMock2() {
-        const targetKeys2 = [];
-        const mockData2 = [];
-        for (let i = 0; i < 5; i++) {
-          const data = {
-            key: i.toString(),
-            title: `联系人${i + 1}`,
-            //description: `description of content${i + 1}`,
-            chosen: 0,
-          };
-          if (data.chosen) {
-            targetKeys2.push(data.key);
-          }
-          mockData2.push(data);
-        }
-        this.mockData2 = mockData2;
-        this.targetKeys2 = targetKeys2;
-      },
-      addAdminHandleChange(targetKeys2, direction, moveKeys) {
-        console.log(targetKeys2, direction, moveKeys);
-        this.targetKeys2 = targetKeys2;
+      onAdminChange(e) {
+         console.log("radio3 checked", e.target.value);
       },
 
       //显示个人信息部分

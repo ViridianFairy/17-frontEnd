@@ -64,9 +64,10 @@
                <a-menu-item key="3" @click="showMemberModal">
                   查看项目成员
                   <a-modal v-model="memberVisible" title="项目成员信息" ok-text="确认" cancel-text="关闭" @ok="memberHandleOk">
-                     <p style="padding-left:30px"><a-avatar :size="30" slot="avatar">U</a-avatar>A</p>
-                     <p style="padding-left:30px"><a-avatar :size="30" slot="avatar">U</a-avatar>B</p>
-                     <p style="padding-left:30px"><a-avatar :size="30" slot="avatar">U</a-avatar>C</p>
+                     <p style="padding-left:30px" v-for="i in projectMember">
+								<a-avatar :size="30" slot="avatar" :src="i.photo"></a-avatar>
+								{{i.username}}
+							</p>
                   </a-modal>
                </a-menu-item>
 
@@ -205,7 +206,8 @@ export default {
    },
    data() {
       return {
-         //addressOptions,
+			//addressOptions,
+			projectMember:[],
          infoVisible: false,
          createVisible: false,
          createLoading: false,
@@ -228,7 +230,6 @@ export default {
          infoVisible: false,
          newName:"",
 			changeProject:[],
-
          headers: {
             authorization: 'authorization-text',
          },
@@ -287,13 +288,14 @@ export default {
          });
       },
       exchangeHandleOk(id, name) {
+			this.$store.commit("taskUpdate", { id, name });
          var store = window.localStorage;
          this.exchangeLoading = true;
          this.changeProject.forEach(i => {
             if (i.id == id) name = i.name;
          });
          //proj
-         this.$store.commit("projectReload", { id, name });
+			this.$store.commit("projectReload", { id, name });
          store.setItem(this.$cookies.get("session"), id);
          setTimeout(() => {
             this.exchangeVisible = false;
@@ -319,9 +321,8 @@ export default {
             cancelText: "否",
             onOk() {
                self.$http
-         		.post(`/api/project/${self.$store.state.project.id}/task/delete`, {
+         		.post(`/api/project/${self.$store.state.project.id}/delete`, {
 						project_id:self.$store.state.project.id,
-						id:self.id,
 					})
          		.then(doc => {
          		   var code = doc.data.status;
@@ -330,7 +331,7 @@ export default {
 							self.$alert(msg,'true')
 						else
 							self.$alert(msg,'false')
-						console.log(doc)
+						self.$store.commit("taskUpdate");
          		})
             },
             onCancel() {
@@ -341,6 +342,16 @@ export default {
 
       //显示项目成员信息部分
       showMemberModal(){
+			this.$http
+         .get(`/api/project/${this.$store.state.project.id}`, {
+				project_id:this.$store.state.project.id,
+			})
+         .then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+				if (code == 0)
+					this.projectMember = doc.data.data.member				
+         })
          this.memberVisible = true;
       },
       memberHandleOk(e) {
@@ -530,7 +541,7 @@ export default {
     	'$store.state.userUpdate': function () {
 			this.update();
    	}
-  },
+   },
 };
 </script>
 

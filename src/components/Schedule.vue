@@ -25,19 +25,20 @@
         </div>
 
         <div id="contentright">
-        <a-input placeholder="填写日程内容" autoSize allowClear style="width:400px;"/>
+        <a-input placeholder="填写日程内容" autoSize allowClear style="width:400px;" v-model="content"/>
         <a-date-picker @change="onChange" style="margin-top:20px;width:400px" placeholder="请选择日期"/>
+        <a-date-picker @change="onChange2" style="margin-top:20px;width:400px" placeholder="请选择提醒时间"/>
         <p></p>
-        <a-date-picker
+        <!-- <a-date-picker
             :mode="mode1"
             showTime
             @openChange="handleOpenChange1"
             @panelChange="handlePanelChange1"
             placeholder="请选择提醒时间"
             style="margin-top:30px;width:400px"
-            />
+            /> -->
             <p></p>
-        <a-input placeholder="填写备注" autoSize allowClear style="margin-top:30px;width:400px"/>
+        <a-input placeholder="填写备注" v-model="remarks" autoSize allowClear style="margin-top:30px;width:400px"/>
         <p></p>
         <div id="tags">
                 <div>
@@ -80,7 +81,18 @@
             <a-collapse v-model="activeKey">
             <!--   数据需要部分 以下为模拟  ---->
             <!--   任务面板key=123         ---->
-            <a-collapse-panel header="2020年4月" key="4">
+				<a-collapse-panel header="2020年5月" key="5">
+                <div class="content">
+						 	<div v-for="(i,index) in doc" style="margin:10px 0;">
+								 <a-divider v-if="index!=0"/>
+                    		<p>{{i.time}}<em>
+									  {{i.content}}
+								</em></p>
+                    		
+						 	</div>
+                </div>
+            </a-collapse-panel>
+            <!-- <a-collapse-panel header="2020年4月" key="4">
                 <div class="content">
                     <p>4月26日<em>团队alpha冲刺</em></p>
                     <a-divider/>
@@ -88,25 +100,14 @@
                     <a-divider />
                     <p>4月2日<em>类图分析</em></p>
                 </div>
-            </a-collapse-panel>
-            <a-collapse-panel header="2020年3月" key="5">
-                <div class="content">
-                    <p>3月29日<em>构件设计</em></p>
-                    <a-divider/>
-                    <p>3月18日<em>原型制作</em></p>
-                </div>
-            </a-collapse-panel>
-            <a-collapse-panel header="2020年2月" key="6">
-                <div class="content">
-                    <p>2月20日<em>需求分析</em></p>
-                </div>
-            </a-collapse-panel>
+            </a-collapse-panel> -->
             </a-collapse>
         </div>
     </div>
 </template>
  
 <script>
+import {toDateTime,getFirstMsg} from '../js/code.js'
 export default {
    name: "Schedule",
    components: {},
@@ -119,11 +120,41 @@ export default {
         mode1: 'time',
         tags: ['标签'],
         inputVisible: false,
-        inputValue: '',
+		  inputValue: '',
+		  doc:[],
+		  activeKey:"",
+		  dateString1:"",
+		  dateString2:"",
+		  content:"",
+		  remarks:"",
       };
-   }, 
+	}, 
+	mounted(){
+		this.update()
+	},
    methods: {
+		update(){
+			this.$http
+         .get(`/api/project/${this.$store.state.project.id}/schedule`, {
+				project_id:this.$store.state.project.id,
+			})
+         .then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+				if (code == 0)
+					this.doc = doc.data.data	
+				this.doc.forEach(i=>{
+					var d = new Date(i.t_set)
+					i.time = d.getMonth()+'月'+d.getDate()+'日'
+				})	
+         })
+		},
     onChange(date, dateString) {
+		this.dateString1 = dateString
+      console.log(date, dateString);
+    },
+    onChange2(date, dateString) {
+		this.dateString2 = dateString
       console.log(date, dateString);
     },
     handleOpenChange1(open) {
@@ -171,7 +202,23 @@ export default {
 
     handleOk(e) {
       this.ModalText = 'The modal will be closed after two seconds';
-      this.confirmLoading = true;
+		this.confirmLoading = true;
+		this.$http
+         .post(`/api/project/${this.$store.state.project.id}/schedule`, {
+				project_id:this.$store.state.project.id,
+				t_set:toDateTime(this.dateString1),
+				t_remind:toDateTime(this.dateString2),
+				content:this.content,
+				remarks:this.remarks,
+				//label:this.$store.state.project.id,
+			})
+         .then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+				if (code == 0)
+					this.update()	
+				console.log(this.doc)		
+         })
       setTimeout(() => {
         this.visible = false;
         this.confirmLoading = false;

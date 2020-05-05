@@ -15,7 +15,10 @@ const mutations = {
 	},
 	userUpdate(state){
 		state.userUpdate++
-	}
+	},
+	taskUpdate(state){
+		state.taskUpdate++
+	},
 }
 const state = {
 		banner:{
@@ -24,6 +27,7 @@ const state = {
 		},
 		login:false,
 		userUpdate:0,
+		taskUpdate:0,
 		project:{
 			id:"",
 			name:""

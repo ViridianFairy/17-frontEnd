@@ -4,7 +4,7 @@
          <h2>未完成</h2>
          <div>
             <div>
-               <a-button block @click="showModal" v-for="i in getCol1" 
+               <a-button block @click="showModal(i)" v-for="i in getCol1" 
 					style="margin:6px 0;">
                   {{i.name}}
                </a-button>
@@ -12,14 +12,15 @@
                      title="任务:软件工程实践"
                      v-model="visible"
                      @ok="handleOk"
-                     cancelText="保存"
+                     cancelText="OK"
                      okType="danger"
                      okText="删除"
                      width="600px"
                   >
                   <div id="more">
                      <div id="contextleft">
-                     <p>
+                  <p>
+						
                   <a-icon type="file-done" style="fontSize:22px;color:gray;margin-top:10px;vertical-align:bottom"/>
                   <em class="em11" style="margin-left:1px">状态</em><br />
 
@@ -43,7 +44,7 @@
                   
                   <!--   数据需要部分 以下为模拟  ---->
                   <em class="em11" style="margin-right:10px;font-size:15px;padding-left:0">完成情况</em>
-                  <a-switch defaultunChecked @change="onChange" /><br />
+                  <a-switch v-model="finish" @change="onChange" /><br />
                   <!---拉取头像  --->
                <a-avatar icon="user" style="margin-top:20px" :size="37"/>
                <br />
@@ -56,7 +57,7 @@
                <br /><br />
                <div>
                <p>
-               <a-textarea placeholder="填写备注" autoSize  allowClear style="width:360px;" />
+               <a-textarea v-model="flowMarks" @blur="flowMarksOn" placeholder="填写备注" autoSize  allowClear style="width:360px;" />
                <br /><br />
                <a-tag color="gray" style="font-size:15px;text-align:center;width:50px;height:23px;margin-top:3px">较低</a-tag>
                <br /><br /></p>
@@ -320,7 +321,7 @@
       <div id="finish">
          <h2>已完成</h2>
             <div>
-               <a-button block @click="showModal" v-for="i in getCol2" 
+               <a-button block @click="showModal(i)" v-for="i in getCol2" 
 					style="margin:6px 0;">
                   {{i.name}}
                </a-button>
@@ -349,7 +350,7 @@ export default {
 		},
 		getCol2(){
 			return this.projectData.filter(val=>{
-				return !val.finish
+				return val.finish
 			})
 		}
 	},
@@ -380,6 +381,10 @@ export default {
          name: "",
 			remarks: "",
 			dateFormat:"",
+			id:0,
+			flowMarks:"",
+			flowName:"",
+			finish:false,
       };
       this.dateFormat = 'YYYY-MM-DD';
    },
@@ -407,18 +412,74 @@ export default {
       },
       ////后缀带clock的是提醒时间的弹窗
       ////任务详情弹框
-      showModal() {
+      showModal(obj) {
+			this.id = obj.id
+			this.flowName = obj.name
+			this.flowMarks = obj.remarks
+			this.finish = obj.finish
          this.visible = true;
-      },
+		},
+		flowMarksOn(){
+			this.$http
+         .post(`/api/project/${this.$store.state.project.id}/task/update`, {
+				project_id:this.$store.state.project.id,
+				id:this.id,
+				remarks:this.flowMarks,
+				name:this.flowName,
+				finish:this.finish,
+			})
+         .then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+				if (code == 0){
+					this.update()
+				}else{
+					this.$alert(msg,'false')
+				}
+         });
+		},
       handleOk(e) {
          console.log(e);
-         this.visible = false;
+			this.visible = false;
+			this.$http
+         .post(`/api/project/${this.$store.state.project.id}/task/delete`, {
+				project_id:this.$store.state.project.id,
+				id:this.id
+			})
+         .then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+				if (code == 0){
+					this.$alert(msg,'true')
+					this.update()
+				}
+					
+				else
+					this.$alert(msg,'false')
+         });
       },
       add(e) {
       console.log(e);
       },
       onChange(checked) {
-         console.log(`a-switch to ${checked}`);
+			console.log(`a-switch to ${checked}`);
+			var obj = {
+				project_id:this.$store.state.project.id,
+				id:this.id,
+				finish:checked,
+				name:this.flowName
+			}
+			this.$http
+         .post(`/api/project/${this.$store.state.project.id}/task/update`, obj)
+         .then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+				if (code == 0){
+					this.update()
+				}else{
+					this.$alert(msg,'false')
+				}
+         });
       },
       handleClose(removedTag) {
          const tags = this.tags.filter(tag => tag !== removedTag);
@@ -579,7 +640,12 @@ export default {
          this.showclock = 0;
          this.clocktype = 0;
 		},
-   }
+	},
+	watch: {
+    	'$store.state.taskUpdate': function () {
+			this.update();
+   	}
+   },
 };
 </script>
 

@@ -1,4 +1,4 @@
-const addressOptions = [
+export default[
     {
       id: "35",
       label: "北京市",
@@ -21538,6 +21538,3 @@ const addressOptions = [
       ]
     }
   ]
-
-  
-export default addressOptions;

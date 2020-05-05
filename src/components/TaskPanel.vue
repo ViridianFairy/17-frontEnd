@@ -502,6 +502,7 @@
    </div>
 </template>
 <script>
+import {toDateTime} from '../js/code.js'
 export default {
    name: "TaskPanel",
 
@@ -548,6 +549,7 @@ export default {
 
    methods: {
       make() {
+			
          /*在这先存储好数据再初始化 防止两次创建的时候数据联动
          this.clocktype=0;
          this.showclock=0;
@@ -557,11 +559,11 @@ export default {
          this.taskpriority="较低";
 			this.tags=["任务"];*/
          var obj = {
-            project_id: this.$store.state.project.id,
+            project_id: Number(this.$store.state.project.id),
             name: this.name,
             remarks: this.remarks,
-            t_begin: new Date(this.dateString1).getTime(),
-            t_end: new Date(this.dateString2).getTime(),
+            t_begin: toDateTime(this.dateString1),
+            t_end: toDateTime(this.dateString2),
             priority: this.taskpriority,
             label: this.tags.join(" ")
 			}

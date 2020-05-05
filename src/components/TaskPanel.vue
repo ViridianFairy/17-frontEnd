@@ -88,7 +88,7 @@
                <div style="margin-top:-18px">
                   <div id="tags">
                      <div style="margin-left:4px;margin-top:3px">
-                        <template v-for="(tag, index) in tagspanel">
+                        <template v-for="(tag, index) in tags">
                            <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
                               <a-tag
                                  :key="tag"
@@ -128,20 +128,6 @@
                         </a-tag>
                      </div>
                   </div>
-
-
-
-
-               <!--template v-for="(tag) in tags">
-                     <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
-                     <a-tag :key="tag" @close="() => handleClose(tag)">
-                        {{ `${tag.slice(0, 20)}...` }}
-                     </a-tag>
-                     </a-tooltip>
-                     <a-tag v-else :key="tag" color="#003366" style="font-size:15px;text-align:center;height:23px" @close="() => handleClose(tag)">
-                  {{ tag }}
-                  </a-tag>
-               </template-->
             </div>
          </div>
       </div>
@@ -332,7 +318,7 @@
                               <a-tag
                                  :key="tag"
                                  :closable="index !== 0"
-                                 @close="() => handleClose(tag)"
+                                 @close="() => handleClosepanel(tag)"
                               >{{ `${tag.slice(0, 20)}...` }}</a-tag>
                            </a-tooltip>
                            <a-tag
@@ -341,23 +327,23 @@
                               :closable="index !== 0"
                               color="#003366"
                               style="font-size:14px;text-align:center;height:22px"
-                              @close="() => handleClose(tag)"
+                              @close="() => handleClosepanel(tag)"
                            >{{ tag }}</a-tag>
                         </template>
                         <a-input
-                           v-if="inputVisible"
+                           v-if="inputVisiblepanel"
                            ref="input"
                            type="text"
                            size="default"
                            :style="{ width: '78px' }"
-                           :value="inputValue"
-                           @change="handleInputChange"
-                           @blur="handleInputConfirm"
-                           @keyup.enter="handleInputConfirm"
+                           :value="inputValuepanel"
+                           @change="handleInputChangepanel"
+                           @blur="handleInputConfirmpanel"
+                           @keyup.enter="handleInputConfirmpanel"
                         />
                         <a-tag
                            v-else
-                           @click="showInput"
+                           @click="showInputpanel"
                            style="background:#fff;height:22px; borderStyle: dashed;margin-top:8px"
                         >
                            <a-icon type="plus" />
@@ -391,6 +377,7 @@
       </div>
       <div id="finish">
          <h2>已完成</h2>
+         <a-button @click="showModal">df</a-button>
             <div>
                <a-button block @click="showModal(i)" v-for="i in getCol2" 
 					style="margin:6px 0;">
@@ -438,9 +425,13 @@ export default {
          visible: false,
          visibleclock: false,
          taskdone:0,
-         tagspanel: ["任务"],
          inputVisible: false,
          inputValue: "",
+         //面板变量
+         inputVisiblepanel: false,
+         inputValuepanel: '',
+         tagspanel: ['任务'],
+         //面板变量
          text:"test",
          taskpriority:2,
          clocktype:0,
@@ -449,7 +440,7 @@ export default {
          confirmLoading: false,
          dateString1:"",
          dateString2:"",
-         tags: ['Unremovable', 'Tag 2','hinknolhoo'],
+         tags: ['任务'],
          name: "",
 			remarks: "",
 			dateFormat:"",
@@ -485,6 +476,7 @@ export default {
             console.log(this.projectData)
          });
       },
+
       ////后缀带clock的是提醒时间的弹窗
       ////任务详情弹框
       showModal(obj) {
@@ -566,8 +558,7 @@ export default {
          this.$nextTick(function() {
          this.$refs.input.focus();
          });
-      },
-      ////////任务详情弹框  
+      }, 
 
       make() {			
          /*在这先存储好数据再初始化 防止两次创建的时候数据联动
@@ -627,9 +618,9 @@ export default {
       },
 
       handleClose(removedTag) {
-         const tags1 = this.tagspanel.filter(tag => tag !== removedTag);
-         console.log(tagspanel);
-         this.tagspanel = tags1;
+         const tags1 = this.tags.filter(tag => tag !== removedTag);
+         console.log(tags);
+         this.tags = tags1;
       },
 
       showInput() {
@@ -645,17 +636,51 @@ export default {
 
       handleInputConfirm() {
          const inputValue = this.inputValue;
-         let tagspanel = this.tagspanel;
-         if (inputValue && tagspanel.indexOf(inputValue) === -1) {
-            tagspanel = [...tagspanel, inputValue];
+         let tags = this.tags;
+         if (inputValue && tags.indexOf(inputValue) === -1) {
+            tags = [...tags, inputValue];
          }
-         console.log(tagspanel);
+         console.log(tags);
          Object.assign(this, {
-            tagspanel,
+            tags,
             inputVisible: false,
             inputValue: ""
          });
       },
+
+      //任务面板标签编辑
+      handleClosepanel(removedTag) {
+         const tagspanel = this.tagspanel.filter(tag => tag !== removedTag);
+         console.log(tagspanel);
+         this.tagspanel = tagspanel;
+      },
+
+      showInputpanel() {
+         this.inputVisiblepanel = true;
+         this.$nextTick(function() {
+            this.$refs.input.focus();
+         });
+      },
+
+      handleInputChangepanel(e) {
+         this.inputValuepanel = e.target.value;
+      },
+
+      handleInputConfirmpanel() {
+         const inputValuepanel = this.inputValuepanel;
+         let tagspanel = this.tagspanel;
+         if (inputValuepanel && tagspanel.indexOf(inputValuepanel) === -1) {
+            tagspanel = [...tagspanel, inputValuepanel];
+         }
+         console.log(tagspanel);
+         Object.assign(this, {
+            tagspanel,
+            inputVisiblepanel: false,
+            inputValuepanel: ""
+         });
+      },
+      ///任务面板标签编辑
+
       log(e) {
          console.log(e);
       },

@@ -40,7 +40,7 @@
                         >切换</a-button>
                      </template>
                      请选择要切至的项目：
-                     <a-radio-group v-model="value" @change="onChange">
+                     <a-radio-group v-model="value" @change="onGroupChange">
                         <a-radio :key="i.id" :value="i.id" v-for="i in changeProject">{{i.name}}</a-radio>
                      </a-radio-group>
                   </a-modal>
@@ -130,14 +130,38 @@
                   cancel-text="关闭"
                   @ok="infoHandleOk"
                >
-                  <p style="padding-left:30px">
+                  <p style="padding-left:10px">
                      头像：
                      <a-avatar :size="50" slot="avatar" :src="userInfo.photo"></a-avatar>
+                     <a-button style="float:right;width:100px;height:25px;margin-top:10px" @click="updatePhoto">上传头像</a-button>
                   </p>
-                  <p style="padding-left:30px">用户名：{{name}}</p>
-                  <p style="padding-left:30px">邮箱：{{userInfo.email}}</p>
-                  <p style="padding-left:30px">所在地：{{userInfo.location}}</p>
-                  <p style="padding-left:30px">个人主页：{{userInfo.website}}</p>
+                  
+                  <p style="padding-left:10px">
+                     用户名：
+                     <showName v-if="changingName==0">{{name}}</showName>
+                     <a-input v-if="changingName==1" style="width:385px" default-value="" />
+                     <a-button v-if="changingName==0" style="float:right;width:100px;height:25px" @click="changeName">更改用户名</a-button>
+                  </p>
+
+                  <p style="padding-left:10px">
+                     邮箱：
+                     <showEmail>{{userInfo.email}}</showEmail>
+                  </p>
+
+                  <p style="padding-left:10px">
+                     所在地：
+                     <showAddress v-if="changingAddress==0">{{userInfo.location}}</showAddress>
+                     <a-cascader v-if="changingAddress==1" style="width:385px" :options="addressOptions" placeholder="请选择地址" @change="onAddressChange" />
+                     <a-button v-if="changingAddress==0" style="float:right;width:100px;height:25px" @click="changeAddress">更改地址</a-button>
+                  </p>
+
+                  <p style="padding-left:10px">
+                     个人主页：
+                     <showWebsite v-if="changingWebsite==0">{{userInfo.website}}</showWebsite>
+                     <a-input v-if="changingWebsite==1" style="width:370px" addon-before="http://" addon-after=".com" default-value="" />
+                     <a-button v-if="changingWebsite==0" style="float:right;width:100px;height:25px" @click="changeWebsite">更改网站</a-button>
+                  </p>
+
                </a-modal>
             </a-menu-item>
             <a-menu-divider v-if="login" />
@@ -152,6 +176,7 @@
 <script>
 import { Modal } from 'ant-design-vue'
 import zhCN from 'ant-design-vue/es/locale-provider/zh_CN'
+import china from '../js/china'
 export default {
    name: "Banner",
    computed: {
@@ -167,6 +192,7 @@ export default {
    },
    data() {
       return {
+         //addressOptions,
          infoVisible: false,
          createVisible: false,
          createLoading: false,
@@ -175,7 +201,7 @@ export default {
          createLoading: false,
          exchangeVisible: false,
          exchangeLoading: false,
-         value: 1,
+         //value: 1,
          newName: "",
          changeProject: [],
          userInfo: { photo: "", email: "", website: "", location: "" },
@@ -189,6 +215,10 @@ export default {
          infoVisible: false,
          newName:"",
 			changeProject:[],
+
+         changingName: 0,
+         changingAddress: 0,
+         changingWebsite: 0,
 		};
 	},
 	methods: {
@@ -257,7 +287,7 @@ export default {
       exchangeHandleCancel(e) {
          this.exchangeVisible = false;
       },
-      onChange(e) {
+      onGroupChange(e) {
          console.log("radio checked", e.target.value);
       },
  
@@ -364,7 +394,27 @@ export default {
       infoHandleOk(e) {
          console.log(e);
          this.infoVisible = false;
+
+         this.changingName = 0;
+         this.changingAddress = 0;
+         this.changingWebsite = 0;
       },
+
+      //修改个人信息部分
+      changeName() {
+         this.changingName = 1;
+      },
+      changeAddress() {
+         this.changingAddress = 1;
+      },
+      onAddressChange(value) {
+         console.log(value);
+      },
+      changeWebsite() {
+         this.changingWebsite = 1;
+      },
+
+
 
       //退出登录后返回登录界面
       showOutLoginConfirm() {

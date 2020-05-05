@@ -377,7 +377,6 @@
       </div>
       <div id="finish">
          <h2>已完成</h2>
-         <a-button @click="showModal">df</a-button>
             <div>
                <a-button block @click="showModal(i)" v-for="i in getCol2" 
 					style="margin:6px 0;">

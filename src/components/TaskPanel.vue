@@ -12,6 +12,8 @@
             <a-collapse accordion id="panel1" @change="setclock=0">
                <a-collapse-panel header="✚" key="1" :showArrow="false">
                   <a-input placeholder="输入任务标题" v-model="name" />
+                  <a-input placeholder="输入任务备注" v-model="remarks" 
+						style="margin-top:12px;"/>
                   <!-- 菜单  -->
                   <p style="margin-top:20px">
                      <a-avatar :size="30" icon="user" />
@@ -24,26 +26,6 @@
                      type="calendar"
                      style="fontSize:20px;color:gray;margin-left:4px;margin-top:4px;vertical-align:bottom"
                   />
-                  <!--a-date-picker
-                        style="margin-top:-10px;margin-bottom:5px;margin-left:18px;"
-                        :disabledDate="disabledStartDate"
-                        showTime
-                        format="YYYY-MM-DD HH:mm:ss"
-                        v-model="startValue"
-                        placeholder="开始时间"
-                        @openChange="handleStartOpenChange"
-                     /><br />
-                  <a-icon type="calendar" style="fontSize:20px;color:gray;margin-left:4px" />
-                     <a-date-picker
-                        style="margin-top:-10px;margin-bottom:5px;margin-left:18px;"
-                        :disabledDate="disabledEndDate"
-                        showTime
-                        format="YYYY-MM-DD HH:mm:ss"
-                        placeholder="结束时间"
-                        v-model="endValue"
-                        :open="endOpen"
-                        @openChange="handleEndOpenChange"
-                  /-->
                   <a-date-picker
                      style="color:gray;font-size:15px;margin-left:20px"
                      placeholder="设置开始时间"
@@ -152,46 +134,46 @@
                               style="fontSize:20px;color:gray;margin-left:-12px;vertical-align:middle;margin-bottom:4px"
                            />
                            <a-tag
-                              v-if="taskpriority=='较低'"
+                              v-if="taskpriority=='1'"
                               color="gray"
                               :visible="true"
                               style="font-size:15px;height:22px;margin-left:10px;margin-top:14px"
                            >较低</a-tag>
                            <a-tag
-                              v-if="taskpriority=='普通'"
+                              v-if="taskpriority=='2'"
                               color="green"
                               :visible="true"
                               style="font-size:15px;height:22px;margin-left:10px;margin-top:14px"
                            >普通</a-tag>
                            <a-tag
-                              v-if="taskpriority=='紧急'"
+                              v-if="taskpriority=='3'"
                               color="orange"
                               :visible="true"
                               style="font-size:15px;height:22px;margin-left:10px;margin-top:14px"
                            >紧急</a-tag>
                            <a-tag
-                              v-if="taskpriority=='非常紧急'"
+                              v-if="taskpriority=='4'"
                               color="red"
                               :visible="true"
                               style="font-size:15px;height:22px;margin-left:10px;margin-top:14px"
                            >非常紧急</a-tag>
                         </span>
-                        <a-menu-item key="jd" @click="taskpriority='较低'">
+                        <a-menu-item key="24" @click="taskpriority=1">
                            <a-tag color="gray" style="font-size:15px;height:22px;margin-left:0px">较低</a-tag>
                         </a-menu-item>
-                        <a-menu-item key="pt" @click="pt">
+                        <a-menu-item key="22" @click="taskpriority=2">
                            <a-tag
                               color="green"
                               style="font-size:15px;height:22px;margin-left:0px"
                            >普通</a-tag>
                         </a-menu-item>
-                        <a-menu-item key="jj" @click="jj">
+                        <a-menu-item key="23" @click="taskpriority=3">
                            <a-tag
                               color="orange"
                               style="font-size:15px;height:22px;margin-left:0px"
                            >紧急</a-tag>
                         </a-menu-item>
-                        <a-menu-item key="fc" @click="fc">
+                        <a-menu-item key="23" @click="taskpriority=4">
                            <a-tag
                               color="red"
                               style="font-size:14px;height:22px;margin-left:0px"
@@ -276,7 +258,8 @@
          <div>
             <a-collapse accordion>
                <a-collapse-panel header="✚" key="2" :showArrow="false">
-                  <a-input placeholder="输入任务标题" />
+                  <a-input placeholder="输入任务标题" v-model="name"/>
+                  <a-input placeholder="输入任务备注" v-model="remarks"/>
                   <!-- 菜单  -->
                   <p style="margin-top:20px">
                      <a-avatar :size="30" icon="user" />
@@ -289,26 +272,6 @@
                      type="calendar"
                      style="fontSize:20px;color:gray;margin-left:4px;margin-top:4px;vertical-align:bottom"
                   />
-                  <!--a-date-picker
-                        style="margin-top:-10px;margin-bottom:5px;margin-left:18px;"
-                        :disabledDate="disabledStartDate"
-                        showTime
-                        format="YYYY-MM-DD HH:mm:ss"
-                        v-model="startValue"
-                        placeholder="开始时间"
-                        @openChange="handleStartOpenChange"
-                     /><br />
-                  <a-icon type="calendar" style="fontSize:20px;color:gray;margin-left:4px" />
-                     <a-date-picker
-                        style="margin-top:-10px;margin-bottom:5px;margin-left:18px;"
-                        :disabledDate="disabledEndDate"
-                        showTime
-                        format="YYYY-MM-DD HH:mm:ss"
-                        placeholder="结束时间"
-                        v-model="endValue"
-                        :open="endOpen"
-                        @openChange="handleEndOpenChange"
-                  /-->
                   <a-date-picker
                      style="color:gray;font-size:15px;margin-left:20px"
                      placeholder="设置开始时间"
@@ -417,46 +380,46 @@
                               style="fontSize:20px;color:gray;margin-left:-12px;vertical-align:middle;margin-bottom:4px"
                            />
                            <a-tag
-                              v-if="taskpriority=='较低'"
+                              v-if="taskpriority=='1'"
                               color="gray"
                               :visible="true"
                               style="font-size:15px;height:22px;margin-left:10px;margin-top:14px"
                            >较低</a-tag>
                            <a-tag
-                              v-if="taskpriority=='普通'"
+                              v-if="taskpriority=='2'"
                               color="green"
                               :visible="true"
                               style="font-size:15px;height:22px;margin-left:10px;margin-top:14px"
                            >普通</a-tag>
                            <a-tag
-                              v-if="taskpriority=='紧急'"
+                              v-if="taskpriority=='3'"
                               color="orange"
                               :visible="true"
                               style="font-size:15px;height:22px;margin-left:10px;margin-top:14px"
                            >紧急</a-tag>
                            <a-tag
-                              v-if="taskpriority=='非常紧急'"
+                              v-if="taskpriority=='4'"
                               color="red"
                               :visible="true"
                               style="font-size:15px;height:22px;margin-left:10px;margin-top:14px"
                            >非常紧急</a-tag>
                         </span>
-                        <a-menu-item key="jd" @click="taskpriority='较低'">
+                        <a-menu-item key="jd" @click="taskpriority=1">
                            <a-tag color="gray" style="font-size:15px;height:22px;margin-left:0px">较低</a-tag>
                         </a-menu-item>
-                        <a-menu-item key="pt" @click="pt">
+                        <a-menu-item key="pt" @click="taskpriority=2">
                            <a-tag
                               color="green"
                               style="font-size:15px;height:22px;margin-left:0px"
                            >普通</a-tag>
                         </a-menu-item>
-                        <a-menu-item key="jj" @click="jj">
+                        <a-menu-item key="jj" @click="taskpriority=3">
                            <a-tag
                               color="orange"
                               style="font-size:15px;height:22px;margin-left:0px"
                            >紧急</a-tag>
                         </a-menu-item>
-                        <a-menu-item key="fc" @click="fc">
+                        <a-menu-item key="fc" @click="taskpriority=4">
                            <a-tag
                               color="red"
                               style="font-size:14px;height:22px;margin-left:0px"
@@ -597,11 +560,13 @@ export default {
             project_id: this.$store.state.project.id,
             name: this.name,
             remarks: this.remarks,
-            t_begin: this.dateString1,
-            t_end: this.dateString2,
+            t_begin: new Date(this.dateString1).getTime(),
+            t_end: new Date(this.dateString2).getTime(),
             priority: this.taskpriority,
             label: this.tags.join(" ")
-         }
+			}
+
+			console.log(obj)
          this.$http
             .post(`/api/project/${this.$store.state.project.id}/task`, obj)
             .then(doc => {
@@ -630,17 +595,6 @@ export default {
       },
       clearTime() {
          this.time1 = undefined;
-      },
-      pt() {
-         this.taskpriority = "普通";
-      },
-
-      jj() {
-         this.taskpriority = "紧急";
-      },
-
-      fc() {
-         this.taskpriority = "非常紧急";
       },
 
       close() {

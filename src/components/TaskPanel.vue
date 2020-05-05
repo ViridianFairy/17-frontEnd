@@ -15,7 +15,7 @@
                      cancelText="OK"
                      okType="danger"
                      okText="删除"
-                     width="600px"
+                     width="700px"
                   >
                   <div id="more">
                      <div id="contextleft">
@@ -46,23 +46,93 @@
                   <em class="em11" style="margin-right:10px;font-size:15px;padding-left:0">完成情况</em>
                   <a-switch v-model="finish" @change="onChange" /><br />
                   <!---拉取头像  --->
-               <a-avatar icon="user" style="margin-top:20px" :size="37"/>
+               <a-avatar icon="user" style="margin-top:-13px" :size="37"/>
+               <a-tooltip>
+                     <template slot="title">添加参与者</template>
+                     <a>
+                        <a-icon
+                           type="plus-circle"
+                           theme="filled"
+                           style="fontSize:30px;color:#003366;margin-left:10px;margin-top:22px"
+                        />
+                        <br />
+                     </a>
+                  </a-tooltip>
                <br />
                <a-range-picker
                   :defaultValue="[moment('2020-04-26', dateFormat), moment('2020-05-07', dateFormat)]"
-                  disabled
-                  style="margin-top:16px"
-         
+                  style="margin-top:-4px;width:397px"
                />
                <br /><br />
                <div>
                <p>
-               <a-textarea v-model="flowMarks" @blur="flowMarksOn" placeholder="填写备注" autoSize  allowClear style="width:360px;" />
+               <a-textarea v-model="flowMarks" @blur="flowMarksOn" placeholder="填写备注" autoSize  allowClear style="width:397px;" />
                <br /><br />
-               <a-tag color="gray" style="font-size:15px;text-align:center;width:50px;height:23px;margin-top:3px">较低</a-tag>
-               <br /><br /></p>
-               <div style="margin-top:-10px">
-               <template v-for="(tag) in tags">
+
+               <a-radio-group v-model="value" @change="onChange1" style="width:700px">
+                  <a-radio :value="1">
+                  <a-tag color="gray" style="font-size:15px;text-align:center;width:50px;height:23px;margin-top:3px">较低</a-tag>
+                  </a-radio>
+                  <a-radio :value="2">
+                  <a-tag color="green" style="font-size:15px;text-align:center;width:50px;height:23px;margin-top:3px">普通</a-tag>
+                  </a-radio>
+                  <a-radio :value="3">
+                  <a-tag color="orange" style="font-size:15px;text-align:center;width:50px;height:23px;margin-top:3px">紧急</a-tag>
+                  </a-radio>
+                  <a-radio :value="4">
+                  <a-tag color="red" style="font-size:15px;text-align:center;width:80px;height:23px;margin-top:3px">非常紧急</a-tag>
+                  </a-radio>
+               </a-radio-group>                                 
+              
+               <br /><br />
+               <div style="margin-top:-18px">
+                  <div id="tags">
+                     <div style="margin-left:4px;margin-top:3px">
+                        <template v-for="(tag, index) in tagspanel">
+                           <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
+                              <a-tag
+                                 :key="tag"
+                                 :closable="index !== 0"
+                                 @close="() => handleClose(tag)"
+                              >{{ `${tag.slice(0, 20)}...` }}</a-tag>
+                           </a-tooltip>
+                           <a-tag
+                              v-else
+                              :key="tag"
+                              :closable="index !== 0"
+                              color="#003366"
+                              style="font-size:14px;text-align:center;height:22px"
+                              @close="() => handleClose(tag)"
+                           >{{ tag }}</a-tag>
+                        </template>
+                        <a-input
+                           v-if="inputVisible"
+                           ref="input"
+                           type="text"
+                           size="default"
+                           :style="{ width: '78px' }"
+                           :value="inputValue"
+                           @change="handleInputChange"
+                           @blur="handleInputConfirm"
+                           @keyup.enter="handleInputConfirm"
+                        />
+                        <a-tag
+                           v-else
+                           @click="showInput"
+                           style="background:#fff;height:22px; borderStyle: dashed;margin-top:8px"
+                        >
+                           <a-icon type="plus" />
+                           <em
+                              style="font-size:14px;font-style:normal;font-family:'Microsoft YaHei'"
+                           >添加标签</em>
+                        </a-tag>
+                     </div>
+                  </div>
+
+
+
+
+               <!--template v-for="(tag) in tags">
                      <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
                      <a-tag :key="tag" @close="() => handleClose(tag)">
                         {{ `${tag.slice(0, 20)}...` }}
@@ -71,12 +141,13 @@
                      <a-tag v-else :key="tag" color="#003366" style="font-size:15px;text-align:center;height:23px" @close="() => handleClose(tag)">
                   {{ tag }}
                   </a-tag>
-               </template>
+               </template-->
             </div>
          </div>
       </div>
    </div>
 </a-modal>
+
             </div>
             <br />
          </div>
@@ -359,6 +430,7 @@ export default {
    },
    data() {
       return {
+         value: 1,
          projectData: [],
          startValue: null,
          endValue: null,
@@ -394,10 +466,13 @@ export default {
       },
       endValue(val) {
          console.log("endValue", val);
-      }
+      },
    },
 
    methods: {
+      onChange1(e) {
+         console.log('radio checked', e.target.value);
+      },
       moment,
       update(){
 			this.$http
@@ -639,7 +714,7 @@ export default {
          this.visibleclock = false;
          this.showclock = 0;
          this.clocktype = 0;
-		},
+      },
 	},
 	watch: {
     	'$store.state.taskUpdate': function () {

@@ -307,8 +307,10 @@ export default {
          console.log("radio checked", e.target.value);
       },
  
-      //删除项目部分
+		//删除项目部分
+		
       showDeleteConfirm() {
+			var self = this
          Modal.confirm({
             title: "确定要删除项目吗？",
             content: "",
@@ -316,7 +318,20 @@ export default {
             okType: "danger",
             cancelText: "否",
             onOk() {
-               console.log("OK");
+               self.$http
+         		.post(`/api/project/${self.$store.state.project.id}/task/delete`, {
+						project_id:self.$store.state.project.id,
+						id:self.id,
+					})
+         		.then(doc => {
+         		   var code = doc.data.status;
+         		   var msg = doc.data.msg;
+						if (code == 0)
+							self.$alert(msg,'true')
+						else
+							self.$alert(msg,'false')
+						console.log(doc)
+         		})
             },
             onCancel() {
                console.log("Cancel");
@@ -454,20 +469,7 @@ export default {
             okType: "danger",
             cancelText: "否",
             onOk() {
-					this.$http
-         		.post(`/api/project/${this.$store.state.project.id}/task/delete`, {
-						project_id:this.$store.state.project.id,
-						id:this.id,
-					})
-         		.then(doc => {
-         		   var code = doc.data.status;
-         		   var msg = doc.data.msg;
-						if (code == 0)
-							this.$alert(msg,'true')
-						else
-							this.$alert(msg,'false')
-
-         		})
+					
             },
             onCancel() {
                console.log("Cancel");

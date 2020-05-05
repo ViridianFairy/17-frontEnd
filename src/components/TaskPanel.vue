@@ -4,7 +4,84 @@
          <h2>未完成</h2>
          <div>
             <div>
-               <a-button block @click="$router.push('/taskDetails')">软件工程实践</a-button>
+               <a-button block @click="showModaling">
+                  软件工程实践
+               </a-button>
+               <a-modal 
+                     title="任务:软件工程实践"
+                     v-model="visibleing"
+                     @ok="handleOking"
+                     @cancel="handleCanceling"
+                     cancelText="保存"
+                     okType="danger"
+                     okText="删除"
+                     width="600px"
+                  >
+                  <div id="more">
+                     <div id="contextleft">
+                     <p>
+                  <a-icon type="file-done" style="fontSize:22px;color:gray;margin-top:10px;vertical-align:bottom"/>
+                  <em class="em11" style="margin-left:1px">状态</em><br />
+
+                  <a-icon type="user" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
+                  <em class="em11" style="margin-left:2px">执行者</em><br />
+                  
+                  <a-icon type="calendar" style="fontSize:20px;color:gray;margin-top:30px;vertical-align:bottom"/>
+                  <em class="em11" style="margin-left:4.5px">执行时间</em><br />
+
+                  <a-icon type="pushpin" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
+                  <em class="em11" style="margin-left:2px">备注</em><br />
+
+                  <a-icon type="fire" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom;margin-bottom:-2px"/>
+                  <em class="em11" style="margin-left:2.3px">优先级</em><br />
+
+                  <a-icon type="tag" style="fontSize:22px;color:gray;margin-top:28px;vertical-align:bottom;margin-bottom:-1px"/>
+                  <em class="em11" style="margin-left:2.3px">标签</em><br />    
+               </p>   
+               </div>   
+               <div id="contextright">
+                  
+                  <!--   数据需要部分 以下为模拟  ---->
+                  <em class="em11" style="margin-right:10px;font-size:15px;padding-left:0">完成情况</em>
+                  <a-switch defaultunChecked @change="onChange" /><br />
+                  <!---拉取头像  --->
+               <a-avatar icon="user" style="margin-top:20px" :size="37"/>
+               <br />
+               <a-range-picker
+                  :defaultValue="[moment('2020-04-26', dateFormat), moment('2020-05-07', dateFormat)]"
+                  disabled
+                  style="margin-top:16px"
+         
+               />
+               <br /><br />
+               <div>
+               <p>
+               <a-textarea placeholder="填写备注" autoSize  allowClear style="width:360px;" />
+               <br /><br />
+               <a-tag color="gray" style="font-size:15px;text-align:center;width:50px;height:23px;margin-top:3px">较低</a-tag>
+               <br /><br /></p>
+               <div style="margin-top:-10px">
+               <template v-for="(tag) in tagsing">
+                     <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
+                     <a-tag :key="tag" @close="() => handleCloseing(tag)">
+                        {{ `${tag.slice(0, 20)}...` }}
+                     </a-tag>
+                     </a-tooltip>
+                     <a-tag v-else :key="tag" color="#003366" style="font-size:15px;text-align:center;height:23px" @close="() => handleCloseing(tag)">
+                  {{ tag }}
+                  </a-tag>
+               </template>
+            </div>
+         </div>
+      </div>
+   </div>
+</a-modal>
+
+
+
+
+
+
             </div>
             <br />
          </div>
@@ -302,14 +379,14 @@
             <a-collapse accordion>
                <a-collapse-panel header="✚" key="2" :showArrow="false">
                   <a-input placeholder="输入任务标题" v-model="name"/>
-                  <a-input placeholder="输入任务备注" v-model="remarks"/>
+                  <a-input placeholder="输入任务备注" v-model="remarks"/-->
                   <!-- 菜单  -->
                   <!--p style="margin-top:20px">
                      <a-avatar :size="30" icon="user" />
                      <em
                         style="font-style:normal;font-family:'Microsoft YaHei';color:gray;font-size:15px;margin-left:14.5px"
                      >用户</em>
-                  </p>
+                  </p-->
                   <!-- 起止日期 -->
                   <!--a-icon
                      type="calendar"
@@ -337,7 +414,7 @@
                         @ok="onOk"
                      >
                         <span>{{ dateString2 ? dateString2 : '设置截止时间' }}</span>
-                     </a-date-picker>
+                     </a-date-picker-->
 
                      <!-- 提醒   -->
                      <!--br />
@@ -345,7 +422,7 @@
                      <a-icon
                         type="clock-circle"
                         style="fontSize:20px;color:gray;margin-left:4px;margin-top:22px;vertical-align:bottom;margin-bottom:0.2px"
-                     />
+                     /-->
 
                      <!--em class="em11" style="padding-left:20px;margin-bottom:60px" v-if="clocktype==0" @click="showModal">不提醒</em>
                         <em class="em11" style="padding-left:20px" v-if="clocktype==1" @click="showModal">任务开始时</em>
@@ -412,7 +489,7 @@
                            <br />
                         </a>
                      </a-tooltip>
-                  </a-modal>
+                  </a-modal-->
 
                   <!-- 优先级   -->
                   <!--a-menu style="width: 340px;margin-left:10x;margin-right:-20px">
@@ -469,7 +546,7 @@
                            >非常紧急</a-tag>
                         </a-menu-item>
                      </a-sub-menu>
-                  </a-menu>
+                  </a-menu-->
 
                   <!--  标签   -->
                   <!--a-icon
@@ -612,6 +689,7 @@ export default {
          inputVisibledone: false,
          inputValuedone: "",
          visibledone: false,
+         visibleing: false,
          text:"test",
          taskpriority:"较低",
          clocktype:0,
@@ -621,6 +699,7 @@ export default {
          dateString1:"",
          dateString2:"",
          tagsdone: ['Unremovable', 'Tag 2','hinknolhoo'],
+         tagsing: ['Unremovable', 'Tag 2','hinknolhoo'],
          name: "",
          remarks: ""
       };
@@ -662,40 +741,7 @@ export default {
          this.$refs.input.focus();
          });
       },
-      make() {
-         /*在这先存储好数据再初始化 防止两次创建的时候数据联动
-         this.clocktype=0;
-         this.showclock=0;
-         this.showlabel=0;
-         this.dateString1="";
-         this.dateString2="";
-         this.taskpriority="较低";
-			this.tags=["任务"];*/
-         var obj = {
-            project_id: this.$store.state.project.id,
-            name: this.name,
-            remarks: this.remarks,
-            t_begin: new Date(this.dateString1).getTime(),
-            t_end: new Date(this.dateString2).getTime(),
-            priority: this.taskpriority,
-            label: this.tags.join(" ")
-			}
-
-			console.log(obj)
-         this.$http
-            .post(`/api/project/${this.$store.state.project.id}/task`, obj)
-            .then(doc => {
-               var code = doc.data.status;
-               var msg = doc.data.msg;
-               if (code == 0){
-						this.$alert(msg,'true')
-					}else{
-						this.$alert(msg,'false')
-					}
-				console.log(doc)
-            });
-      },
-
+      
       handleInputChangedone(e) {
          this.inputValuedone = e.target.value;
       },
@@ -714,6 +760,82 @@ export default {
          });
       },
       ////////已完成弹窗
+
+      /////////未完成面板
+      showModaling() {
+         this.visibleing = true;
+      },
+      handleOking(e) {
+         console.log(e);
+         this.visibleing = false;
+      },
+
+      handleCloseing(removedTag) {
+         const tagsing = this.tagsing.filter(tag => tag !== removedTag);
+         console.log(tagsing);
+         this.tagsing = tagsing;
+      },
+
+      showInputing() {
+         this.inputVisibleing = true;
+         this.$nextTick(function() {
+         this.$refs.input.focus();
+         });
+      },
+      
+      handleInputChangeing(e) {
+         this.inputValueing = e.target.value;
+      },
+
+      handleInputConfirming() {
+         const inputValueing = this.inputValueing;
+         let tagsing = this.tagsing;
+         if (inputValueing && tagsing.indexOf(inputValueing) === -1) {
+         tagsing = [...tagsing, inputValueing];
+         }
+         console.log(tagsing);
+         Object.assign(this, {
+         tagsing,
+         inputVisibleing: false,
+         inputValueing: '',
+         });
+      },
+      ////////未完成弹窗
+
+
+      make() {
+         /*在这先存储好数据再初始化 防止两次创建的时候数据联动
+         this.clocktype=0;
+         this.showclock=0;
+         this.showlabel=0;
+         this.dateString1="";
+         this.dateString2="";
+         this.taskpriority="较低";
+         this.tags=["任务"];*/
+         var obj = {
+            project_id: this.$store.state.project.id,
+            name: this.name,
+            remarks: this.remarks,
+            t_begin: new Date(this.dateString1).getTime(),
+            t_end: new Date(this.dateString2).getTime(),
+            priority: this.taskpriority,
+            label: this.tags.join(" ")
+         }
+
+         console.log(obj)
+         this.$http
+            .post(`/api/project/${this.$store.state.project.id}/task`, obj)
+            .then(doc => {
+               var code = doc.data.status;
+               var msg = doc.data.msg;
+               if (code == 0){
+                  this.$alert(msg,'true')
+               }else{
+                  this.$alert(msg,'false')
+               }
+            console.log(doc)
+            });
+      },
 
       onChange1(value, dateString) {
          console.log("Selected Time: ", value);

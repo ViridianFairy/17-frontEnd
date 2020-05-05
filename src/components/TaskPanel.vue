@@ -4,16 +4,15 @@
          <h2>未完成</h2>
          <div>
             <div>
-               <a-button block @click="showModaling" v-for="i in getCol1" 
+               <a-button block @click="showModal" v-for="i in getCol1" 
 					style="margin:6px 0;">
                   {{i.name}}
                </a-button>
                
                <a-modal 
                      title="任务:软件工程实践"
-                     v-model="visibleing"
-                     @ok="handleOking"
-                     @cancel="handleCanceling"
+                     v-model="visible"
+                     @ok="handleOk"
                      cancelText="保存"
                      okType="danger"
                      okText="删除"
@@ -47,7 +46,7 @@
                   <em class="em11" style="margin-right:10px;font-size:15px;padding-left:0">完成情况</em>
                   <a-switch defaultunChecked @change="onChange" /><br />
                   <!---拉取头像  --->
-               <a-avata r icon="user" style="margin-top:20px" :size="37"/>
+               <a-avatar icon="user" style="margin-top:20px" :size="37"/>
                <br />
                <a-range-picker
                   :defaultValue="[moment('2020-04-26', dateFormat), moment('2020-05-07', dateFormat)]"
@@ -63,13 +62,13 @@
                <a-tag color="gray" style="font-size:15px;text-align:center;width:50px;height:23px;margin-top:3px">较低</a-tag>
                <br /><br /></p>
                <div style="margin-top:-10px">
-               <template v-for="(tag) in tagsing">
+               <template v-for="(tag) in tags">
                      <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
-                     <a-tag :key="tag" @close="() => handleCloseing(tag)">
+                     <a-tag :key="tag" @close="() => handleClose(tag)">
                         {{ `${tag.slice(0, 20)}...` }}
                      </a-tag>
                      </a-tooltip>
-                     <a-tag v-else :key="tag" color="#003366" style="font-size:15px;text-align:center;height:23px" @close="() => handleCloseing(tag)">
+                     <a-tag v-else :key="tag" color="#003366" style="font-size:15px;text-align:center;height:23px" @close="() => handleClose(tag)">
                   {{ tag }}
                   </a-tag>
                </template>
@@ -138,25 +137,25 @@
                   <p
                      style="padding-left:20.5px;display:inline;color:gray;font-family:'Microsoft YaHei';font-size:15px"
                      v-if="clocktype==0"
-                     @click="showModal"
+                     @click="showModalclock"
                   >不提醒</p>
                   <p
                      style="padding-left:20.5px;display:inline;color:gray;font-family:'Microsoft YaHei';font-size:15px"
                      v-if="clocktype==1"
-                     @click="showModal"
+                     @click="showModalclock"
                   >任务开始时</p>
                   <p
                      style="padding-left:20.5px;display:inline;color:gray;font-family:'Microsoft YaHei';font-size:15px"
                      v-if="clocktype==2"
-                     @click="showModal"
+                     @click="showModalclock"
                   >任务截止时</p>
 
                   <a-modal
                      title="任务提醒设置"
-                     :visible="visible"
+                     :visible="visibleclock"
                      :confirm-loading="confirmLoading"
-                     @ok="handleOk"
-                     @cancel="handleCancel"
+                     @ok="handleOkclock"
+                     @cancel="handleCancelclock"
                      cancelText="取消"
                      okText="保存"
                      width="600px"
@@ -329,15 +328,14 @@
       <div id="finish">
          <h2>已完成</h2>
             <div>
-               <a-button block @click="showModaldone" v-for="i in getCol2" 
+               <a-button block @click="showModal" v-for="i in getCol2" 
 					style="margin:6px 0;">
                   {{i.name}}
                </a-button>
                <a-modal 
                      title="任务:界面制作"
-                     v-model="visibledone"
-                     @ok="handleOkdone"
-                     @cancel="handleCanceldone"
+                     v-model="visible"
+                     @ok="handleOk"
                      cancelText="保存"
                      okType="danger"
                      okText="删除"
@@ -386,13 +384,13 @@
             <a-tag color="gray" style="font-size:15px;text-align:center;width:50px;height:23px;margin-top:3px">较低</a-tag>
             <br /><br /></p>
             <div style="margin-top:-10px">
-            <template v-for="(tag) in tagsdone">
+            <template v-for="(tag) in tags">
                   <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
-                  <a-tag :key="tag" @close="() => handleClosedone(tag)">
+                  <a-tag :key="tag" @close="() => handleClose(tag)">
                      {{ `${tag.slice(0, 20)}...` }}
                   </a-tag>
                   </a-tooltip>
-                  <a-tag v-else :key="tag" color="#003366" style="font-size:15px;text-align:center;height:23px" @close="() => handleClosedone(tag)">
+                  <a-tag v-else :key="tag" color="#003366" style="font-size:15px;text-align:center;height:23px" @close="() => handleClose(tag)">
                {{ tag }}
                </a-tag>
             </template>
@@ -442,14 +440,11 @@ export default {
          endValue: null,
          endOpen: false,
          visible: false,
+         visibleclock: false,
          taskdone:0,
          tagspanel: ["任务"],
          inputVisible: false,
          inputValue: "",
-         inputVisibledone: false,
-         inputValuedone: "",
-         visibledone: false,
-         visibleing: false,
          text:"test",
          taskpriority:2,
          clocktype:0,
@@ -458,8 +453,7 @@ export default {
          confirmLoading: false,
          dateString1:"",
          dateString2:"",
-         tagsdone: ['Unremovable', 'Tag 2','hinknolhoo'],
-         tagsing: ['Unremovable', 'Tag 2','hinknolhoo'],
+         tags: ['Unremovable', 'Tag 2','hinknolhoo'],
          name: "",
 			remarks: "",
 			dateFormat:"",
@@ -487,13 +481,15 @@ export default {
 					this.projectData = doc.data.data;
             console.log(this.projectData)
          });
-		},
-      showModaldone() {
-         this.visibledone = true;
       },
-      handleOkdone(e) {
+      ////后缀带clock的是提醒时间的弹窗
+      ////任务详情弹框
+      showModal() {
+         this.visible = true;
+      },
+      handleOk(e) {
          console.log(e);
-         this.visibledone = false;
+         this.visible = false;
       },
       add(e) {
       console.log(e);
@@ -501,81 +497,20 @@ export default {
       onChange(checked) {
          console.log(`a-switch to ${checked}`);
       },
-      handleClosedone(removedTag) {
-         const tagsdone = this.tagsdone.filter(tag => tag !== removedTag);
-         console.log(tagsdone);
-         this.tagsdone = tagsdone;
+      handleClose(removedTag) {
+         const tags = this.tags.filter(tag => tag !== removedTag);
+         console.log(tags);
+         this.tags = tags;
       },
-      showInputdone() {
-         this.inputVisibledone = true;
+      showInput() {
+         this.inputVisible = true;
          this.$nextTick(function() {
          this.$refs.input.focus();
          });
       },
-      
-      handleInputChangedone(e) {
-         this.inputValuedone = e.target.value;
-      },
+      ////////任务详情弹框  
 
-      handleInputConfirmdone() {
-         const inputValuedone = this.inputValuedone;
-         let tagsdone = this.tagsdone;
-         if (inputValuedone && tagsdone.indexOf(inputValuedone) === -1) {
-         tagsdone = [...tagsdone, inputValuedone];
-         }
-         console.log(tagsdone);
-         Object.assign(this, {
-         tagsdone,
-         inputVisibledone: false,
-         inputValuedone: '',
-         });
-      },
-      ////////已完成弹窗
-
-      /////////未完成面板
-      showModaling() {
-         this.visibleing = true;
-      },
-      handleOking(e) {
-         console.log(e);
-         this.visibleing = false;
-      },
-
-      handleCloseing(removedTag) {
-         const tagsing = this.tagsing.filter(tag => tag !== removedTag);
-         console.log(tagsing);
-         this.tagsing = tagsing;
-      },
-
-      showInputing() {
-         this.inputVisibleing = true;
-         this.$nextTick(function() {
-         this.$refs.input.focus();
-         });
-      },
-      
-      handleInputChangeing(e) {
-         this.inputValueing = e.target.value;
-      },
-
-      handleInputConfirming() {
-         const inputValueing = this.inputValueing;
-         let tagsing = this.tagsing;
-         if (inputValueing && tagsing.indexOf(inputValueing) === -1) {
-         tagsing = [...tagsing, inputValueing];
-         }
-         console.log(tagsing);
-         Object.assign(this, {
-         tagsing,
-         inputVisibleing: false,
-         inputValueing: '',
-         });
-      },
-      ////////未完成弹窗
-
-
-      make() {
-			
+      make() {			
          /*在这先存储好数据再初始化 防止两次创建的时候数据联动
          this.clocktype=0;
          this.showclock=0;
@@ -703,30 +638,24 @@ export default {
       handleChange(value) {
          console.log(`selected ${value}`);
       },
-      showModal() {
-         this.visible = true;
+      showModalclock() {
+         this.visibleclock = true;
       },
-      handleOk(e) {
+      handleOkclock(e) {
          this.ModalText = "The modal will be closed after two seconds";
          this.confirmLoading = true;
          setTimeout(() => {
-            this.visible = false;
+            this.visibleclock = false;
             this.confirmLoading = false;
          }, 0);
          this.showclock = 0;
       },
-      handleCancel(e) {
+      handleCancelclock(e) {
          console.log("Clicked cancel button");
-         this.visible = false;
+         this.visibleclock = false;
          this.showclock = 0;
          this.clocktype = 0;
 		},
-		handleCanceling(){
-
-		},
-		handleCanceldone(){
-
-		}
    }
 };
 </script>

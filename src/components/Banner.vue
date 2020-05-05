@@ -129,11 +129,24 @@
                   ok-text="确认"
                   cancel-text="关闭"
                   @ok="infoHandleOk"
+                  @cancel="infoHandleCancel"
                >
                   <p style="padding-left:10px">
                      头像：
                      <a-avatar :size="50" slot="avatar" :src="userInfo.photo"></a-avatar>
+                     <a-upload
+                        name="file"
+                        :multiple="true"
+                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                        :headers="headers"
+                        @change="photoHandleChange"
+                        style="float:right"
+                     >
+                        <a-button style="width:100px;height:25px;margin-top:10px">上传头像</a-button>
+                     </a-upload>
+                     <!-- 
                      <a-button style="float:right;width:100px;height:25px;margin-top:10px" @click="updatePhoto">上传头像</a-button>
+                     -->
                   </p>
                   
                   <p style="padding-left:10px">
@@ -201,7 +214,7 @@ export default {
          createLoading: false,
          exchangeVisible: false,
          exchangeLoading: false,
-         //value: 1,
+         value: 1,
          newName: "",
          changeProject: [],
          userInfo: { photo: "", email: "", website: "", location: "" },
@@ -216,6 +229,9 @@ export default {
          newName:"",
 			changeProject:[],
 
+         headers: {
+            authorization: 'authorization-text',
+         },
          changingName: 0,
          changingAddress: 0,
          changingWebsite: 0,
@@ -399,8 +415,25 @@ export default {
          this.changingAddress = 0;
          this.changingWebsite = 0;
       },
+      infoHandleCancel() {
+         this.infoVisible = false;
+
+         this.changingName = 0;
+         this.changingAddress = 0;
+         this.changingWebsite = 0;
+      },
 
       //修改个人信息部分
+      photoHandleChange(info) {
+         if (info.file.status !== 'uploading') {
+         console.log(info.file, info.fileList);
+         }
+         if (info.file.status === 'done') {
+         this.$message.success(`${info.file.name} file uploaded successfully`);
+         } else if (info.file.status === 'error') {
+         this.$message.error(`${info.file.name} file upload failed.`);
+         }
+      },
       changeName() {
          this.changingName = 1;
       },

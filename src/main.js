@@ -6,7 +6,7 @@ import App from './App.vue'
 import Alert from './components/attach/alert'
 import 'ant-design-vue/dist/antd.css'
 import {Button, Divider, Radio, Switch, Tooltip, Modal} from 'ant-design-vue'
-import {Input} from 'ant-design-vue'
+import {Input, Form, Upload} from 'ant-design-vue'
 import {Collapse} from 'ant-design-vue'
 import {Checkbox} from 'ant-design-vue'
 import {Menu} from 'ant-design-vue'
@@ -53,6 +53,8 @@ Vue.component(Popover.name, Popover)
 Vue.component(Transfer.name, Transfer)
 Vue.component(LocaleProvider.name, LocaleProvider)
 Vue.component(Cascader.name, Cascader)
+Vue.component(Form.name, Form)
+Vue.component(Upload.name, Upload)
 Vue.use(Button)
 Vue.use(Input)
 Vue.use(Collapse)
@@ -77,6 +79,8 @@ Vue.use(Popover)
 Vue.use(Transfer)
 Vue.use(LocaleProvider)
 Vue.use(Cascader)
+Vue.use(Form)
+Vue.use(Upload)
 //Vue.prototype.$confirm = Modal.confirm
 // plugins mounted
 Vue.prototype.$cookies = Cookies;

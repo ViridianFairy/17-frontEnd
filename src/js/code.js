@@ -15,7 +15,15 @@ function toDateTime(time) {
 	strDate = Y+M+D+h+m+s;
 	return strDate;
 }
+function getFirstMsg(obj){
+	if(typeof obj == 'string')
+		return obj
+	for(var i in obj){
+		return i+' '+obj[i]
+	}
+}
 module.exports = {
 	url,
-	toDateTime
+	toDateTime,
+	getFirstMsg,
 }

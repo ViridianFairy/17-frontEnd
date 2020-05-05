@@ -59,7 +59,6 @@ export default {
 					this.$router.push({ path: '/login', query: {account,password} })
 					.catch(()=>{})
 				}else{
-					if(typeof msg == 'object')
 						msg = getFirstMsg(msg)
 					this.$alert(msg,'false')
 				}
@@ -75,6 +74,8 @@ export default {
 				1009:"用户名格式错误",
 			}*/
 			function getFirstMsg(obj){
+				if(typeof msg != 'object')
+					return obj
 				for(var i in obj){
 					return i+' '+obj[i]
 				}

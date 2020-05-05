@@ -13,6 +13,7 @@ import {Menu} from 'ant-design-vue'
 import {Avatar} from 'ant-design-vue'
 import {Icon} from 'ant-design-vue'
 import {Popover} from 'ant-design-vue'
+import {Popconfirm} from 'ant-design-vue'
 import {List,Card} from 'ant-design-vue'
 import {DatePicker,PageHeader} from 'ant-design-vue'
 import {Dropdown,Select,Drawer,Tag,Tabs} from 'ant-design-vue'
@@ -73,7 +74,7 @@ Vue.use(Modal)
 Vue.use(Popover)
 Vue.use(Transfer)
 Vue.use(LocaleProvider)
-
+//Vue.prototype.$confirm = Modal.confirm
 // plugins mounted
 Vue.prototype.$cookies = Cookies;
 Vue.prototype.$http = axios.create({baseURL,"Access-Control-Allow-Origin":"*"})

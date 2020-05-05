@@ -16,13 +16,14 @@ import {Popover} from 'ant-design-vue'
 import {Popconfirm} from 'ant-design-vue'
 import {List,Card} from 'ant-design-vue'
 import {DatePicker,PageHeader} from 'ant-design-vue'
-import {Dropdown,Select,Drawer,Tag,Tabs} from 'ant-design-vue'
+import {Dropdown,Select,Drawer,Tag,Tabs,Cascader} from 'ant-design-vue'
 import {Transfer} from 'ant-design-vue'
 import {LocaleProvider} from 'ant-design-vue'
 import router from './js/router'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import store from './js/store'
+//import china from './js/china'
 Vue.config.productionTip = false
 // axios.defaults.withCredentials=true
 axios.defaults.withCredentials = true
@@ -51,6 +52,7 @@ Vue.component(Modal.name,Modal)
 Vue.component(Popover.name, Popover)
 Vue.component(Transfer.name, Transfer)
 Vue.component(LocaleProvider.name, LocaleProvider)
+Vue.component(Cascader.name, Cascader)
 Vue.use(Button)
 Vue.use(Input)
 Vue.use(Collapse)
@@ -74,6 +76,7 @@ Vue.use(Modal)
 Vue.use(Popover)
 Vue.use(Transfer)
 Vue.use(LocaleProvider)
+Vue.use(Cascader)
 //Vue.prototype.$confirm = Modal.confirm
 // plugins mounted
 Vue.prototype.$cookies = Cookies;
@@ -85,7 +88,8 @@ Vue.prototype.$http2 = axios.create({baseURL})
 new Vue({
 	render: h => h(App),
 	router,
-	store
+	store,
+	//china
 }).$mount('#app')
 // tips
 //Vue.prototype.$alertNum = 0;

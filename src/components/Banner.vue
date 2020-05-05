@@ -144,9 +144,6 @@
                      >
                         <a-button style="width:100px;height:25px;margin-top:10px">上传头像</a-button>
                      </a-upload>
-                     <!-- 
-                     <a-button style="float:right;width:100px;height:25px;margin-top:10px" @click="updatePhoto">上传头像</a-button>
-                     -->
                   </p>
                   
                   <p style="padding-left:10px">
@@ -164,7 +161,7 @@
                   <p style="padding-left:10px">
                      所在地：
                      <showAddress v-if="changingAddress==0">{{userInfo.location}}</showAddress>
-                     <a-cascader v-if="changingAddress==1" style="width:385px" :options="addressOptions" placeholder="请选择地址" @change="onAddressChange" />
+                     <a-cascader v-if="changingAddress==1" style="width:385px" :options="options" placeholder="请选择地址" @change="onAddressChange" />
                      <a-button v-if="changingAddress==0" style="float:right;width:100px;height:25px" @click="changeAddress">更改地址</a-button>
                   </p>
 
@@ -205,7 +202,7 @@ export default {
    },
    data() {
       return {
-         //addressOptions,
+         options: china,
          infoVisible: false,
          createVisible: false,
          createLoading: false,
@@ -228,7 +225,6 @@ export default {
          infoVisible: false,
          newName:"",
 			changeProject:[],
-
          headers: {
             authorization: 'authorization-text',
          },

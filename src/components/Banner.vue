@@ -201,7 +201,7 @@ export default {
          createLoading: false,
          exchangeVisible: false,
          exchangeLoading: false,
-         //value: 1,
+         value: 1,
          newName: "",
          changeProject: [],
          userInfo: { photo: "", email: "", website: "", location: "" },
@@ -413,10 +413,6 @@ export default {
       changeWebsite() {
          this.changingWebsite = 1;
       },
-
-
-
-      //退出登录后返回登录界面
       showOutLoginConfirm() {
          Modal.confirm({
             title: "确定要退出登录吗？",
@@ -425,7 +421,20 @@ export default {
             okType: "danger",
             cancelText: "否",
             onOk() {
-               console.log("OK");
+					this.$http
+         		.post(`/api/project/${this.$store.state.project.id}/task/delete`, {
+						project_id:this.$store.state.project.id,
+						id:this.id,
+					})
+         		.then(doc => {
+         		   var code = doc.data.status;
+         		   var msg = doc.data.msg;
+						if (code == 0)
+							this.$alert(msg,'true')
+						else
+							this.$alert(msg,'false')
+
+         		})
             },
             onCancel() {
                console.log("Cancel");

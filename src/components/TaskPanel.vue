@@ -374,18 +374,6 @@
                                  <a-checkbox value="C">
                                     C
                                  </a-checkbox>
-                                 <br />
-                                 <a-checkbox value="C">
-                                    C
-                                 </a-checkbox>
-                                 <br />
-                                 <a-checkbox value="C">
-                                    C
-                                 </a-checkbox>
-                                 <br />
-                                 <a-checkbox value="C">
-                                    C
-                                 </a-checkbox>
                               </div>
                            </a-checkbox-group>
                            <br /><a-button type="primary" block>确认</a-button>

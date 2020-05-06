@@ -81,6 +81,7 @@ Vue.use(LocaleProvider)
 Vue.use(Cascader)
 Vue.use(Form)
 Vue.use(Upload)
+Vue.use(Checkbox)
 //Vue.prototype.$confirm = Modal.confirm
 // plugins mounted
 Vue.prototype.$cookies = Cookies;

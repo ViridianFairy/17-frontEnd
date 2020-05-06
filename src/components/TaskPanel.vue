@@ -361,25 +361,31 @@
                      <a>
                         <a-popover title="添加/移除参与者" trigger="click">
                            <template slot="content">
-                           <a-checkbox-group @change="onTaskMemberChange">
-                              <div style="max-height:100px;overflow:auto">
-                                 <a-col :span="8">
+                           <a-checkbox-group name="checkboxgroup" @change="onTaskMemberChange">
+                              <div style="max-height:100px;width:150px;overflow:auto">
                                  <a-checkbox value="A">
                                     A
                                  </a-checkbox>
-                                 </a-col>
                                  <br />
-                                 <a-col :span="8">
                                  <a-checkbox value="B">
                                     B
                                  </a-checkbox>
-                                 </a-col>
                                  <br />
-                                 <a-col :span="8">
                                  <a-checkbox value="C">
                                     C
                                  </a-checkbox>
-                                 </a-col>
+                                 <br />
+                                 <a-checkbox value="C">
+                                    C
+                                 </a-checkbox>
+                                 <br />
+                                 <a-checkbox value="C">
+                                    C
+                                 </a-checkbox>
+                                 <br />
+                                 <a-checkbox value="C">
+                                    C
+                                 </a-checkbox>
                               </div>
                            </a-checkbox-group>
                            <br /><a-button type="primary" block>确认</a-button>

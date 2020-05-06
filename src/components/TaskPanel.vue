@@ -297,7 +297,7 @@
                               style="font-size:15px;height:22px;margin-left:0px"
                            >紧急</a-tag>
                         </a-menu-item>
-                        <a-menu-item key="23" @click="taskpriority=4">
+                        <a-menu-item key="26" @click="taskpriority=4">
                            <a-tag
                               color="red"
                               style="font-size:14px;height:22px;margin-left:0px"
@@ -363,8 +363,11 @@
                            <template slot="content">
                            <a-checkbox-group name="checkboxgroup" @change="onTaskMemberChange">
                               <div style="max-height:100px;width:150px;overflow:auto">
-                                 <a-checkbox value="A">A</a-checkbox>
-                              </div>
+                                 <a-checkbox :value="i.id" v-for="i in this.$store.state.member">
+												{{i.username}}
+											</a-checkbox>
+											
+										</div>
                            </a-checkbox-group>
                            <br /><a-button type="primary" block>确认</a-button>
                            </template>
@@ -429,6 +432,7 @@ export default {
    },
    data() {
       return {
+			projectMember:[],
          value: 1,
          projectData: [],
          taskMemberOptions,
@@ -536,7 +540,6 @@ export default {
 					this.$alert(msg,'true')
 					this.update()
 				}
-					
 				else
 					this.$alert(msg,'false')
          });

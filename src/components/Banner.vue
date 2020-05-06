@@ -383,8 +383,10 @@ export default {
          .then(doc => {
             var code = doc.data.status;
             var msg = doc.data.msg;
-				if (code == 0)
-					this.projectMember = doc.data.data.member				
+				if (code == 0){
+					this.projectMember = doc.data.data.member
+					this.$store.commit("memberUpdate", this.projectMember);	
+				}			
          })
          this.memberVisible = true;
       },
@@ -577,7 +579,19 @@ export default {
             if (code == 0) {
                this.userInfo = doc.data.data;
             }
-         });
+			});
+			this.$http
+         .get(`/api/project/${this.$store.state.project.id}`, {
+				project_id:this.$store.state.project.id,
+			})
+         .then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+				if (code == 0){
+					this.projectMember = doc.data.data.member
+					this.$store.commit("memberUpdate", this.projectMember);	
+				}			
+         })
       }
    },
    mounted() {

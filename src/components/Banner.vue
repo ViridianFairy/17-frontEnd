@@ -64,10 +64,10 @@
                <a-menu-item key="3" @click="showMemberModal">
                   查看项目成员
                   <a-modal v-model="memberVisible" title="项目成员信息" ok-text="确认" cancel-text="关闭" @ok="memberHandleOk">
-                     <p style="padding-left:30px" v-for="i in projectMember">
+                     <p style="padding-left:30px" v-for="i in projectMember" :key="i.id">
 								<a-avatar :size="30" slot="avatar" :src="i.photo"></a-avatar>
 								{{i.username}}
-                        <a-button style="width:65px;height:25px;margin-right:30px;color:red;float:right" @click="deleteMember">移除</a-button>
+                        <a-button style="width:65px;height:25px;margin-right:30px;color:red;float:right" @click="deleteMember(i.id)">移除</a-button>
 							</p>
                   </a-modal>
                </a-menu-item>
@@ -149,8 +149,8 @@
                      <span v-if="changingAddress==0">{{userInfo.location}}</span>
                      <a-cascader v-if="changingAddress==1" 
 								style="width:385px" :options="options" placeholder="请选择地址" 
-								@change="onAddressChange" v-model="mLocation"
-								:fieldNames="{ label: 'label', value: 'label',children: 'children'}"
+								@change="blurLocation" v-model="mLocation"
+								:fieldNames="{ 'label': 'label', 'value': 'label','children': 'children'}"
 							/>
                      <a-button v-if="changingAddress==0" style="float:right;width:100px;height:25px" @click="changeAddress">更改地址</a-button>
                   </p>
@@ -227,11 +227,27 @@ export default {
 			addText1:"",
 			addText2:"",
 			mName:"",
-			mLocation:"",
+			mLocation:[],
 			mHome:"",
 		};
 	},
 	methods: {
+		deleteMember(id){
+			this.$http.post(`/api/project/${this.$store.state.project.id}/user/remove`, { 
+				account_type: 'id',
+				account:id,
+			}).then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+            if (code == 0) {
+					this.$alert(msg, "true");
+					this.showMemberModal()
+            } else {
+               this.$alert(msg, "false");
+            }
+         })
+			
+		},
 		blurName(){
 			this.$http.post(`/api/user/info`, { 
 				username: this.mName,
@@ -243,7 +259,7 @@ export default {
             } else {
                this.$alert(msg, "false");
             }
-         });
+         })
 		},
 		blurHome(){
 			this.$http.post(`/api/user/info`, { 
@@ -258,9 +274,6 @@ export default {
                this.$alert(msg, "false");
             }
          });
-		},
-		blurLocation(){
-			
 		},
       //这个jump似乎就用不到了
       jump() {
@@ -443,14 +456,7 @@ export default {
       //显示个人信息部分
       showInfoModal() {
          this.infoVisible = true;
-         this.$http.get(`/api/user/info`).then(doc => {
-            var code = doc.data.status;
-            var msg = doc.data.msg;
-            if (code == 0) {
-               this.userInfo = doc.data.data;
-            } else {
-            }
-         });
+         
       },
       infoHandleOk(e) {
          console.log(e);
@@ -484,10 +490,10 @@ export default {
          this.changingName = 1;
       },
       changeAddress() {
-			this.mLocation = "";
+			this.mLocation = [];
          this.changingAddress = 1;
       },
-      onAddressChange(value) {
+      blurLocation(value) {
 			var obj = { 
 				username: this.name,
 				location:this.mLocation.join('-'),
@@ -564,6 +570,13 @@ export default {
                   name: "未登录"
                });
                this.$store.commit("loginReload", false);
+            }
+			});
+			this.$http.get(`/api/user/info`).then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+            if (code == 0) {
+               this.userInfo = doc.data.data;
             }
          });
       }

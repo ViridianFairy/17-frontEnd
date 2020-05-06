@@ -4,7 +4,7 @@
          <h2>未完成</h2>
          <div>
             <div>
-               <a-button block @click="showModal(i)" v-for="i in getCol1" 
+               <a-button block @click="showModal(i)" v-for="(i,index) in getCol1" :key="index" 
 					style="margin:6px 0;">
                   {{i.name}}
                </a-button>
@@ -282,22 +282,22 @@
                               style="font-size:15px;height:22px;margin-left:10px;margin-top:14px"
                            >非常紧急</a-tag>
                         </span>
-                        <a-menu-item key="24" @click="taskpriority=1">
+                        <a-menu-item key="24" @click="onFlowPri(1)">
                            <a-tag color="gray" style="font-size:15px;height:22px;margin-left:0px">较低</a-tag>
                         </a-menu-item>
-                        <a-menu-item key="22" @click="taskpriority=2">
+                        <a-menu-item key="22" @click="onFlowPri(2)">
                            <a-tag
                               color="green"
                               style="font-size:15px;height:22px;margin-left:0px"
                            >普通</a-tag>
                         </a-menu-item>
-                        <a-menu-item key="23" @click="taskpriority=3">
+                        <a-menu-item key="23" @click="onFlowPri(3)">
                            <a-tag
                               color="orange"
                               style="font-size:15px;height:22px;margin-left:0px"
                            >紧急</a-tag>
                         </a-menu-item>
-                        <a-menu-item key="26" @click="taskpriority=4">
+                        <a-menu-item key="26" @click="onFlowPri(4)">
                            <a-tag
                               color="red"
                               style="font-size:14px;height:22px;margin-left:0px"
@@ -363,7 +363,7 @@
                            <template slot="content">
                            <a-checkbox-group name="checkboxgroup" @change="onTaskMemberChange">
                               <div style="max-height:100px;width:150px;overflow:auto">
-                                 <a-checkbox :value="i.id" v-for="i in this.$store.state.member">
+                                 <a-checkbox :value="i.id" v-for="i in this.projectMember">
 												{{i.username}}
 											</a-checkbox>
 											
@@ -391,8 +391,7 @@
       <div id="finish">
          <h2>已完成</h2>
             <div>
-               <a-button block @click="showModal(i)" v-for="i in getCol2" 
-					style="margin:6px 0;">
+               <a-button block @click="showModal(i)" v-for="(i,index) in getCol2" :key="index" style="margin:6px 0;">
                   {{i.name}}
                </a-button>
 </div>
@@ -494,7 +493,20 @@ export default {
 				if (code == 0) 
 					this.projectData = doc.data.data;
             console.log(this.projectData)
-         });
+			});
+						this.$http
+         .get(`/api/project/${this.$store.state.project.id}`, {
+				project_id:this.$store.state.project.id,
+			})
+         .then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+				if (code == 0){
+					this.projectMember = doc.data.data.member
+					this.$store.commit("memberUpdate", this.projectMember);	
+					
+				}			
+         })
       },
 
       ////后缀带clock的是提醒时间的弹窗
@@ -504,7 +516,31 @@ export default {
 			this.flowName = obj.name
 			this.flowMarks = obj.remarks
 			this.finish = obj.finish
+			this.id = obj.id
+			this.taskpriority = obj.priority
+			this.label = obj.priority
          this.visible = true;
+		},
+		onFlowPri(pri){
+			this.taskpriority = pri
+			this.$http
+         .post(`/api/project/${this.$store.state.project.id}/task/update`, {
+				project_id:this.$store.state.project.id,
+				id:this.id,
+				remarks:this.flowMarks,
+				name:this.flowName,
+				finish:this.finish,
+				priority:pri,
+			})
+         .then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+				if (code == 0){
+					this.update()
+				}else{
+					this.$alert(msg,'false')
+				}
+         });
 		},
 		flowMarksOn(){
 			this.$http

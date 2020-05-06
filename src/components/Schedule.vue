@@ -145,7 +145,7 @@ export default {
 					this.doc = doc.data.data	
 				this.doc.forEach(i=>{
 					var d = new Date(i.t_set)
-					i.time = d.getMonth()+'月'+d.getDate()+'日'
+					i.time = (d.getMonth()+1)+'月'+d.getDate()+'日'
 				})	
          })
 		},

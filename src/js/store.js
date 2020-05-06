@@ -28,6 +28,7 @@ const state = {
 		login:false,
 		userUpdate:0,
 		taskUpdate:0,
+		memberUpdate:0,
 		project:{
 			id:"",
 			name:""

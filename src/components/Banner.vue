@@ -246,7 +246,6 @@ export default {
                this.$alert(msg, "false");
             }
          })
-			
 		},
 		blurName(){
 			this.$http.post(`/api/user/info`, { 

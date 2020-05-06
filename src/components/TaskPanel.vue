@@ -363,17 +363,7 @@
                            <template slot="content">
                            <a-checkbox-group name="checkboxgroup" @change="onTaskMemberChange">
                               <div style="max-height:100px;width:150px;overflow:auto">
-                                 <a-checkbox value="A">
-                                    A
-                                 </a-checkbox>
-                                 <br />
-                                 <a-checkbox value="B">
-                                    B
-                                 </a-checkbox>
-                                 <br />
-                                 <a-checkbox value="C">
-                                    C
-                                 </a-checkbox>
+                                 <a-checkbox value="A">A</a-checkbox>
                               </div>
                            </a-checkbox-group>
                            <br /><a-button type="primary" block>确认</a-button>

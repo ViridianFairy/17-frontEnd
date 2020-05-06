@@ -381,8 +381,8 @@
                                  </a-checkbox>
                                  </a-col>
                               </div>
-                              <br /><a-button type="primary" block>确认</a-button>
                            </a-checkbox-group>
+                           <br /><a-button type="primary" block>确认</a-button>
                            </template>
                            <a-icon
                               type="plus-circle"

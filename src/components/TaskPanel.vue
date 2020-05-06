@@ -362,7 +362,7 @@
                         <a-popover title="添加/移除参与者" trigger="click">
                            <template slot="content">
                            <a-checkbox-group @change="onTaskMemberChange">
-                              <a-row>
+                              <div style="max-height:100px;overflow:auto">
                                  <a-col :span="8">
                                  <a-checkbox value="A">
                                     A
@@ -380,8 +380,8 @@
                                     C
                                  </a-checkbox>
                                  </a-col>
-                              </a-row>
-                              <br /><br /><a-button type="primary" block>确认</a-button>
+                              </div>
+                              <br /><a-button type="primary" block>确认</a-button>
                            </a-checkbox-group>
                            </template>
                            <a-icon

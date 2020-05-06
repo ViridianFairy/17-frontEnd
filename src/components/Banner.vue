@@ -67,6 +67,7 @@
                      <p style="padding-left:30px" v-for="i in projectMember">
 								<a-avatar :size="30" slot="avatar" :src="i.photo"></a-avatar>
 								{{i.username}}
+                        <a-button style="width:70px;height:25px;padding-right:30px;color:red;float:right" @click="deleteMember">移除</a-button>
 							</p>
                   </a-modal>
                </a-menu-item>

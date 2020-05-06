@@ -114,7 +114,7 @@
                   ok-text="确认"
                   cancel-text="关闭"
                   @ok="infoHandleOk"
-                  @cancel="infoHandleCancel"
+                  @cancel="infoHandleOk"
                >
                   <p style="padding-left:10px">
                      头像：
@@ -246,7 +246,7 @@ export default {
 		},
 		blurHome(){
 			this.$http.post(`/api/user/info`, { 
-				username: this.mName,
+				username: this.name,
 				website:this.mHome,
 			}).then(doc => {
             var code = doc.data.status;
@@ -454,17 +454,17 @@ export default {
       infoHandleOk(e) {
          console.log(e);
          this.infoVisible = false;
-
+			this.update()
          this.changingName = 0;
          this.changingAddress = 0;
          this.changingWebsite = 0;
       },
       infoHandleCancel() {
-         this.infoVisible = false;
+         // this.infoVisible = false;
 
-         this.changingName = 0;
-         this.changingAddress = 0;
-         this.changingWebsite = 0;
+         // this.changingName = 0;
+         // this.changingAddress = 0;
+         // this.changingWebsite = 0;
       },
 
       //修改个人信息部分
@@ -483,7 +483,7 @@ export default {
          this.changingName = 1;
       },
       changeAddress() {
-			this.mLocation = this.userInfo.location;
+			this.mLocation = "";
          this.changingAddress = 1;
       },
       onAddressChange(value) {

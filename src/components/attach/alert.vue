@@ -76,7 +76,7 @@
       left: 0;
       top: 0;
       position: absolute;
-      z-index: 502;
+      z-index: 1000;
       height: 100%;
 		font-size: 5px;
    }

@@ -73,26 +73,26 @@
 
                <a-menu-divider />
                <a-menu-item key="4" @click="showAddMemberModal">
-                  添加/移除项目成员
-                  <a-modal v-model="addMemberVisible" title="添加/移除项目成员" ok-text="确认" cancel-text="取消" @ok="addMemberHandleOk">
-                  <p>请输入要操作的成员：<a-input style="width:300px" /></p>
+                  添加项目成员
+                  <a-modal v-model="addMemberVisible" title="添加项目成员" ok-text="确认" cancel-text="取消" @ok="addMemberHandleOk">
+                  <p>请输入要操作的成员：<a-input style="width:300px" v-model="addText1" /></p>
                      <a-radio-group v-model="value2" @change="onMemberChange">
-                        <a-radio :value="1">按用户名</a-radio>
-                        <a-radio :value="2">按手机号</a-radio>
-                        <a-radio :value="3">按邮箱</a-radio>
+                        <a-radio value="1">按邮箱</a-radio>
+                        <a-radio value="2" disabled>按手机号</a-radio>
+                        <a-radio value="3">按用户ID</a-radio>
                      </a-radio-group>
                   </a-modal>
                </a-menu-item>
 
                <a-menu-divider />
                <a-menu-item key="5" @click="showAddAdminModal">
-                  添加/移除项目管理员
-                  <a-modal v-model="addAdminVisible" title="添加/移除项目管理员" ok-text="确认" cancel-text="取消" @ok="addAdminHandleOk">
-                  <p>请输入要操作的成员：<a-input style="width:300px" /></p>
+                  添加项目管理员
+                  <a-modal v-model="addAdminVisible" title="添加项目管理员" ok-text="确认" cancel-text="取消" @ok="addAdminHandleOk">
+                  <p>请输入要操作的成员：<a-input v-model="addText2" style="width:300px" /></p>
                      <a-radio-group v-model="value3" @change="onAdminChange">
-                        <a-radio :value="1">按用户名</a-radio>
-                        <a-radio :value="2">按手机号</a-radio>
-                        <a-radio :value="3">按邮箱</a-radio>
+                        <a-radio value="1" disabled>按邮箱</a-radio>
+                        <a-radio value="2" disabled>按手机号</a-radio>
+                        <a-radio value="3" >按用户ID</a-radio>
                      </a-radio-group>
                   </a-modal>
                </a-menu-item>
@@ -122,7 +122,7 @@
                      <a-upload
                         name="file"
                         :multiple="true"
-                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                        action="http://47.99.132.18:9999/api/user/info/photo"
                         :headers="headers"
                         @change="photoHandleChange"
                         style="float:right"
@@ -133,27 +133,31 @@
                   
                   <p style="padding-left:10px">
                      用户名：
-                     <showName v-if="changingName==0">{{name}}</showName>
-                     <a-input v-if="changingName==1" style="width:385px" default-value="" />
+                     <span v-if="changingName==0">{{name}}</span>
+                     <a-input v-if="changingName==1" style="width:385px" default-value="" v-model="mName" @blur="blurName"/>
                      <a-button v-if="changingName==0" style="float:right;width:100px;height:25px" @click="changeName">更改用户名</a-button>
                   </p>
 
                   <p style="padding-left:10px">
                      邮箱：
-                     <showEmail>{{userInfo.email}}</showEmail>
+                     <span>{{userInfo.email}}</span>
                   </p>
 
                   <p style="padding-left:10px">
                      所在地：
-                     <showAddress v-if="changingAddress==0">{{userInfo.location}}</showAddress>
-                     <a-cascader v-if="changingAddress==1" style="width:385px" :options="options" placeholder="请选择地址" @change="onAddressChange" />
+                     <span v-if="changingAddress==0">{{userInfo.location}}</span>
+                     <a-cascader v-if="changingAddress==1" 
+								style="width:385px" :options="options" placeholder="请选择地址" 
+								@change="onAddressChange" v-model="mLocation"
+								:fieldNames="{ label: 'label', value: 'label',children: 'children'}"
+							/>
                      <a-button v-if="changingAddress==0" style="float:right;width:100px;height:25px" @click="changeAddress">更改地址</a-button>
                   </p>
 
                   <p style="padding-left:10px">
                      个人主页：
-                     <showWebsite v-if="changingWebsite==0">{{userInfo.website}}</showWebsite>
-                     <a-input v-if="changingWebsite==1" style="width:370px" addon-before="http://" addon-after=".com" default-value="" />
+                     <span v-if="changingWebsite==0">{{userInfo.website}}</span>
+                     <a-input @blur="blurHome" v-if="changingWebsite==1" style="width:370px" v-model="mHome" addon-before="http://" default-value="" />
                      <a-button v-if="changingWebsite==0" style="float:right;width:100px;height:25px" @click="changeWebsite">更改网站</a-button>
                   </p>
 
@@ -218,10 +222,45 @@ export default {
          },
          changingName: 0,
          changingAddress: 0,
-         changingWebsite: 0,
+			changingWebsite: 0,
+			addText1:"",
+			addText2:"",
+			mName:"",
+			mLocation:"",
+			mHome:"",
 		};
 	},
 	methods: {
+		blurName(){
+			this.$http.post(`/api/user/info`, { 
+				username: this.mName,
+			}).then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+            if (code == 0) {
+               this.$alert(msg, "true");
+            } else {
+               this.$alert(msg, "false");
+            }
+         });
+		},
+		blurHome(){
+			this.$http.post(`/api/user/info`, { 
+				username: this.mName,
+				website:this.mHome,
+			}).then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+            if (code == 0) {
+               this.$alert(msg, "true");
+            } else {
+               this.$alert(msg, "false");
+            }
+         });
+		},
+		blurLocation(){
+			
+		},
       //这个jump似乎就用不到了
       jump() {
          if (this.name == "未登录") this.$router.push("/login").catch(() => {});
@@ -343,23 +382,58 @@ export default {
 
       //添加/移除成员部分
       showAddMemberModal() {
+			this.value2 = '1'
         this.addMemberVisible = true;
       },
       addMemberHandleOk(e) {
-        console.log(e);
-        this.addMemberVisible = false;
+		  var val = this.value2
+			if(val == '1')
+				val = 'email'
+			if(val == '3')
+				val = 'id'
+			console.log(val);
+			this.$http.post(`/api/project/${this.$store.state.project.id}/user/add`,{
+				project_id:this.$store.state.project.id,
+				account:this.addText1,
+				account_type:val,
+			}).then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+            if (code == 0) {
+					this.$alert(msg,'true')
+					this.addMemberVisible = false;
+            } else 
+					this.$alert(msg,'false')
+         });
       },
       onMemberChange(e) {
-         console.log("radio2 checked", e.target.value);
+			
       },
-
       //添加/移除管理员部分
       showAddAdminModal() {
+			this.value3 = '3'
         this.addAdminVisible = true;
       },
       addAdminHandleOk(e) {
-        console.log(e);
-        this.addAdminVisible = false;
+		  var val = this.value3
+			if(val == '1')
+				val = 'email'
+			if(val == '3')
+				val = 'id'
+			console.log(val);
+			this.$http.post(`/api/project/${this.$store.state.project.id}/admin/add`,{
+				project_id:this.$store.state.project.id,
+				account:this.addText2,
+				account_type:val,
+			}).then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+            if (code == 0) {
+					this.$alert(msg,'true')
+					this.addAdminVisible = false;
+            } else 
+					this.$alert(msg,'false')
+         });
       },
       onAdminChange(e) {
          console.log("radio3 checked", e.target.value);
@@ -405,15 +479,32 @@ export default {
          }
       },
       changeName() {
+			this.mName = this.name;
          this.changingName = 1;
       },
       changeAddress() {
+			this.mLocation = this.userInfo.location;
          this.changingAddress = 1;
       },
       onAddressChange(value) {
-         console.log(value);
+			var obj = { 
+				username: this.name,
+				location:this.mLocation.join('-'),
+			}
+			console.log(obj);
+			this.mLocation = value
+			this.$http.post(`/api/user/info`,obj).then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+            if (code == 0) {
+               this.$alert(msg, "true");
+            } else {
+               this.$alert(msg, "false");
+            }
+         });
       },
       changeWebsite() {
+			this.mHome = this.userInfo.website;
          this.changingWebsite = 1;
       },
       showOutLoginConfirm() {
@@ -478,8 +569,7 @@ export default {
    },
    mounted() {
 		this.update();
-		this.getMock1();
-      this.getMock2();
+		
 	},
 	watch: {
     	'$store.state.userUpdate': function () {

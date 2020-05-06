@@ -357,13 +357,39 @@
                   <p style="margin-top:-15px;font-size:16px;margin-left:5px">参与者 · 1</p>
                   <a-avatar :size="35" icon="user" style="margin-top:-18px" />
                   <a-tooltip>
-                     <template slot="title">添加参与者</template>
+                     <template slot="title">添加/移除参与者</template>
                      <a>
-                        <a-icon
-                           type="plus-circle"
-                           theme="filled"
-                           style="fontSize:30px;color:#003366;margin-left:10px;"
-                        />
+                        <a-popover title="添加/移除参与者" trigger="click">
+                           <template slot="content">
+                           <a-checkbox-group @change="onTaskMemberChange">
+                              <a-row>
+                                 <a-col :span="8">
+                                 <a-checkbox value="A">
+                                    A
+                                 </a-checkbox>
+                                 </a-col>
+                                 <br />
+                                 <a-col :span="8">
+                                 <a-checkbox value="B">
+                                    B
+                                 </a-checkbox>
+                                 </a-col>
+                                 <br />
+                                 <a-col :span="8">
+                                 <a-checkbox value="C">
+                                    C
+                                 </a-checkbox>
+                                 </a-col>
+                              </a-row>
+                              <br /><br /><a-button type="primary" block>确认</a-button>
+                           </a-checkbox-group>
+                           </template>
+                           <a-icon
+                              type="plus-circle"
+                              theme="filled"
+                              style="fontSize:30px;color:#003366;margin-left:10px;"
+                           />
+                        </a-popover>
                         <br />
                      </a>
                   </a-tooltip>
@@ -397,6 +423,9 @@
 import {toDateTime,getFirstMsg} from '../js/code.js'
 import moment from 'moment';
 import { input } from 'ant-design-vue';
+
+const taskMemberOptions = ['A', 'P', 'O'];
+
 export default {
    name: "TaskPanel",
 	computed:{
@@ -418,6 +447,7 @@ export default {
       return {
          value: 1,
          projectData: [],
+         taskMemberOptions,
          startValue: null,
          endValue: null,
          endOpen: false,
@@ -460,6 +490,9 @@ export default {
    },
 
    methods: {
+      onTaskMemberChange(checkedValues) {
+         console.log('checked = ', checkedValues);
+      },
       onChange1(e) {
          console.log('radio checked', e.target.value);
       },

@@ -117,18 +117,21 @@
                   @ok="infoHandleOk"
                   @cancel="infoHandleOk"
                >
-                  <p style="padding-left:10px">
-                     头像：
-                     <a-avatar :size="50" slot="avatar" :src="userInfo.photo"></a-avatar>
+                  <p style="padding-left:calc((100% - 60px)/2)">
                      <a-upload
-                        name="file"
+                        name="avatar"
                         :multiple="true"
+                        class="avatar-uploader"
+                        :show-upload-list="false"
                         action="http://47.99.132.18:9999/api/user/info/photo"
                         :headers="headers"
                         @change="photoHandleChange"
-                        style="float:right"
+                        
                      >
-                        <a-button style="width:100px;height:25px;margin-top:10px">上传头像</a-button>
+                     <img v-if="imageUrl" :src="imageUrl" alt="avatar" style="width:60px;height:60px;border-radius:50%"/>
+                     <div v-else>
+                        <a-avatar :size="60" slot="avatar" :src="userInfo.photo"></a-avatar>
+                     </div>
                      </a-upload>
                   </p>
                   
@@ -177,6 +180,13 @@
 import { Modal } from 'ant-design-vue'
 import zhCN from 'ant-design-vue/es/locale-provider/zh_CN'
 import china from '../js/china'
+
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
+
 export default {
    name: "Banner",
    computed: {
@@ -228,9 +238,12 @@ export default {
 			addText2:"",
 			mName:"",
 			mLocation:[],
-			mHome:"",
+         mHome:"",
+         
+         loading: false,
+         imageUrl: "",
 		};
-	},
+   },
 	methods: {
 		deleteMember(id){
 			this.$http.post(`/api/project/${this.$store.state.project.id}/user/remove`, { 
@@ -477,15 +490,30 @@ export default {
 
       //修改个人信息部分
       photoHandleChange(info) {
-         if (info.file.status !== 'uploading') {
-         console.log(info.file, info.fileList);
+         if (info.file.status === 'uploading') {
+            this.loading = true;
+            return;
          }
          if (info.file.status === 'done') {
-         this.$message.success(`${info.file.name} file uploaded successfully`);
-         } else if (info.file.status === 'error') {
-         this.$message.error(`${info.file.name} file upload failed.`);
+            // Get this url from response in real world.
+            getBase64(info.file.originFileObj, imageUrl => {
+            this.imageUrl = imageUrl;
+            this.loading = false;
+         });
          }
       },
+      beforeUpload(file) {
+      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+      if (!isJpgOrPng) {
+        this.$message.error('只能上传JPG或PNG格式的图片');
+      }
+      const isLt5M = file.size / 1024 / 1024 < 5;
+      if (!isLt5M) {
+        this.$message.error('图片不能超过5MB');
+      }
+      return isJpgOrPng && isLt5M;
+      },
+
       changeName() {
 			this.mName = this.name;
          this.changingName = 1;
@@ -629,4 +657,13 @@ export default {
    padding: 15px;
    float: right;
 }
+
+.avatar-uploader{
+  width: 50px;
+  height: 50px;
+}
+
+
+
+
 </style>

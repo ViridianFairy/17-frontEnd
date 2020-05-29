@@ -4,19 +4,19 @@
        <a-divider style="margin-top:10px"/>
       <div id="post">
           
-    <a-list item-layout="horizontal" :data-source="data">
+    <a-list item-layout="horizontal" :data-source="postdata"><!---->
     <a-list-item slot="renderItem" slot-scope="item">
       <a-list-item-meta
-        :description="item.post.content"
+        :description="item.content"
       >                            <!--//item.title-->
-        <a slot="title" href="">{{ item.post.user.username}}{{item.post.action}}</a>
+        <a slot="title" href="">{{item.user.username}}{{item.action}}</a>
         
         <a-avatar
           slot="avatar"
           
         />
       </a-list-item-meta>
-      <div style="margin-right:30px;font-size:12px">{{item.post.time}}</div>
+      <div style="margin-right:30px;font-size:12px">{{item.time}}</div>
     </a-list-item>
   </a-list>
   </div>
@@ -34,28 +34,6 @@
 </template>
 
 <script>
-const data = [
-  {
-    title: 'XXX创建了任务',
-    content:'任务名',
-  },
-  {
-    title: 'XXX更新了内容',
-    content:'XXXXXXXXXX内容',
-  },
-  {
-    title: 'XXX发表了评论',
-    content:'XXXXXXXXXX评论',
-  },
-  {
-    title: 'XXX更新了内容',
-    content:'XXXXXXXXXX内容',
-  },
-  {
-    title: 'XXX删除了任务',
-    content:'任务名',
-  },
-];
 export default {
    name: "Post",
 
@@ -63,15 +41,47 @@ export default {
    data() {
       return {
         num:0,
-        unit:{
+        /*unit:{
           action:'',
           content:'',
           user:null,
           time:null,
           link:''
         },
-        post:unit[100],
+        post:unit[100],*/
+        postdata:[{
+          action: "成为了管理员",
+          content: "AA",
+          link: "task:16",
+          time: "2020-05-13 00:36:13",
+          user: {
+          id: 3,
+          photo: null,
+          username: "用户03",
+          }
+        },
+        {
+          action: "成为了管理员",
+          content: "BB",
+          link: "task:16",
+          time: "2020-05-23 00:36:13",
+          user: {
+          id: 2,
+          photo: null,
+          username: "用户02",
+          }
+        }],
+        /*
+        action:['sda'],
+        content:['sadasda'],
+        user:[],
+        time:[],
+        link:[],
+        userid:[],
+        username:['sdasda'],
+        userphoto:[],
         project_id:1,
+        */
       };
    },
 
@@ -82,26 +92,41 @@ export default {
    methods:{
      getData:function(){
        var project_id=this.project_id;
-       this.$http.get(`/api/project/<project_id>/action`,{project_id})
+       this.$http.get(`/api/project/${this.$store.state.project.id}/action`,{params:{project_id:project_id}})
        .then(doc=>{
-          this.unit.action=doc.data.action;
-          this.unit.user=doc.data.user;
-          this.unit.content=doc.data.content;
-          this.unit.time=doc.data.time;
-          this.unit.link=doc.data.link;
-          this.post.push(this.unit);
-          alert(doc.data.content);
+          this.postdata=doc.data.data;
        }).catch(err=>{
 				this.$alert("未知错误", "false");  //服务器还没搭起来
-			})
-     /*this.num++;
-     function setData(num){
-        this.post[num].action=doc.data.action;
-        this.post[num].user=doc.data.user;
-        this.post[num].content=doc.data.content;
-        this.post[num].time=doc.data.time;
-        this.post[num].link=doc.data.link;
-     }*/
+      })
+      /*var i;
+      var action=[],
+        content=[],
+        user=[],
+        time=[],
+        link=[],
+        username=[],
+        userid=[],
+        userphoto=[];
+      for(i=0;i<this.postdata.length;i++){
+        action.push(this.postdata[i].action);
+        content.push(this.postdata[i].content);
+        user.push(this.postdata[i].user);
+        time.push(this.postdata[i].time);
+        link.push(this.postdata[i].link);
+      }
+      this.action=action;
+      this.content=content;
+      this.user=user;
+      this.time=time;
+      this.link=link;
+      for(i=0;i<this.user.length;i++){
+        userid.push(this.user[i].id);
+        username.push(this.user[i].username);
+        userphoto.push(this.user[i].photo);
+      }
+      this.username=username;
+      this.userid=userid;
+      this.userphoto=userphoto;*/
      }
      
    }

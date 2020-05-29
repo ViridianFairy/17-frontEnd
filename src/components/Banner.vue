@@ -495,23 +495,24 @@ export default {
             return;
          }
          if (info.file.status === 'done') {
-            // Get this url from response in real world.
             getBase64(info.file.originFileObj, imageUrl => {
-            this.imageUrl = imageUrl;
+            this.userInfo.photo = imageUrl;
             this.loading = false;
+            console.log(info.file);
          });
          }
       },
+
       beforeUpload(file) {
-      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-      if (!isJpgOrPng) {
-        this.$message.error('只能上传JPG或PNG格式的图片');
-      }
-      const isLt5M = file.size / 1024 / 1024 < 5;
-      if (!isLt5M) {
-        this.$message.error('图片不能超过5MB');
-      }
-      return isJpgOrPng && isLt5M;
+         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+         if (!isJpgOrPng) {
+         this.$message.error('只能上传JPG或PNG格式的图片');
+         }
+         const isLt5M = file.size / 1024 / 1024 < 5;
+         if (!isLt5M) {
+         this.$message.error('图片不能超过5MB');
+         }
+         return isJpgOrPng && isLt5M;
       },
 
       changeName() {

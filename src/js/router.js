@@ -12,6 +12,7 @@ import Chat from '../components/Chat'
 import Login from '../components/Login'
 import Register from '../components/Register'
 import Post from '../components/Post'
+import Member from '../components/Member'
 
 import Test from '../components/Test'
 Vue.use(VueRouter);
@@ -57,6 +58,14 @@ const routes = [
 			top: Banner,
          left: Options,
          right: ScheduleAdd,
+      }
+   },
+   {
+      path: "/member",
+      components: {
+			top: Banner,
+         left: Options,
+         right: Member,
       }
    },
    {

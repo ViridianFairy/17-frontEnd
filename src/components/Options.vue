@@ -11,6 +11,11 @@
         <span>任务面板</span>
       </a-menu-item>
 
+      <a-menu-item key="8"  @click="$router.push('/member')">
+        <a-icon type="team" />
+        <span>成员管理</span>
+      </a-menu-item>
+
       <a-menu-item key="2"  @click="$router.push('/post')">
         <a-icon type="bars" />
         <span>动态查看</span>
@@ -32,7 +37,7 @@
       </a-menu-item>
 
       <a-menu-item key="6" @click="$router.push('/chat')" disabled>
-        <a-icon type="team" />
+        <a-icon type="wechat" />
         <span>群组聊天</span>
       </a-menu-item>
 

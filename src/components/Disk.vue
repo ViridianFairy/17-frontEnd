@@ -330,12 +330,25 @@
          },
          refresh(first){
             // console.log(this.pos)
-            this.$http2
-            .post("/disk/getPublic",{
-               pos:this.pos,
-            })
+            this.$http.get(`/api/project/${this.$store.state.project.id}/file?path=${this.pos}`)
             .then(res => {
-               this.files = res.data.data;
+					var a = res.data.data
+					this.files = null;
+					console.log(a);
+					a.directory.forEach(v=>{
+						this.files.push({
+							name:v.filename,
+							isFile:false,
+							size:"",time:"",changeTime:"",
+						})
+					})
+					a.file.forEach(v=>{
+						this.files.push({
+							name:v.filename,
+							isFile:true,
+							size:v.size,time:"",changeTime:"",
+						})
+					})
                if(first){
                   this.choose = [];
                   this.files.forEach(()=>{

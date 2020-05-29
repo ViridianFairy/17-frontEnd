@@ -4,7 +4,7 @@
        <a-divider style="margin-top:10px"/>
       <div id="post">
           
-    <a-list item-layout="horizontal" :data-source="postdata"><!---->
+    <a-list item-layout="horizontal" :data-source="postData"><!---->
     <a-list-item slot="renderItem" slot-scope="item">
       <a-list-item-meta
         :description="item.content"

@@ -75,7 +75,10 @@ export default {
        var project_id=this.project_id;
        this.$http.get(`/api/project/${this.$store.state.project.id}/action`,{params:{project_id:project_id}})
        .then(doc=>{
-          this.postData=doc.data.data;
+			 if(doc.data.data)
+				 this.postData=doc.data.data;
+			else
+				this.postData=[];
        }).catch(err=>{
 				this.$alert("未知错误", "false");  //服务器还没搭起来
       })

@@ -333,7 +333,11 @@
             this.$http.get(`/api/project/${this.$store.state.project.id}/file?path=${this.pos}`)
             .then(res => {
 					var a = res.data.data
-					this.files = null;
+					this.files = [{
+						name:"aaa",
+							isFile:false,
+							size:"",time:"",changeTime:"",
+					}];
 					console.log(a);
 					a.directory.forEach(v=>{
 						this.files.push({

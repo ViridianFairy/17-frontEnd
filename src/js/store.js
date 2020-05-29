@@ -3,18 +3,21 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 const mutations = {
-   bannerReload(state, obj){
+	bannerReload(state, obj){
 		state.banner.name = obj.name
 	},
-   loginReload(state, bool){
+	loginReload(state, bool){
 		state.login = bool
 	},
-   projectReload(state, obj){
+	projectReload(state, obj){
 		state.project.id = obj.id
 		state.project.name = obj.name
 	},
-   memberUpdate(state, obj){
+	memberUpdate(state, obj){
 		state.member = obj
+	},
+	timReload(state, obj){
+		state.tim = obj;
 	},
 	userUpdate(state){
 		state.userUpdate++
@@ -22,24 +25,26 @@ const mutations = {
 	taskUpdate(state){
 		state.taskUpdate++
 	},
+
 }
 const state = {
-		banner:{
-			name:"未登录",
-			avatar:""
-		},
-		login:false,
-		userUpdate:0,
-		taskUpdate:0,
-		member:[],
-		project:{
-			id:"",
-			name:""
-		}
-   }
+	banner:{
+		name:"未登录",
+		avatar:""
+	},
+	login:false,
+	userUpdate:0,
+	taskUpdate:0,
+	member:[],
+	project:{
+		id:"",
+		name:""
+	},
+	tim: null,
+}
 const vuex = new Vuex.Store({
-   state,
+	state,
 	mutations,
-	
+
 });
 export default vuex;

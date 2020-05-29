@@ -216,9 +216,13 @@ const dataMember = [
   },
 ];
 import zhCN from 'ant-design-vue/es/locale-provider/zh_CN';
+import TIM from 'tim-js-sdk';
+// import COS from "cos-js-sdk-v5";
+
 export default {
     name: "Chat",
     components: {},
+
     data() {
         return {
             zhCN,
@@ -229,14 +233,55 @@ export default {
             createGroupVisible:false,
             mockData: [],
             targetKeys: [],
+            project_id: 0,
+            disabled: false
         };
     },
     mounted() {
       this.getMock();
+      this.timInit();
     },
     methods: {
-      onSearch(value) {
-        console.log(value);
+      timInit() {
+        if (this.project_id !== this.$store.state.project.id) {
+
+          this.$http
+                  .get(`/api/project/${this.$store.state.project.id}/chat/sig`, {})
+                  .then(doc => {
+                    var code = doc.data.status;
+                    var msg = doc.data.msg;
+                    if (code === 0) {
+                      let tim = this.$store.state.tim;
+                      let data = doc.data.data;
+                      if (tim === null) {
+                        tim = TIM.create({
+                          SDKAppID: data.app_id
+                        });
+                        tim.setLogLevel(0);
+                        // tim.registerPlugin({'cos-js-sdk': COS});
+                        this.$store.commit('timReload', tim);
+                      }
+                      this.logout();
+                      this.login(data.user_id, data.user_sig);
+                    }
+                  });
+        }
+      },
+      logout() {
+        let promise = this.$store.state.tim.logout();
+        promise.then(function(imResponse) {
+          console.log(imResponse.data); // 登出成功
+        }).catch(function(imError) {
+          console.warn('logout error:', imError);
+        });
+      },
+      login(user_id, user_sig) {
+        let promise = this.$store.state.tim.login({userID: user_id, userSig: user_sig});
+        promise.then(function(imResponse) {
+          console.log("im login success", imResponse.data); // 登录成功
+        }).catch(function(imError) {
+          console.warn('login error:', imError); // 登录失败的相关信息
+        });
       },
       callback(key) {
         console.log(key);

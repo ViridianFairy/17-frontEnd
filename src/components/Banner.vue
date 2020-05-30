@@ -126,9 +126,8 @@
                         action="http://47.99.132.18:9999/api/user/info/photo"
                         :headers="headers"
                         @change="photoHandleChange"
-                        
                      >
-                     <img v-if="imageUrl" :src="imageUrl" alt="avatar" style="width:60px;height:60px;border-radius:50%"/>
+                     <img v-if="image" :src="image" alt="avatar" style="width:60px;height:60px;border-radius:50%"/>
                      <div v-else>
                         <a-avatar :size="60" slot="avatar" :src="userInfo.photo"></a-avatar>
                      </div>
@@ -241,7 +240,7 @@ export default {
          mHome:"",
          
          loading: false,
-         imageUrl: "",
+         image: "",
 		};
    },
 	methods: {
@@ -495,14 +494,25 @@ export default {
             return;
          }
          if (info.file.status === 'done') {
-            getBase64(info.file.originFileObj, imageUrl => {
-            this.userInfo.photo = imageUrl;
+            getBase64(info.file.originFileObj, image => {
+            this.image = image;
+            this.userInfo.photo = image;
             this.loading = false;
-            console.log(info.file);
          });
          }
+         var image = this.image
+         console.log(info.file)
+         this.$http.post(`/api/user/info/photo`,image).then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+            if (code == 0) {
+               this.$alert(msg, "true");
+            } else {
+               this.$alert(msg, "false");
+            }
+            console.log(doc);
+         });
       },
-
       beforeUpload(file) {
          const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
          if (!isJpgOrPng) {

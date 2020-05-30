@@ -44,7 +44,10 @@
       <a-list-item-meta
       >                            <!--//item.title-->
         <a slot="title" href="" style="font-size:18px;color:gray">{{item.username}}
-          <a-icon @click="getMessage" type="eye" style="color:gray;fontSize:22px;margin-left:20px;vertical-align:bottom;margin-bottom:9px;"/></a>
+
+          <a-icon v-if="item.identity=='originator'" type="crown" style="color:gold;fontSize:22px;margin-left:25px;vertical-align:bottom;margin-bottom:9px;"/>
+        <a-icon v-if="item.identity=='admin'" type="sketch" style="color:#003366;fontSize:22px;margin-left:25px;vertical-align:bottom;margin-bottom:9px;"/>
+          <!--a-icon @click="getMessage" type="eye" style="color:gray;fontSize:22px;margin-left:10px;vertical-align:bottom;margin-bottom:9px;"/--></a>
           
         
         <a-avatar
@@ -55,11 +58,10 @@
         />
       </a-list-item-meta>
       
-      <div style="display:inline;margin-right:900px;font-size:12px">
+      <div style="display:inline;margin-right:30px;font-size:10px">
         
-        <a-icon v-if="item.identity=='originator'" type="crown" style="color:gold;fontSize:22px;margin-right:220px;vertical-align:bottom;margin-bottom:4.5px;"/>
-        <a-icon v-if="item.identity=='admin'" type="sketch" style="color:#003366;fontSize:22px;margin-right:250px;vertical-align:bottom;margin-bottom:4.5px;"/>
-      <a><a-icon @click="amendModal(item.identity,item.id)" v-if="item.identity!='originator'&&(identity=='admin'||identity=='originator')" type="setting" style="fontSize:25px;color:gray"/></a></div>
+        
+      <a><a-icon @click="amendModal(item.identity,item.id)" v-if="item.identity!='originator'&&(identity=='admin'||identity=='originator')" type="setting" style="fontSize:25px;color:gray;margin-right:50px"/></a></div>
     </a-list-item>
   </a-list>
     </div>    
@@ -86,6 +88,7 @@ export default {
       searchWay:'phone',
       identityType:'admin',
       memberNum:0,
+      isRouterAlive: true,
       memberData:[/*{
           id:1,
           username:'张三',
@@ -106,15 +109,25 @@ export default {
       },*/],
     };
   },
-   
+  
+  provide(){
+      return{
+        reload:this.reload
+      }
+  },
+
   mounted(){
     this.getMember()
   },
 
   methods:{
-    searchMember(){
-
+    reload(){
+          this.isRouterAlive = false,
+          this.$nextTick(function(){
+            this.isRouterAlive = true;
+          })
     },
+
     showConfirm(){//确认是否删除
       var a=confirm("确认移除该成员吗？");
        if(a){
@@ -151,7 +164,7 @@ export default {
             }
         })
     }
-    else if(this.identityType=='admin'){//身份为member
+    else if(this.identityType=='admin'){//身份为管理员
       this.$http.post(`/api/project/${this.$store.state.project.id}/admin/add`, { //添加管理员
         project_id: this.$store.state.project.id,
         id:this.nowId,
@@ -165,6 +178,7 @@ export default {
             }
         })
     }
+    this.reload();
       this.amendVisible=false;
     },
     identityChange(e){//单选设置身份按钮

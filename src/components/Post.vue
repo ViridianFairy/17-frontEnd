@@ -72,8 +72,7 @@ export default {
 
    methods:{
      getData:function(){
-       var project_id=this.project_id;
-       this.$http.get(`/api/project/${this.$store.state.project.id}/action`,{params:{project_id:project_id}})
+       this.$http.get(`/api/project/${this.$store.state.project.id}/action`,{params:{project_id:this.$store.state.project.id}})
        .then(doc=>{
 			 if(doc.data.data)
 				 this.postData=doc.data.data;

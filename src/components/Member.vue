@@ -10,7 +10,7 @@
     <a-list-item slot="renderItem" slot-scope="item">
       <a-list-item-meta
       >                            <!--//item.title-->
-        <a slot="title" :href="item.link" style="font-size:18px">{{item.name}}</a>
+        <a slot="title" href="" style="font-size:18px">{{item.username}}</a>
         
         <a-avatar
           slot="avatar"
@@ -28,21 +28,46 @@
 
 <script>
 export default {
-   name: "Post",
+  name: "Member",
 
-   components: {},
-   data() {
-      return {
-        memberData:[{
-            name:'张三',
-            identity:'manager',
-        }],
-      };
-   },
+  components: {},
+  data() {
+    return {
+      allData:[],
+      memberData:[{
+          id:1,
+          username:'张三',
+          identity:'manager',
+          photo:"",
+      }],
+    };
+  },
+   
+  mounted(){
+    this.getMember()
+  },
 
-   methods:{
-     
-    },
+  methods:{
+    getMember(){
+       this.$http.get(`/api/project/${this.$store.state.project.id}`,{params:{project_id:this.$store.state.project.id}})
+       .then(doc=>{
+        var code = doc.data.status;
+        var msg = doc.data.msg;
+				if (code == 0){
+			    if(doc.data.data)
+            this.allData=doc.data.data;
+          else
+            this.allData=[];
+          if(doc.data.data.member)
+            this.memberData=doc.data.data.member; 
+          else
+            this.memberData=[];
+        }
+       }).catch(err=>{
+				this.$alert("未知错误", "false");  //服务器还没搭起来
+      })
+    }
+  },
      
     
    

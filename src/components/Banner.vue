@@ -178,6 +178,7 @@
 import { Modal } from 'ant-design-vue'
 import zhCN from 'ant-design-vue/es/locale-provider/zh_CN'
 import china from '../js/china'
+// import { resolve } from 'dns';
 
 function getBase64(img, callback) {
   const reader = new FileReader();
@@ -342,6 +343,7 @@ export default {
          });
          //proj
 			this.$store.commit("projectReload", { id, name });
+			console.log("任务ID："+this.$store.state.project.id)
          store.setItem(this.$cookies.get("session"), id);
          setTimeout(() => {
             this.exchangeVisible = false;
@@ -588,7 +590,8 @@ export default {
          });
       },
       update() {
-         this.$http.get(`/api/user/info`).then(doc => {
+			var fetchProjectId = new Promise((resolve,reject)=>{
+				this.$http.get(`/api/user/info`).then(doc => {
             var code = doc.data.status;
             if (code == 0) {
                this.$store.commit("bannerReload", {
@@ -601,44 +604,48 @@ export default {
 							this.changeProject = doc.data.data;
 							var id = window.localStorage[this.$cookies.get("session")];
 							this.exchangeHandleOk(id)
+							resolve()
                   }
                });
-               
-               //console.log('已分发'+ doc.data.data.username)
             } else {
                this.$store.commit("bannerReload", {
                   name: "未登录"
                });
-               this.$store.commit("loginReload", false);
+					this.$store.commit("loginReload", false);
+					reject();
             }
 			});
-			this.$http.get(`/api/user/info`).then(doc => {
-            var code = doc.data.status;
-            var msg = doc.data.msg;
-            if (code == 0) {
-               this.userInfo = doc.data.data;
-            }
-			});
-			this.$http
-         .get(`/api/project/${this.$store.state.project.id}`, {
-				project_id:this.$store.state.project.id,
 			})
-         .then(doc => {
-            var code = doc.data.status;
-            var msg = doc.data.msg;
-				if (code == 0){
-					this.projectMember = doc.data.data.member
-					this.$store.commit("memberUpdate", this.projectMember);	
-				}			
-         })
+			fetchProjectId.then(()=>{
+				this.$http.get(`/api/user/info`).then(doc => {
+            	var code = doc.data.status;
+            	var msg = doc.data.msg;
+            	if (code == 0) {
+               	this.userInfo = doc.data.data;
+            	}
+				});
+				this.$http.get(`/api/project/${this.$store.state.project.id}`, {
+					project_id:this.$store.state.project.id,
+				}).then(doc => {
+         	   var code = doc.data.status;
+					var msg = doc.data.msg;
+					console.log("任务ID："+this.$store.state.project.id)
+					if (code == 0){
+						this.projectMember = doc.data.data.member
+						this.$store.commit("memberUpdate", this.projectMember);	
+					}			
+         	})
+			},()=>{})
       }
    },
    mounted() {
 		this.update();
-		
 	},
 	watch: {
-    	'$store.state.userUpdate': function () {
+		'$store.state.userUpdate': function () {
+			this.update();
+   	},
+		'$store.state.project.id': function () {
 			this.update();
    	}
    },

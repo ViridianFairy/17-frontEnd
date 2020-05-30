@@ -1,6 +1,9 @@
 <template>
    <div>
-      <div id="join-text">已加入项目</div>
+        <div id="add-button">
+            <a-button>新建项目</a-button>
+        </div>
+        <div id="join-text">已加入项目</div>
    </div>
 </template>
 
@@ -27,5 +30,9 @@ export default {
 #join-text{
     font-size: 20px;
     margin-top: 5%;
+}
+#add-button{
+    margin-right: 170px;
+    float: right;
 }
 </style>

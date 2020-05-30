@@ -32,7 +32,7 @@ export default {
       this.TopAndLeftHide()
    },
    watch: {
-      $router(to,from){
+      '$route.path'(to,from){
          this.TopAndLeftHide()
       }
    },

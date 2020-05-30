@@ -661,6 +661,7 @@ export default {
    padding: 15px;
 }
 #dropdown2 {
+   display: none;
    float: left;
    padding: 15px;
 }

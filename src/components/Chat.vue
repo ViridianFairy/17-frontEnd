@@ -234,17 +234,17 @@ export default {
             mockData: [],
             targetKeys: [],
             project_id: 0,
-            disabled: false
+            tim_disabled: true,
         };
     },
     mounted() {
       this.getMock();
-      this.timInit();
+      this.timLogin();
     },
     methods: {
-      timInit() {
+      timLogin() {
         if (this.project_id !== this.$store.state.project.id) {
-
+          this.tim_disabled = true;
           this.$http
                   .get(`/api/project/${this.$store.state.project.id}/chat/sig`, {})
                   .then(doc => {
@@ -254,18 +254,21 @@ export default {
                       let tim = this.$store.state.tim;
                       let data = doc.data.data;
                       if (tim === null) {
-                        tim = TIM.create({
-                          SDKAppID: data.app_id
-                        });
-                        tim.setLogLevel(0);
-                        // tim.registerPlugin({'cos-js-sdk': COS});
-                        this.$store.commit('timReload', tim);
+                        this.timInit(data.app_id)
                       }
                       this.logout();
                       this.login(data.user_id, data.user_sig);
                     }
                   });
         }
+      },
+      timInit(app_id) {
+        let tim = TIM.create({
+          SDKAppID: app_id
+        });
+        tim.setLogLevel(0);
+        // tim.registerPlugin({'cos-js-sdk': COS});
+        this.$store.commit('timReload', tim);
       },
       logout() {
         let promise = this.$store.state.tim.logout();
@@ -279,6 +282,7 @@ export default {
         let promise = this.$store.state.tim.login({userID: user_id, userSig: user_sig});
         promise.then(function(imResponse) {
           console.log("im login success", imResponse.data); // 登录成功
+          this.tim_disabled = false;
         }).catch(function(imError) {
           console.warn('login error:', imError); // 登录失败的相关信息
         });

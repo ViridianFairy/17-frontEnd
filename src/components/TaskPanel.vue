@@ -494,7 +494,7 @@ export default {
 					this.projectData = doc.data.data;
             // console.log(this.projectData)
 			});
-						this.$http
+			/*this.$http
          .get(`/api/project/${this.$store.state.project.id}`, {
 				project_id:this.$store.state.project.id,
 			})
@@ -506,7 +506,7 @@ export default {
 					this.$store.commit("memberUpdate", this.projectMember);	
 					
 				}			
-         })
+         })*/
       },
 
       ////后缀带clock的是提醒时间的弹窗

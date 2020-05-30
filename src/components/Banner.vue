@@ -582,6 +582,7 @@ export default {
             this.update();
             if (code == 0) {
                this.$alert(msg, "true");
+               this.$router.push('/login');
             } else {
                this.$alert(msg, "false");
             }

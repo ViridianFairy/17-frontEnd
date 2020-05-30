@@ -2,7 +2,7 @@
    <div id="wrapper">
       <img src="http://funx.pro/resource/junk/17logo.svg" />
 
-      <div id="dropdown1">
+      <div id="dropdown1" v-if="$route.path !== '/home'">
          <a-dropdown :trigger="['hover']" style="color:black">
             <a class="ant-dropdown-link" @click="e => e.preventDefault()" :disabled="!login">
                项目：{{login?projectName:'无'}}
@@ -166,6 +166,8 @@
 
                </a-modal>
             </a-menu-item>
+            <a-menu-divider v-if="login" />
+            <a-menu-item key="5" @click="$router.push('/home')">返回主界面</a-menu-item>
             <a-menu-divider v-if="login" />
             <a-menu-item key="1" style="color:red" @click="toExit" v-if="login">退出登录</a-menu-item>
             <a-menu-item key="3" style @click="toLogin" v-if="!login">登录</a-menu-item>
@@ -584,6 +586,7 @@ export default {
             this.update();
             if (code == 0) {
                this.$alert(msg, "true");
+               this.$router.push('/login');
             } else {
                this.$alert(msg, "false");
             }

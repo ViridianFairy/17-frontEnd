@@ -1,10 +1,10 @@
 <template>
    <div id="main-app">
-      <div id="top" class="top" v-if="isShow">
+      <div id="top" class="top" v-if="isTopShow">
          <router-view name="top"></router-view>
       </div>
       <div id="main-wrapper">
-         <div id="left" class="left" v-if="isShow">
+         <div id="left" class="left" v-if="isLeftShow">
             <router-view name="left"></router-view>
          </div>
          <div id="right">
@@ -33,7 +33,7 @@ export default {
    },
    watch: {
       '$route.path'(to,from){
-			console.log('path modified')
+			// console.log('path modified')
          this.TopAndLeftHide()
       }
    },
@@ -47,9 +47,16 @@ export default {
    methods: {
       TopAndLeftHide(){
          if (this.$route.path === '/login' || this.$route.path === '/register') {
-            this.isShow = false
-         } else {
-            this.isShow = true
+            this.isTopShow = false
+            this.isLeftShow = false
+         }
+         else if (this.$route.path === '/home') {
+            this.isTopShow = true
+            this.isLeftShow = false
+         } 
+         else {
+            this.isTopShow = true
+            this.isLeftShow = true
          }
       }
    },

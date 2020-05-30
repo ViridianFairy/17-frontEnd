@@ -22,7 +22,7 @@
 
 <script>
 export default {
-   name: "Login",
+   name: "Register",
    components: {},
    data() {
       return {
@@ -92,8 +92,8 @@ export default {
 	min-width: 300px;
     width: 30%;
     height: 100%;
-    margin: auto;
-    margin-top: 5%;
+    margin-left: calc((70% - 170px)/2);
+    margin-top: 2%;
     overflow: hidden;
     text-align: center;
 }

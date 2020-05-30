@@ -32,7 +32,8 @@ export default {
       this.TopAndLeftHide()
    },
    watch: {
-      $router(to,from){
+      '$route.path'(to,from){
+			console.log('path modified')
          this.TopAndLeftHide()
       }
    },
@@ -41,7 +42,7 @@ export default {
 		var account= 'pixiaojiang@gov.cn'
 		var password = '123456'
       this.$router.push({ path: '/login', query: {account,password} }).catch(()=>{})
-      console.log(this.$route.path)
+      // console.log(this.$route.path)
    },
    methods: {
       TopAndLeftHide(){

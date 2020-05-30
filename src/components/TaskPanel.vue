@@ -492,7 +492,7 @@ export default {
             var msg = doc.data.msg;
 				if (code == 0) 
 					this.projectData = doc.data.data;
-            console.log(this.projectData)
+            // console.log(this.projectData)
 			});
 						this.$http
          .get(`/api/project/${this.$store.state.project.id}`, {

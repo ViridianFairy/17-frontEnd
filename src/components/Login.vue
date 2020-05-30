@@ -63,7 +63,7 @@ export default {
 					this.$alert(msg,'false')
 					this.$store.commit('loginReload',false)
 				}
-				console.log(doc)
+				// console.log(doc)
 
 			})
 			function getFirstMsg(obj){

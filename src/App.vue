@@ -26,9 +26,9 @@ export default {
    },
 	created(){
 		//console.log(this.$store.state.banner.name)
-		var account= 'pixiaojiang@gov.cn'
-		var password = '123456'
-		this.$router.push({ path: '/login', query: {account,password} }).catch(()=>{})
+		/*var account= 'pixiaojiang@gov.cn'
+		var password = '123456'*/
+      //this.$router.push({ path: '/login', query: {account,password} }).catch(()=>{})
 	},
 };
 </script>

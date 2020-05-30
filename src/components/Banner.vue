@@ -40,8 +40,13 @@
                         >切换</a-button>
                      </template>
                      请选择要切至的项目：
-                     <a-radio-group v-model="value" @change="onGroupChange">
-                        <a-radio :key="i.id" :value="i.id" v-for="i in changeProject">{{i.name}}</a-radio>
+                     <br/>
+                     <a-radio-group v-model="value" @change="onGroupChange" style="margin-left:30%">
+                        <a-radio 
+                           :key="i.id" 
+                           :value="i.id" 
+                           :style='radioStyleGroupChange'
+                           v-for="i in changeProject">{{i.name}}</a-radio>
                      </a-radio-group>
                   </a-modal>
                </a-menu-item>
@@ -216,6 +221,7 @@ export default {
          value3: 1,
          newName: "",
          changeProject: [],
+         radioStyleGroupChange: {display: 'block',height: '30px',lineHeight: '30px',},
          userInfo: { photo: "", email: "", website: "", location: "" },
          memberVisible: false,
          addMemberVisible: false,
@@ -308,7 +314,7 @@ export default {
          this.$http.post(`/api/project`, { name: this.newName }).then(doc => {
             var code = doc.data.status;
             var msg = doc.data.msg;
-            if (code != 0) {
+            if (code !== 0) {
                this.$alert(msg, "false");
                this.createLoading = false;
             } else {
@@ -379,7 +385,8 @@ export default {
 						else
 							self.$alert(msg,'false')
 						self.$store.commit("taskUpdate");
-         		})
+               })
+               self.$router.push('/home');
             },
             onCancel() {
                console.log("Cancel");

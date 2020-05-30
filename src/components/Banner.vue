@@ -52,9 +52,6 @@
          </a-dropdown>
       </div>
 
-
-
-
       <div id="dropdown2">
          <a-dropdown :trigger="['hover']" style="color:black">
             <a class="ant-dropdown-link" @click="e => e.preventDefault()" :disabled="!login">
@@ -166,8 +163,8 @@
 
                </a-modal>
             </a-menu-item>
-            <a-menu-divider v-if="login" />
-            <a-menu-item key="5" @click="$router.push('/home')">返回主界面</a-menu-item>
+            <a-menu-divider v-if="login" v-show="$route.path !== '/home'" />
+            <a-menu-item key="5" @click="$router.push('/home')" v-if="$route.path !== '/home'">返回主界面</a-menu-item>
             <a-menu-divider v-if="login" />
             <a-menu-item key="1" style="color:red" @click="toExit" v-if="login">退出登录</a-menu-item>
             <a-menu-item key="3" style @click="toLogin" v-if="!login">登录</a-menu-item>

@@ -179,6 +179,7 @@ export default {
 
   mounted(){
     this.getMember()
+    this.update();
   },
 
   methods:{
@@ -188,6 +189,7 @@ export default {
       },
 
     reload(){
+      this.update();
           this.isRouterAlive = false,
           this.$nextTick(function(){
             this.isRouterAlive = true;
@@ -244,9 +246,23 @@ export default {
             }
         })
     }
-    //this.reload();//第一种刷新
-    this.$router.go(0);//第二种刷新
-      this.amendVisible=false;
+    this.reload();//第一种刷新
+    this.update();
+    this.amendVisible=false;
+    },
+    update(){
+      this.$http
+          .get(`/api/project/${this.$store.state.project.id}`, {
+          project_id:this.$store.state.project.id,
+        })
+          .then(doc => {
+              var code = doc.data.status;
+              var msg = doc.data.msg;
+          if (code == 0){
+            this.memberData = doc.data.data.member
+            this.$store.commit("memberUpdate", this.memberData);	
+          }			
+          })
     },
     identityChange(e){//单选设置身份按钮
       this.identityType=e.target.value;

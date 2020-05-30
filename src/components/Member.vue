@@ -58,7 +58,7 @@
       <div style="display:inline;margin-right:900px;font-size:12px">
         
         <a-icon v-if="item.identity=='originator'" type="crown" style="color:gold;fontSize:22px;margin-right:220px;vertical-align:bottom;margin-bottom:4.5px;"/>
-        <a-icon v-if="item.identity=='admin'" type="sketch" style="color:#003366;fontSize:22px;margin-right:260px;vertical-align:bottom;margin-bottom:4.5px;"/>
+        <a-icon v-if="item.identity=='admin'" type="sketch" style="color:#003366;fontSize:22px;margin-right:250px;vertical-align:bottom;margin-bottom:4.5px;"/>
       <a><a-icon @click="amendModal(item.identity,item.id)" v-if="item.identity!='originator'&&(identity=='admin'||identity=='originator')" type="setting" style="fontSize:25px;color:gray"/></a></div>
     </a-list-item>
   </a-list>
@@ -85,7 +85,7 @@ export default {
       identity:"originator",//登录者的身份
       searchWay:'phone',
       identityType:'admin',
-      memberNum:3,
+      memberNum:0,
       memberData:[/*{
           id:1,
           username:'张三',
@@ -139,6 +139,20 @@ export default {
     okMessage(){//设置成员信息
     if(this.identityType=='member'){//身份为member
       this.$http.post(`/api/project/${this.$store.state.project.id}/admin/remove`, { //删除管理员
+        project_id: this.$store.state.project.id,
+        id:this.nowId,
+      }).then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+            if (code == 0) {
+          this.$alert(msg, "true");
+            } else {
+              this.$alert(msg, "false");
+            }
+        })
+    }
+    else if(this.identityType=='admin'){//身份为member
+      this.$http.post(`/api/project/${this.$store.state.project.id}/admin/add`, { //添加管理员
         project_id: this.$store.state.project.id,
         id:this.nowId,
       }).then(doc => {

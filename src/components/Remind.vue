@@ -15,7 +15,43 @@
   </a-list>
        </div>
        <div id="right1">
-           <div id="more">
+           <div id="more1" v-if="this.messageType=='schedule'">
+           <!--日程部分-->
+           <div id="iconleft">
+            <a-icon type="edit" style="fontSize:22px;color:gray;vertical-align:middle;margin:15px;margin-bottom:20px"/>日程内容
+            <a-icon type="user" style="fontSize:22px;color:gray;vertical-align:middle;margin:15px;margin-bottom:20px"/>发起人
+            <a-icon type="calendar" style="fontSize:22px;color:gray;margin:15px;vertical-align:middle;margin-bottom:20px"/>设置时间
+            <a-icon type="clock-circle" style="fontSize:22px;color:gray;margin:15px;vertical-align:middle;margin-bottom:16px"/>提醒时间
+            <a-icon type="pushpin" style="fontSize:22px;color:gray;margin:15px;vertical-align:middle;margin-bottom:16px"/>备注
+            <a-icon type="tag" style="fontSize:22px;color:gray;margin:15px;vertical-align:middle;margin-bottom:20px;"/>标签
+        </div>
+
+        <div id="contentright1">
+        <a-input placeholder="日程内容" style="width:400px;" v-model="scheName" disabled/>
+        <a-input placeholder="发起人" style="margin-top:25px;width:400px;" v-model="scheCreator" disabled/>
+        <a-date-picker style="margin-top:25px;width:400px" :defaultValue="moment(this.t_set)" disabled/>
+        <a-date-picker style="margin-top:23px;width:400px" :defaultValue="moment(this.t_remind)" disabled/>
+            
+        <a-input v-model="scheRemarks" disabled style="margin-top:23px;width:400px"/>
+        <p></p>
+        <div id="tags">
+                <div>
+                <template v-for="(tag) in scheLabel">
+                <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
+                <a-tag :key="tag">
+                {{ `${tag.slice(0, 20)}...` }}
+                </a-tag>
+            </a-tooltip>
+            <a-tag v-else :key="tag" color="#003366" style="font-size:15px;text-align:center;height:25px;margin-top:10px" @close="() => handleClose(tag)">
+                {{ tag }}
+            </a-tag>
+            </template>   
+        </div>      
+        </div>    
+    </div>   
+    </div>
+           <!--任务部分-->
+           <div id="more" v-if="this.messageType=='task'">
                      <div id="contextleft">
                   <p>
 						
@@ -122,7 +158,7 @@ export default {
     data() {
         return {
             defaultChecked:false,
-            remindData:[{
+            remindData:[/*{
                 name: "任务3",
                 t_remind: "2020-05-30 21:00:00",
                 type: "task:22"
@@ -130,8 +166,8 @@ export default {
             {
                 name: "日程4",
                 t_remind: "2020-05-30 21:00:00",
-                type: "schdule:22"
-            }],
+                type: "schedule:22"
+            }*/],
             messageType:"",
             messageId:1,
             taskData:null,
@@ -141,36 +177,49 @@ export default {
             taskRemarks:"",
             t_begin:null,
             t_end:null,
+            scheAllData:[],
+            scheData:null,
+            scheName:"",
+            scheLabel:[],
+            scheRemarks:"",
+            t_remind:null,
+            t_set:null,
+            scheCreator:"",
         };
     },
     mounted() {
-      //this.getData();
-      this.getTaskData();
+      this.getData();
     },
     methods: {
         moment,
-        handleClose(removedTag) {
-            const tags = this.tags.filter(tag => tag !== removedTag);
-            console.log(tags);
-            this.tags = tags;
-        },
         showDetails(type){
             var a=type.split(':');
             this.messageType=a[0];
             this.messageId=parseInt(a[1]);
-            if(this.messageType=='task'){//显示任务详情
-                if(document.getElementById("right1").style.display=="block")
-                    document.getElementById("right1").style.display="none";
-                else
-                    document.getElementById("right1").style.display="block"
+            if(document.getElementById("right1").style.display=="block"){
+                document.getElementById("right1").style.display="none";
+                /*if(this.messageType=='schedule'){
+                    document.getElementById("more").style.display="none";
+                    document.getElementById("more1").style.display="block";
+                }
+                else{
+                    document.getElementById("more1").style.display="none";
+                    document.getElementById("more").style.display="block";
+                } */                  
+            }               
+            else{
+                document.getElementById("right1").style.display="block";               
             }
+            this.getTaskData();
+            this.getScheData();
             console.log(this.messageType);
         },
         getData:function(){
             this.$http.get(`/api/project/${this.$store.state.project.id}/remind`,{params:{project_id:this.$store.state.project.id}})
             .then(doc=>{
-                    if(doc.data.data)
-                        this.remindData=doc.data.data;
+                    if(doc.data.data){
+                        this.remindData=doc.data.data;                    
+                    }
                     else
                         this.remindData=[];
             }).catch(err=>{
@@ -181,21 +230,46 @@ export default {
             this.$http.get(`/api/project/${this.$store.state.project.id}/task/info?id=${this.messageId}`,
             {params:{project_id:this.$store.state.project.id,task_id:this.messageId}})
             .then(doc=>{
-                    if(doc.data.data)
+                    if(doc.data.data){
                         this.taskData=doc.data.data;
+                        this.defaultChecked=this.taskData.finish;
+                        this.taskRemarks=this.taskData.remarks;
+                        this.taskPriority=this.taskData.priority;
+                        this.t_begin=this.taskData.t_begin;
+                        this.t_end=this.taskData.t_end;
+                        this.taskLabel=this.taskData.label;
+                        this.taskPhoto=this.taskData.originator.photo;     
+                    }                  
                     else
                         this.taskData=null;
             }).catch(err=>{
                         this.$alert("未知错误", "false");  //服务器还没搭起来
-            })
-            this.defaultChecked=this.taskData.finish;
-            this.taskRemarks=this.taskData.remarks;
-            this.taskPriority=this.taskData.priority;
-            this.t_begin=this.taskData.t_begin;
-            this.t_end=this.taskData.t_end;
-            this.taskLabel=this.taskData.label;
-            this.taskPhoto=this.taskData.originator.photo;
-            
+            })                
+        },
+        getScheData:function(){
+            this.$http.get(`/api/project/${this.$store.state.project.id}/schedule`,
+            {params:{project_id:this.$store.state.project.id}})
+            .then(doc=>{
+                    if(doc.data.data){
+                        this.scheAllData=doc.data.data;
+                        for(var i=0;i<this.scheAllData.length;i++){
+                            if(this.scheAllData[i].id==this.messageId){
+                                this.scheData=this.scheAllData[i];
+                                break;
+                            }
+                        }                              
+                        this.scheName=this.scheData.content;
+                        this.scheRemarks=this.scheData.remarks;
+                        this.scheLabel=this.scheData.label;
+                        this.t_remind=this.scheData.t_remind;
+                        this.t_set=this.scheData.t_set;
+                        this.scheCreator=this.taskData.creator.username; 
+                    }                       
+                    else
+                        this.scheAllData=[];
+            }).catch(err=>{
+                        this.$alert("未知错误", "false");  //服务器还没搭起来
+            })                      
         },
     }
 };
@@ -204,9 +278,24 @@ export default {
 
 
 <style scoped>
+#contentright1{
+   width: 500px;
+   height: 300px;
+   margin-top:12px ;
+}
 #more{
     display: flex;
 }
+#more1{
+    display: flex;
+    
+}
+#iconleft{
+   margin-left: 0px;
+   width: 120px;
+   color:gray;
+}
+
 .em1 {
    font-style: normal;
    font-size: 16px;

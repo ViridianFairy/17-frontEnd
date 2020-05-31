@@ -40,8 +40,13 @@
                         >切换</a-button>
                      </template>
                      请选择要切至的项目：
-                     <a-radio-group v-model="value" @change="onGroupChange">
-                        <a-radio :key="i.id" :value="i.id" v-for="i in changeProject">{{i.name}}</a-radio>
+                     <br/>
+                     <a-radio-group v-model="value" @change="onGroupChange" style="margin-left:30%">
+                        <a-radio 
+                           :key="i.id" 
+                           :value="i.id" 
+                           :style='radioStyleGroupChange'
+                           v-for="i in changeProject">{{i.name}}</a-radio>
                      </a-radio-group>
                   </a-modal>
                </a-menu-item>
@@ -51,9 +56,6 @@
             </a-menu>
          </a-dropdown>
       </div>
-
-
-
 
       <div id="dropdown2">
          <a-dropdown :trigger="['hover']" style="color:black">
@@ -166,8 +168,8 @@
 
                </a-modal>
             </a-menu-item>
-            <a-menu-divider v-if="login" />
-            <a-menu-item key="5" @click="$router.push('/home')">返回主界面</a-menu-item>
+            <a-menu-divider v-if="login" v-show="$route.path !== '/home'" />
+            <a-menu-item key="5" @click="$router.push('/home')" v-if="$route.path !== '/home'">返回主界面</a-menu-item>
             <a-menu-divider v-if="login" />
             <a-menu-item key="1" style="color:red" @click="toExit" v-if="login">退出登录</a-menu-item>
             <a-menu-item key="3" style @click="toLogin" v-if="!login">登录</a-menu-item>
@@ -219,6 +221,7 @@ export default {
          value3: 1,
          newName: "",
          changeProject: [],
+         radioStyleGroupChange: {display: 'block',height: '30px',lineHeight: '30px',},
          userInfo: { photo: "", email: "", website: "", location: "" },
          memberVisible: false,
          addMemberVisible: false,
@@ -311,7 +314,7 @@ export default {
          this.$http.post(`/api/project`, { name: this.newName }).then(doc => {
             var code = doc.data.status;
             var msg = doc.data.msg;
-            if (code != 0) {
+            if (code !== 0) {
                this.$alert(msg, "false");
                this.createLoading = false;
             } else {
@@ -382,7 +385,8 @@ export default {
 						else
 							self.$alert(msg,'false')
 						self.$store.commit("taskUpdate");
-         		})
+               })
+               self.$router.push('/home');
             },
             onCancel() {
                console.log("Cancel");

@@ -41,7 +41,7 @@
         <span>群组聊天</span>
       </a-menu-item>
 
-      <a-menu-item key="7" disabled>
+      <a-menu-item key="7" @click="$router.push('/remind')">
         <a-icon type="bell" />
         <span>消息通知</span>
       </a-menu-item>

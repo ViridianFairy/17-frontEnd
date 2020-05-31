@@ -24,7 +24,8 @@ export default {
    components: { top, left },
    data() {
       return {
-         isShow: true,
+         isTopShow: true,
+         isLeftShow: true,
          router: 0,
       };
    },

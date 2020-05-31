@@ -14,6 +14,7 @@ import Register from '../components/Register'
 import Post from '../components/Post'
 import Member from '../components/Member'
 import Home from '../components/Home'
+import Remind from '../components/Remind'
 
 import Test from '../components/Test'
 const routerPush = VueRouter.prototype.push
@@ -65,6 +66,14 @@ const routes = [
          right: ScheduleAdd,
       }
    },
+   {
+      path: "/remind",
+      components: {
+			top: Banner,
+         left: Options,
+         right: Remind,
+      }
+	},
    {
       path: "/member",
       components: {

@@ -21,14 +21,15 @@
   </a-list>
   </div>
   <a-divider style="margin-top:0px"/>
-  <div id="send">
+  <!--消息框-->
+  <!--div id="send">
       <a-textarea v-model="postValue" placeholder="@提及他人" id="postContent" :rows="5" style="font-size:15px;margin-top:-25px;width:1700px"/>
     <a style="color:gray"><a-icon type="link" style="font-size:23px;margin-left:25px;margin-top:10px"/></a>
     <a style="color:gray"><a-icon type="smile" style="font-size:23px;margin-left:20px;margin-bottom:-6px"/></a>
     <a-button type="link" @click="postSomething" style="font-size:18px;float:right;margin-top:0px;margin-right:10px">
       发布
     </a-button>
-  </div>
+  </div-->
 </div>
   
 </template>
@@ -129,7 +130,7 @@ export default {
 
 #post{
     margin-left:40px;
-    height: 340px;
+    height:550px;
     overflow-y: scroll;
     margin-top:-25px;
 }

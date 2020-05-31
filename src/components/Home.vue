@@ -18,6 +18,23 @@
         </div>
         
         <div id="join-text">已加入项目</div>
+
+        <br/><br/>
+
+        <div id="group-content">
+            <a-card 
+                style="width:24%; 
+                    display:inline-block; 
+                    height:80px; 
+                    margin:5px;
+                    background-color:rgb(250, 248, 248)"
+                :key="i.id" 
+                :value="i.id" 
+                @click="enterProject"
+                v-for="i in Project">{{i.name}}
+            </a-card>
+        </div>
+
    </div>
 </template>
 
@@ -30,31 +47,48 @@ export default {
         createVisible: false,
         createLoading: false,
         newName: "",
+        Project:[],
       };
-	},
-   mounted(){
-   },
-   methods: {
-    showCreateModal() {
-        this.createVisible = true;
     },
-    createHandleOk(e) {
-        this.createLoading = true;
-        this.$http.post(`/api/project`, { name: this.newName }).then(doc => {
-            var code = doc.data.status;
-            var msg = doc.data.msg;
-            if (code != 0) {
-               this.$alert(msg, "false");
-               this.createLoading = false;
-            } else {
-               this.createVisible = false;
-               this.createLoading = false;
-            }
-        });
+    mounted(){
+        this.showName()
     },
-    createHandleCancel(e) {
-        this.createVisible = false;
-    },
+    methods: {
+        //新建项目部分
+        showCreateModal() {
+            this.createVisible = true;
+        },
+        createHandleOk(e) {
+            this.createLoading = true;
+            this.$http.post(`/api/project`, { name: this.newName }).then(doc => {
+                var code = doc.data.status;
+                var msg = doc.data.msg;
+                if (code != 0) {
+                this.$alert(msg, "false");
+                this.createLoading = false;
+                } else {
+                this.createVisible = false;
+                this.createLoading = false;
+                }
+            });
+        },
+        createHandleCancel(e) {
+            this.createVisible = false;
+        },
+        
+        //显示加入的项目
+        showName(){
+            this.$http.get(`/api/user/project`).then(doc => {
+                console.log(doc);
+                var code = doc.data.status;
+                var msg = doc.data.msg;
+                this.Project = doc.data.data;
+            });
+        },
+
+        enterProject(){
+
+        },
    },
 };
 </script>
@@ -69,5 +103,12 @@ export default {
 #add-button{
     margin-right: 170px;
     float: right;
+}
+#group-content{
+    text-align: center;
+    margin-right: 170px;
+
+    display: flex;
+    flex-wrap: wrap;
 }
 </style>

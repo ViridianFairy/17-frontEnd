@@ -102,8 +102,8 @@
     <a-list-item slot="renderItem" slot-scope="item">
       <a-list-item-meta
       >                            <!--//item.title-->
-        <p slot="title" @click="showInfoModal(item.id)" style="font-size:18px;color:gray;margin-top:-5px">{{item.username}}
-
+        <p v-if="item.identity=='originator'||item.identity=='admin'" slot="title" @click="showInfoModal(item.id)" style="font-size:18px;color:gray;margin-top:-5px">{{item.username}}
+        
           <a-icon v-if="item.identity=='originator'" type="crown" style="color:gold;fontSize:22px;margin-left:25px;vertical-align:bottom;margin-top:16px;"/>
         <a-icon v-if="item.identity=='admin'" type="sketch" style="color:#003366;fontSize:22px;margin-left:25px;vertical-align:bottom;margin-top:16px;"/>
           <!--a-icon @click="getMessage" type="eye" style="color:gray;fontSize:22px;margin-left:10px;vertical-align:bottom;margin-bottom:9px;"/-->
@@ -116,7 +116,18 @@
           <em v-if="item.website!=null&&item.website!=''" style="font-size:17px;color:gray;font-style:normal;margin-left:20px">
             个人网页：{{item.website}}
           </em>
-          </p>      
+          </p>
+          <p v-if="item.identity=='member'" slot="title" @click="showInfoModal(item.id)" style="font-size:18px;color:gray;margin-top:6.5px">{{item.username}}   
+            <em v-if="item.location!=null&&item.location!=''" style="font-size:17px;color:gray;font-style:normal;margin-left:20px">           
+            地址：{{item.location}}
+          </em>
+          <em v-if="item.tel!=null&&item.tel!=''" style="font-size:17px;color:gray;font-style:normal;margin-left:20px">  
+            电话：{{item.tel}}
+          </em>
+          <em v-if="item.website!=null&&item.website!=''" style="font-size:17px;color:gray;font-style:normal;margin-left:20px">
+            个人网页：{{item.website}}
+          </em>
+          </p>       
         <a-avatar
           slot="avatar"
           :src="item.photo"
@@ -125,7 +136,7 @@
         />
       </a-list-item-meta>
       
-      <div style="display:inline;margin-right:30px;font-size:10px">
+      <div style="margin-top:-7px;margin-right:30px;font-size:10px">
         
         
       <a><a-icon @click="amendModal(item.identity,item.id)" v-if="item.identity!='originator'&&(identity=='admin'||identity=='originator')" type="setting" style="fontSize:25px;color:gray;margin-right:50px"/>

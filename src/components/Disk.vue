@@ -385,8 +385,8 @@
             var formData = new FormData()
             this.fileName = e.target.files[0].name
             formData.append('file', e.target.files[0])
-               formData.append('name', e.target.files[0].name)
-               formData.append('pos', this.pos)
+            formData.append('name', e.target.files[0].name)
+            // formData.append('pos', this.pos)
             this.$alert(`开始上传文件`,'tiny-overload',{x:e.pageX, y:e.pageY})
             var config = {
                headers: { 'Content-Type': 'multipart/form-data' }

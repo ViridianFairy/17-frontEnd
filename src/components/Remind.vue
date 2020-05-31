@@ -14,7 +14,7 @@
     </a-list-item>
   </a-list>
        </div>
-       <div id="right1">
+       <div id="right1" v-if="rightShow">
            <div id="more1" v-if="this.messageType=='schedule'">
            <!--日程部分-->
            <div id="iconleft">
@@ -157,8 +157,9 @@ export default {
     components: {},
     data() {
         return {
+			  rightShow:false,
             defaultChecked:false,
-            remindData:[/*{
+            remindData:[{
                 name: "任务3",
                 t_remind: "2020-05-30 21:00:00",
                 type: "task:22"
@@ -167,7 +168,7 @@ export default {
                 name: "日程4",
                 t_remind: "2020-05-30 21:00:00",
                 type: "schedule:22"
-            }*/],
+            }],
             messageType:"",
             messageId:1,
             taskData:null,
@@ -195,21 +196,8 @@ export default {
         showDetails(type){
             var a=type.split(':');
             this.messageType=a[0];
-            this.messageId=parseInt(a[1]);
-            if(document.getElementById("right1").style.display=="block"){
-                document.getElementById("right1").style.display="none";
-                /*if(this.messageType=='schedule'){
-                    document.getElementById("more").style.display="none";
-                    document.getElementById("more1").style.display="block";
-                }
-                else{
-                    document.getElementById("more1").style.display="none";
-                    document.getElementById("more").style.display="block";
-                } */                  
-            }               
-            else{
-                document.getElementById("right1").style.display="block";               
-            }
+				this.messageId=parseInt(a[1]);
+				if(!this.rightShow) this.rightShow = true;
             this.getTaskData();
             this.getScheData();
             console.log(this.messageType);
@@ -218,7 +206,7 @@ export default {
             this.$http.get(`/api/project/${this.$store.state.project.id}/remind`,{params:{project_id:this.$store.state.project.id}})
             .then(doc=>{
                     if(doc.data.data){
-                        this.remindData=doc.data.data;                    
+                        //this.remindData=doc.data.data;                    
                     }
                     else
                         this.remindData=[];
@@ -321,7 +309,7 @@ export default {
 #right1{
     margin-left:600px;
     width:800px;
-    display: none;
+    display: block;
     margin-top:-150px;
 }
 #left1{

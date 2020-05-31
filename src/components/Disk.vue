@@ -333,12 +333,12 @@
             this.$http.get(`/api/project/${this.$store.state.project.id}/file?path=${this.pos}`)
             .then(res => {
 					var a = res.data.data
+					console.log(res)
 					this.files = [{
 						name:"aaa",
 							isFile:false,
 							size:"",time:"",changeTime:"",
 					}];
-					console.log(a);
 					a.directory.forEach(v=>{
 						this.files.push({
 							name:v.filename,
@@ -378,12 +378,14 @@
             this.$alert(`开始上传文件`,'tiny-overload',{x:e.pageX, y:e.pageY})
             var config = {
                headers: { 'Content-Type': 'multipart/form-data' }
-            }
-            this.$http.post(`/api/project/${this.$store.state.project.id}/file`,{
+				}
+				var obj = {
 					project_id:this.$store.state.project.id,
-					path:this.pos,
+					path:'/',
 					file:formData,
-				}, config ).then(doc=>{
+				}
+				console.log(obj)
+            this.$http.post(`/api/project/${this.$store.state.project.id}/file`,obj, config ).then(doc=>{
                var code = doc.data.status;
 					var msg = doc.data.msg;
 					console.log(msg)	

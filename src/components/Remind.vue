@@ -1,6 +1,6 @@
 <template>
     <div id="wrapper">
-       <p style="margin-left:35px;margin-top:25px;font-size:25px" >全部通知</p>
+       <p style="margin-left:50px;margin-top:25px;font-size:25px" >全部通知</p>
        <a-divider style="margin-top:10px"/>
     <div id="all">
        <div id="left1">
@@ -128,9 +128,9 @@ export default {
                 type: "task:22"
             },
             {
-                name: "任务4",
+                name: "日程4",
                 t_remind: "2020-05-30 21:00:00",
-                type: "task:22"
+                type: "schdule:22"
             }],
             messageType:"",
             messageId:1,
@@ -158,6 +158,12 @@ export default {
             var a=type.split(':');
             this.messageType=a[0];
             this.messageId=parseInt(a[1]);
+            if(this.messageType=='task'){//显示任务详情
+                if(document.getElementById("right1").style.display=="block")
+                    document.getElementById("right1").style.display="none";
+                else
+                    document.getElementById("right1").style.display="block"
+            }
             console.log(this.messageType);
         },
         getData:function(){
@@ -221,16 +227,19 @@ export default {
     margin-top:9.5px;
 }
 #all{
-    display: flex;
+    margin-top:50px;
 }
 #right1{
-    margin-left:100px;
-    width:850px;
+    margin-left:600px;
+    width:800px;
+    display: none;
+    margin-top:-150px;
 }
 #left1{
     margin-top:10px;
-    margin-left:40px;
+    margin-left:50px;
     width:400px;
+    border:1px solid LightGrey;
 }
 .ant-list-item-meta-title > a {
     color: rgba(0, 0, 0, 0.65);

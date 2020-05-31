@@ -25,12 +25,11 @@
             <a-card 
                 style="width:24%; 
                     display:inline-block; 
-                    height:80px; 
                     margin:5px;
                     background-color:rgb(250, 248, 248)"
-                :key="i.id" 
-                :value="i.id" 
-                @click="enterProject"
+                :key="i.id"
+                :hoverable="true"
+                @click="enterProject(i.id)"
                 v-for="i in Project">{{i.name}}
             </a-card>
         </div>
@@ -51,7 +50,10 @@ export default {
       };
     },
     mounted(){
-        this.showName()
+        this.showName();
+        this.update();
+    },
+    computed:{
     },
     methods: {
         //新建项目部分
@@ -86,10 +88,28 @@ export default {
             });
         },
 
-        enterProject(){
-
+        //进入项目
+        enterProject(id){
+            console.log("checked", id);
+            var store = window.localStorage;
+            this.Project.forEach(i => {
+                if (i.id == id) name = i.name;
+            });
+            //未完成
+            //this.$store.commit("projectReload", { id, name });
+			//console.log("任务ID："+this.$store.state.project.id)
+            store.setItem(this.$cookies.get("session"), id);
         },
-   },
+
+        update() {
+		
+        },
+    },
+    watch: {
+		'$store.state.project.id': function () {
+			this.update();
+   	    }
+    },
 };
 </script>
 

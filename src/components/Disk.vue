@@ -46,7 +46,7 @@
                 <img @click="share($event,[])" class="oper-img" src="../assets/Disk/分享.svg" draggable='false'>&nbsp;
             </span>
             </th>
-            <th>大小</th><th>最后修改</th><th>操作</th></tr>
+            <th>大小</th><th>上传者</th><th>操作</th></tr>
          <tbody is="transition-group" :name="transName"  mode="out-in">
             <tr class="files" v-for="(item,index) in files" :key="item.name+item.time" @dblclick="explore(item,index)">
                <td class="format">
@@ -332,6 +332,7 @@
             // console.log(this.pos)
             this.$http.get(`/api/project/${this.$store.state.project.id}/file?path=${this.pos}`)
             .then(res => {
+					
 					var a = res.data.data
 					console.log(res)
 					this.files = [{
@@ -361,7 +362,18 @@
                }else{
                   this.choose.unshift(0)
                }
-            })
+				})
+				function formatSize(a){
+					var realSize = Math.ceil(a/1024)
+               if(realSize >= 1024){
+                  realSize /= 1024
+                  realSize = realSize.toFixed(2)
+                  realSize += ' MB'
+               }else{
+                  realSize += ' KB'
+					}
+					return realSize
+				}
          },
          getFiles(e) {
             e.preventDefault();

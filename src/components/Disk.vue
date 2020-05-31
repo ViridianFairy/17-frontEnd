@@ -216,7 +216,7 @@
                   if(this.renameId==-1) return;
                   this.renameId = -1;
                   if(this.files[index].name==this.renameData) return;
-                  this.$http2
+                  this.$http
                   .post("/disk/rename",{
                      pos:this.pos, name:this.files[index].name, isFile:this.files[index].isFile ,rename:this.renameData
                   }).then(res => {
@@ -229,7 +229,7 @@
             })
          },
          createFold(){
-            this.$http2
+            this.$http
             .post("/disk/createFold",{
                pos:this.pos,
             })
@@ -244,7 +244,7 @@
          },
          delet(index){
 
-            this.$http2
+            this.$http
             .post("/disk/delete",{
                pos:this.pos,
                name:this.files[index].name,
@@ -379,14 +379,17 @@
             var config = {
                headers: { 'Content-Type': 'multipart/form-data' }
             }
-            this.$http2.post('/disk/uploadPublic', formData, config ).then(res=>{
-               if(res.data.success==1){
-                  this.refresh()
-                  console.log('成功')
-                  this.$alert("上传成功！","true-overload");
-               }else{
-                     this.$alert(res.data.msg,"false-overload");
-                  }
+            this.$http.post(`/api/project/${this.$store.state.project.id}/file`,{
+					project_id:this.$store.state.project.id,
+					path:this.pos,
+					file:formData,
+				}, config ).then(doc=>{
+               var code = doc.data.status;
+					var msg = doc.data.msg;
+					console.log(msg)	
+					if (code == 0){
+						
+					}
             })
          },
       },
@@ -415,7 +418,7 @@
                var config = {
                   headers: { 'Content-Type': 'multipart/form-data' }
                }
-               this.$http2.post('/disk/uploadPublic', formData, config ).then(res=>{
+               this.$http.post('/disk/uploadPublic', formData, config ).then(res=>{
                   count++;
                   if(res.data.success==1){
                      success_count++;

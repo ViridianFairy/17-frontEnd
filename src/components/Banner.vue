@@ -646,7 +646,7 @@ export default {
       }
    },
    mounted() {
-		this.update();
+      this.update();
 	},
 	watch: {
 		'$store.state.userUpdate': function () {

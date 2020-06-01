@@ -12,7 +12,7 @@
             v-for="message in currentMessageList"
           >
             <div v-if="message.from === loginInfo.userID" class="chatOut">
-              <a-avatar :size="50" slot="avatar" style="float:right">U</a-avatar>
+              <a-avatar :size="50" slot="avatar" style="float:right" :src="userInfo.photo"></a-avatar>
               <div class="contentOut" style="float:right;color:white">
                 <p>
                   {{message.payload.text}}
@@ -22,7 +22,7 @@
               <br>
             </div>
             <div v-else class="chatIn">
-              <a-avatar :size="50" slot="avatar" style="float:left">U</a-avatar>
+              <a-avatar :size="50" slot="avatar" style="float:left" :src="userInfo.photo"></a-avatar>
               <div class="contentIn">
                 <p>
                   {{message.payload.text}}
@@ -47,7 +47,7 @@
               <p></p>
             </template>
             <a-button type="link">
-              <a-icon style="fontSize:28px;color:white;padding-top:7px" type="paper-clip" />
+              <a-icon style="fontSize:28px;color:#001529;padding-top:7px" type="paper-clip" />
             </a-button>
           </a-popover>
 
@@ -58,7 +58,7 @@
               <p><a-icon style="fontSize:20px" type="meh" /></p>
             </template>
             <a-button type="link">
-              <a-icon style="fontSize:28px;color:white;padding-top:7px" type="smile" />
+              <a-icon style="fontSize:28px;color:#001529;padding-top:7px" type="smile" />
             </a-button>
           </a-popover>
 
@@ -290,8 +290,8 @@
     width: 100%;
     text-align: center;
     font-size: 20px;
-    background-color: #001529;
-    color: white;
+    background-color: white;
+    color: #001529;
   }
 
   .main-content{
@@ -302,7 +302,7 @@
   }
   #chatShow{
     width: 100%;
-    height: 500px;
+    height: calc(100vh - 50px - 53px - 130px);
     overflow: scroll;
     background-color: #F5F5F5;
   }
@@ -345,7 +345,7 @@
   #chatInputOther{
     width: 100%;
     height: 40px;
-    background-color: #001529;
+    background-color:rgb(250, 248, 248);
   }
   #chatInputText{
     width: 100%;

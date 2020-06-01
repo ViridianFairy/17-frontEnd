@@ -90,6 +90,7 @@ body{
    background-color: #001529;
    position: fixed;
    margin-top: 50px;
+   z-index: 10;
 }
 #right {
    width: calc(100% - 170px);

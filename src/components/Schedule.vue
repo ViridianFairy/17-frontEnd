@@ -74,7 +74,7 @@
     </a-modal>
 
         <!--日程查看详情-->
-        <a-modal v-model="showDetails" title="查看日程" @ok="scheDelete" cancelText="OK" okType="danger" okText="删除" style="width:500px;">
+        <a-modal v-model="showDetails" title="查看日程" @ok="scheDelete()" cancelText="OK" okType="danger" okText="删除" style="width:500px;">
         <div id="f2">
         <div id="iconleft">
             <a-icon type="edit" style="fontSize:22px;color:gray;margin:15px;"/>
@@ -169,6 +169,7 @@ export default {
    components: {},
    data() {
       return {
+        detailsId:0,
         scheName:"",
         scheLabel:[],
         scheRemarks:"",
@@ -201,12 +202,15 @@ export default {
     scheDelete(){
       var a=confirm("确认删除该日程吗？");
        if(a){
-         this.delete();
+         this.delete(this.detailsId);
        }
+       this.showDetails=false;
     },
+    
     scheDetails(id){
       for(var i=0;i<this.doc.length;i++){
-        if(this.doc[i].id==id){
+        if(this.doc[i].id==id){         
+          this.detailsId=id;
           this.scheName=this.doc[i].content;
           this.scheLabel=this.doc[i].label;
           this.scheRemarks=this.doc[i].remarks;
@@ -218,8 +222,21 @@ export default {
       }
       this.showDetails=true; 
     },
-    delete(){
-
+    delete(id){
+      this.$http
+         .post(`/api/project/${this.$store.state.project.id}/schedule/delete`, {
+				project_id:this.$store.state.project.id,id:id
+			})
+         .then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+				if (code == 0){
+          alert("删除成功！");	
+          this.update();
+        }
+        else
+          alert("删除失败！");
+         })
     },
 		update(){
 			this.$http

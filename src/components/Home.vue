@@ -70,7 +70,6 @@ export default {
                 } else {
                 this.createVisible = false;
                 this.createLoading = false;
-                this.getName();
                 }
             });
         },

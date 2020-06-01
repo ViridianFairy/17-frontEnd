@@ -121,11 +121,12 @@
                >
                   <p style="padding-left:calc((100% - 60px)/2)">
                      <a-upload
-                        name="avatar"
+								:withCredentials="true"
+                        name="image"
                         :multiple="true"
                         class="avatar-uploader"
                         :show-upload-list="false"
-                        action="http://47.99.132.18:9999/api/user/info/photo"
+                        action="http://47.99.132.18/api/user/info/photo"
                         :headers="headers"
                         @change="photoHandleChange"
                      >
@@ -510,7 +511,7 @@ export default {
          }
          var image = this.image
          console.log(info.file)
-         this.$http.post(`/api/user/info/photo`,image).then(doc => {
+         /*this.$http.post(`/api/user/info/photo`,image).then(doc => {
             var code = doc.data.status;
             var msg = doc.data.msg;
             if (code == 0) {
@@ -519,7 +520,7 @@ export default {
                this.$alert(msg, "false");
             }
             console.log(doc);
-         });
+         });*/
       },
       beforeUpload(file) {
          const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';

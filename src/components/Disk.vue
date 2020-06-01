@@ -33,9 +33,9 @@
       <transition-group name="msg3">
       <div class="files-wrapper" v-if="previewMode==0" key="1"> 
          <table>
-            <col style="width:50%"/>  
-            <col style="width:17%"/>  
-            <col style="width:17%"/>  
+            <col style="width:46%"/>  
+            <col style="width:16%"/>  
+            <col style="width:24%"/>  
             <col style="width:auto"/>   
             <tr><th>
                <span v-if="choose.filter(val=>val>0).length==0">文件名</span>
@@ -77,7 +77,10 @@
                   </span>
                </td> 
                <td><span v-if="item.isFile">{{item.size}}</span><span v-else>--</span></td> 
-               <td>{{item.changeTime}}</td>
+               <td>
+						<img :src="item.avatar" style="width:24px;margin:-3px 6px 0 -6px;border-radius:7px;"/>
+						{{item.user||'--'}}
+					</td>
                <td class="oper">
                   <img v-if="item.isFile" @click="download(index,$event)" src="../assets/Disk/下移.svg" draggable='false'>
                   <img @click="delet(index)" class="delete-icon" src="../assets/Disk/删除.svg" draggable='false'>
@@ -213,6 +216,8 @@
                obj.selectionEnd = obj.value.indexOf('.');// 获取输入框里的长度。
                obj.type = 'input_type';// 获得焦点后，改回number类型
                input.onblur = ()=>{
+						//test
+						return;
                   if(this.renameId==-1) return;
                   this.renameId = -1;
                   if(this.files[index].name==this.renameData) return;
@@ -334,24 +339,30 @@
             .then(res => {
 					
 					var a = res.data.data
-					console.log(res)
+					console.log(a)
 					this.files = [{
-						name:"aaa",
+						name:"人家是默认的噢",
 							isFile:false,
-							size:"",time:"",changeTime:"",
+							size:"",time:"",changeTime:"",user:'',avatar:'',
 					}];
 					a.directory.forEach(v=>{
+						console.log(v)
 						this.files.push({
 							name:v.filename,
 							isFile:false,
-							size:"",time:"",changeTime:"",
+							size:"",time:"",changeTime:"",user:'ff',
+							user:"",
+							avatar:""
 						})
 					})
 					a.file.forEach(v=>{
 						this.files.push({
 							name:v.filename,
 							isFile:true,
-							size:v.size,time:"",changeTime:"",
+							size:formatSize(v.size),time:"",changeTime:"",user:'bb',
+							user:v.upload.username,
+							avatar:v.upload.photo,
+							format:v.filename.split('.')[1]
 						})
 					})
                if(first){
@@ -380,24 +391,22 @@
             if(e.target.files[0].size >= 1024 * 1024 * 50){
                this.$alert("大于50M啦","false");
                return;
-            }
-            console.log(e.target.files[0])
+				}
+				this.fileName = e.target.files[0].name
+				// console.log(e.target.files[0])
+				console.log(e.target.files[0])
+
             var formData = new FormData()
-            this.fileName = e.target.files[0].name
-            formData.append('file', e.target.files[0])
+				formData.append('file', e.target.files[0])
+				formData.append('path', this.pos)
             formData.append('name', e.target.files[0].name)
-            // formData.append('pos', this.pos)
-            this.$alert(`开始上传文件`,'tiny-overload',{x:e.pageX, y:e.pageY})
+            //this.$alert(`开始上传文件`,'tiny-overload',{x:e.pageX, y:e.pageY})
             var config = {
                headers: { 'Content-Type': 'multipart/form-data' }
 				}
-				var obj = {
-					project_id:this.$store.state.project.id,
-					path:'/',
-					file:formData,
-				}
-				console.log(obj)
-            this.$http.post(`/api/project/${this.$store.state.project.id}/file`,obj, config ).then(doc=>{
+				// formData.append('pos', this.pos)
+				//console.log(obj)
+            this.$http.post(`/api/project/${this.$store.state.project.id}/file`,formData, config ).then(doc=>{
                var code = doc.data.status;
 					var msg = doc.data.msg;
 					console.log(msg)	

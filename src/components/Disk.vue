@@ -205,6 +205,7 @@
             }
          },
          rename(index){
+				/*
             this.renameData = this.files[index].name
             this.renameId = index
             this.$nextTick(()=>{
@@ -231,7 +232,7 @@
                         this.$alert(res.data.msg,'false')
                   })
                }
-            })
+            })*/
          },
          createFold(){
             this.$http
@@ -248,7 +249,7 @@
             })
          },
          delet(index){
-
+//test
             this.$http
             .post("/disk/delete",{
                pos:this.pos,
@@ -326,7 +327,7 @@
             }
             else if(!item.isFile){
                this.transName = 'msg'
-               this.pos += '/' + item.name
+               this.pos += '/' + item.filename
                this.refresh(true)
             }else{
                //this.$alert("暂不支持预览哦","tips");
@@ -411,7 +412,8 @@
 					var msg = doc.data.msg;
 					console.log(msg)	
 					if (code == 0){
-						
+					 	this.$alert("上传成功！","true-overload");
+						this.refresh()
 					}
             })
          },

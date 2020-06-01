@@ -72,7 +72,62 @@
 
 </div>
     </a-modal>
-        
+
+        <!--日程查看详情-->
+        <a-modal v-model="showDetails" title="查看日程" @ok="scheDelete" cancelText="OK" okType="danger" okText="删除" style="width:500px;">
+        <div id="f2">
+        <div id="iconleft">
+            <a-icon type="edit" style="fontSize:22px;color:gray;margin:15px;"/>
+            <a-icon type="user" style="fontSize:22px;color:gray;margin:15px;"/>
+            <a-icon type="calendar" style="fontSize:22px;color:gray;margin:15px;"/>
+            <a-icon type="clock-circle" style="fontSize:22px;color:gray;margin:15px;"/>
+            <a-icon type="pushpin" style="fontSize:22px;color:gray;margin:15px;"/>
+            <a-icon type="tag" style="fontSize:22px;color:gray;margin:15px;"/>
+        </div>
+
+        <div id="contentright">
+        <a-input placeholder="日程内容" autoSize allowClear style="width:400px;" v-model="scheName"/>
+        <a-input placeholder="发起人" style="margin-top:20px;width:400px;" v-model="scheCreator" disabled/>
+        <a-date-picker style="margin-top:20px;width:400px" :defaultValue="moment(this.t_set)"/>
+        <a-date-picker style="margin-top:20px;width:400px" :defaultValue="moment(this.t_remind)"/>
+        <p></p>
+            <p></p>
+        <a-input placeholder="填写备注" v-model="scheRemarks" autoSize allowClear style="margin-top:30px;width:400px"/>
+        <p></p>
+        <div id="tags">
+                <div>
+                <template v-for="(tag, index) in scheLabel">
+                <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
+                <a-tag :key="tag" :closable="index !== 0" @close="() => handleClose1(tag)">
+                {{ `${tag.slice(0, 20)}...` }}
+                </a-tag>
+            </a-tooltip>
+            <a-tag v-else :key="tag" :closable="index !== 0" color="#003366" style="font-size:15px;text-align:center;height:25px;margin-top:10px" @close="() => handleClose(tag)">
+                {{ tag }}
+            </a-tag>
+            </template>
+            <a-input
+            v-if="inputVisible"
+            ref="input"
+            type="text"
+            size="large"
+            :style="{ width: '78px' }"
+            :value="inputValue"
+            @change="handleInputChange"
+            @blur="handleInputConfirm"
+            @keyup.enter="handleInputConfirm"
+            />    
+            <a-tag v-else @click="showInput" style="background:#fff; height:25px;borderStyle: dashed;margin-top:12px">
+            <a-icon type="plus" /> <em style="font-size:14px;font-style:normal;color:gray;padding-left:0">添加标签</em>
+            </a-tag>   
+        </div>      
+        </div>    
+    </div>   
+
+</div>
+    </a-modal>
+
+
 
             <!--a-button block size="large" @click="$router.push('/scheduleAdd')">添加日程</a-button-->
             <p><br /><br /></p>
@@ -85,7 +140,7 @@
                 <div class="content">
 						 	<div v-for="(i,index) in doc" style="margin:10px 0;">
 								 <a-divider v-if="index!=0"/>
-                    		<p>{{i.time}}<em>
+                    		<p>{{i.time}}<em @click="scheDetails(i.id)">
 									  {{i.content}}
 								</em></p>
                     		
@@ -108,11 +163,19 @@
  
 <script>
 import {toDateTime,getFirstMsg} from '../js/code.js'
+import moment from 'moment';
 export default {
    name: "Schedule",
    components: {},
    data() {
       return {
+        scheName:"",
+        scheLabel:[],
+        scheRemarks:"",
+        t_remind:null,
+        t_set:null,
+        scheCreator:"",
+        showDetails:false,
         visible: false,
         confirmLoading: false,
         customStyle:
@@ -120,19 +183,44 @@ export default {
         mode1: 'time',
         tags: ['标签'],
         inputVisible: false,
-		  inputValue: '',
-		  doc:[],
-		  activeKey:"",
-		  dateString1:"",
-		  dateString2:"",
-		  content:"",
-		  remarks:"",
+        inputValue: '',
+        doc:[],
+        activeKey:"",
+        dateString1:"",
+        dateString2:"",
+        content:"",
+        remarks:"",
       };
 	}, 
 	mounted(){
 		this.update()
 	},
    methods: {
+     
+    moment,
+    scheDelete(){
+      var a=confirm("确认删除该日程吗？");
+       if(a){
+         this.delete();
+       }
+    },
+    scheDetails(id){
+      for(var i=0;i<this.doc.length;i++){
+        if(this.doc[i].id==id){
+          this.scheName=this.doc[i].content;
+          this.scheLabel=this.doc[i].label;
+          this.scheRemarks=this.doc[i].remarks;
+          this.t_remind=this.doc[i].t_remind;
+          this.t_set=this.doc[i].t_set;
+          this.scheCreator=this.doc[i].creator.username;
+          break;
+        }      
+      }
+      this.showDetails=true; 
+    },
+    delete(){
+
+    },
 		update(){
 			this.$http
          .get(`/api/project/${this.$store.state.project.id}/schedule`, {
@@ -170,7 +258,11 @@ export default {
       console.log(tags);
       this.tags = tags;
     },
-
+    handleClose1(removedTag) {
+      const tags = this.scheLabel.filter(tag => tag !== removedTag);
+      console.log(tags);
+      this.scheLabel = tags;
+    },
     showInput() {
       this.inputVisible = true;
       this.$nextTick(function() {
@@ -242,6 +334,21 @@ export default {
 #fl{
     display: flex;
     margin-bottom: -50px;
+}
+#f2{
+    display: flex;
+    margin-bottom: -10px;
+}
+#contentright1{
+   width: 500px;
+   height: 300px;
+   margin-top:12px ;
+}
+#iconleft{
+   margin-left: 0px;
+   width: 150px;
+   color:gray;
+   
 }
 em{
     padding-left:40px;

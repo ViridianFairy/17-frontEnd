@@ -1,5 +1,5 @@
 
-var baseURL = 'http://47.99.132.18:9999'
+var baseURL = 'http://47.99.132.18'
 
 import Vue from 'vue'
 import App from './App.vue'

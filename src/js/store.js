@@ -3,17 +3,20 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 const mutations = {
-   bannerReload(state, obj){
+    bannerReload(state, obj){
 		state.banner.name = obj.name
 	},
-   loginReload(state, bool){
+    loginReload(state, bool){
 		state.login = bool
 	},
-   projectReload(state, obj){
+    projectReload(state, obj){
 		state.project.id = obj.id
 		state.project.name = obj.name
 	},
-   memberUpdate(state, obj){
+	enterProject(state, obj){
+		state.project.id = obj.id
+	},
+    memberUpdate(state, obj){
 		state.member = obj
 	},
 	userUpdate(state){

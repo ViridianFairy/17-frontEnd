@@ -51,7 +51,6 @@ export default {
     },
     mounted(){
         this.showName();
-        this.update();
     },
     computed:{
     },
@@ -92,23 +91,11 @@ export default {
         enterProject(id){
             console.log("checked", id);
             var store = window.localStorage;
-            this.Project.forEach(i => {
-                if (i.id == id) name = i.name;
-            });
-            //未完成
-            //this.$store.commit("projectReload", { id, name });
-			//console.log("任务ID："+this.$store.state.project.id)
+            this.$store.commit("enterProject", { id });
+			console.log("任务ID："+this.$store.state.project.id)
             store.setItem(this.$cookies.get("session"), id);
+            this.$router.push({path: '/taskPanel',params:{ id }});
         },
-
-        update() {
-		
-        },
-    },
-    watch: {
-		'$store.state.project.id': function () {
-			this.update();
-   	    }
     },
 };
 </script>

@@ -54,15 +54,18 @@
            <div id="more" v-if="this.messageType=='task'">
                      <div id="contextleft">
                   <p>
-						
-                  <a-icon type="file-done" style="fontSize:22px;color:gray;margin-top:10px;vertical-align:bottom"/>
+
+                  <a-icon type="appstore" style="fontSize:22px;color:gray;margin-top:10px;vertical-align:bottom"/>
+                  <em class="em11" style="margin-left:1px">任务名</em><br />  
+
+                  <a-icon type="file-done" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
                   <em class="em11" style="margin-left:1px">状态</em><br />
 
                   <a-icon type="user" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
                   <em class="em11" style="margin-left:2px">执行者</em><br />
                   
-                  <a-icon type="calendar" style="fontSize:20px;color:gray;margin-top:30px;vertical-align:bottom"/>
-                  <em class="em11" style="margin-left:4.5px">执行时间</em><br />
+                  <a-icon type="calendar" style="fontSize:20px;color:gray;margin-bottom:2px;margin-top:30px;vertical-align:bottom"/>
+                  <em class="em11" style="margin-left:4.5px;">执行时间</em><br />
 
                   <a-icon type="pushpin" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
                   <em class="em11" style="margin-left:2px">备注</em><br />
@@ -76,8 +79,9 @@
                </div>   
                <div id="contextright">
                   
-                  <!--   数据需要部分 以下为模拟  ---->
-                  <em class="em11" style="margin-right:10px;font-size:15px;padding-left:0">完成情况</em>
+                  <p class="em11" style="margin-bottom:8px;margin-right:10px;font-size:15px;padding-left:0;">{{this.taskName}}</p>
+                  <br />
+                  <em class="em11" style="margin-right:10px;font-size:15px;padding-left:0;">完成情况</em>
                   <a-switch :defaultChecked="defaultChecked" disabled/><br /><br />
                   <!---拉取头像  --->
                <a-avatar icon="user" style="margin-top:0px" :size="37" :src="this.taskPhoto"/>
@@ -157,7 +161,7 @@ export default {
     components: {},
     data() {
         return {
-			  rightShow:false,
+			rightShow:false,
             defaultChecked:false,
             remindData:[{
                 name: "任务3",
@@ -185,6 +189,7 @@ export default {
             scheRemarks:"",
             t_remind:null,
             t_set:null,
+            taskName:"dsasdfas",
             scheCreator:"",
         };
     },
@@ -227,6 +232,7 @@ export default {
                         this.t_end=this.taskData.t_end;
                         this.taskLabel=this.taskData.label;
                         this.taskPhoto=this.taskData.originator.photo;     
+                        this.taskName=this.taskData.name;     
                     }                  
                     else
                         this.taskData=null;

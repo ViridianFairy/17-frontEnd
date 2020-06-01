@@ -106,6 +106,7 @@
           userSig: null,
         },
         messageBox: [],
+        userInfo: { photo: "", email: "", website: "", location: "" },
       }
     },
     mounted() {

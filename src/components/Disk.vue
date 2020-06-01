@@ -46,7 +46,7 @@
                 <img @click="share($event,[])" class="oper-img" src="../assets/Disk/分享.svg" draggable='false'>&nbsp;
             </span>
             </th>
-            <th>大小</th><th>最后修改</th><th>操作</th></tr>
+            <th>大小</th><th>上传者</th><th>操作</th></tr>
          <tbody is="transition-group" :name="transName"  mode="out-in">
             <tr class="files" v-for="(item,index) in files" :key="item.name+item.time" @dblclick="explore(item,index)">
                <td class="format">
@@ -216,7 +216,7 @@
                   if(this.renameId==-1) return;
                   this.renameId = -1;
                   if(this.files[index].name==this.renameData) return;
-                  this.$http2
+                  this.$http
                   .post("/disk/rename",{
                      pos:this.pos, name:this.files[index].name, isFile:this.files[index].isFile ,rename:this.renameData
                   }).then(res => {
@@ -229,7 +229,7 @@
             })
          },
          createFold(){
-            this.$http2
+            this.$http
             .post("/disk/createFold",{
                pos:this.pos,
             })
@@ -244,7 +244,7 @@
          },
          delet(index){
 
-            this.$http2
+            this.$http
             .post("/disk/delete",{
                pos:this.pos,
                name:this.files[index].name,
@@ -330,12 +330,30 @@
          },
          refresh(first){
             // console.log(this.pos)
-            this.$http2
-            .post("/disk/getPublic",{
-               pos:this.pos,
-            })
+            this.$http.get(`/api/project/${this.$store.state.project.id}/file?path=${this.pos}`)
             .then(res => {
-               this.files = res.data.data;
+					
+					var a = res.data.data
+					console.log(res)
+					this.files = [{
+						name:"aaa",
+							isFile:false,
+							size:"",time:"",changeTime:"",
+					}];
+					a.directory.forEach(v=>{
+						this.files.push({
+							name:v.filename,
+							isFile:false,
+							size:"",time:"",changeTime:"",
+						})
+					})
+					a.file.forEach(v=>{
+						this.files.push({
+							name:v.filename,
+							isFile:true,
+							size:v.size,time:"",changeTime:"",
+						})
+					})
                if(first){
                   this.choose = [];
                   this.files.forEach(()=>{
@@ -344,7 +362,18 @@
                }else{
                   this.choose.unshift(0)
                }
-            })
+				})
+				function formatSize(a){
+					var realSize = Math.ceil(a/1024)
+               if(realSize >= 1024){
+                  realSize /= 1024
+                  realSize = realSize.toFixed(2)
+                  realSize += ' MB'
+               }else{
+                  realSize += ' KB'
+					}
+					return realSize
+				}
          },
          getFiles(e) {
             e.preventDefault();
@@ -356,20 +385,25 @@
             var formData = new FormData()
             this.fileName = e.target.files[0].name
             formData.append('file', e.target.files[0])
-               formData.append('name', e.target.files[0].name)
-               formData.append('pos', this.pos)
+            formData.append('name', e.target.files[0].name)
+            // formData.append('pos', this.pos)
             this.$alert(`开始上传文件`,'tiny-overload',{x:e.pageX, y:e.pageY})
             var config = {
                headers: { 'Content-Type': 'multipart/form-data' }
-            }
-            this.$http2.post('/disk/uploadPublic', formData, config ).then(res=>{
-               if(res.data.success==1){
-                  this.refresh()
-                  console.log('成功')
-                  this.$alert("上传成功！","true-overload");
-               }else{
-                     this.$alert(res.data.msg,"false-overload");
-                  }
+				}
+				var obj = {
+					project_id:this.$store.state.project.id,
+					path:'/',
+					file:formData,
+				}
+				console.log(obj)
+            this.$http.post(`/api/project/${this.$store.state.project.id}/file`,obj, config ).then(doc=>{
+               var code = doc.data.status;
+					var msg = doc.data.msg;
+					console.log(msg)	
+					if (code == 0){
+						
+					}
             })
          },
       },
@@ -398,7 +432,7 @@
                var config = {
                   headers: { 'Content-Type': 'multipart/form-data' }
                }
-               this.$http2.post('/disk/uploadPublic', formData, config ).then(res=>{
+               this.$http.post('/disk/uploadPublic', formData, config ).then(res=>{
                   count++;
                   if(res.data.success==1){
                      success_count++;

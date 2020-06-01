@@ -12,8 +12,15 @@ import Chat from '../components/Chat'
 import Login from '../components/Login'
 import Register from '../components/Register'
 import Post from '../components/Post'
+import Member from '../components/Member'
+import Home from '../components/Home'
+import Remind from '../components/Remind'
 
 import Test from '../components/Test'
+const routerPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return routerPush.call(this, location).catch(error=> error)
+}
 Vue.use(VueRouter);
 const routes = [
    /*{
@@ -57,6 +64,22 @@ const routes = [
 			top: Banner,
          left: Options,
          right: ScheduleAdd,
+      }
+   },
+   {
+      path: "/remind",
+      components: {
+			top: Banner,
+         left: Options,
+         right: Remind,
+      }
+	},
+   {
+      path: "/member",
+      components: {
+			top: Banner,
+         left: Options,
+         right: Member,
       }
    },
    {
@@ -105,6 +128,14 @@ const routes = [
 			top: Banner,
          left: Options,
          right: TaskDetails,
+      }
+   },
+   {
+      path: "/home",
+      components: {
+			top: Banner,
+         left: Options,
+         right: Home,
       }
    },
 ];

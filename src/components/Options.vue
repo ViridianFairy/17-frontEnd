@@ -11,6 +11,11 @@
         <span>任务面板</span>
       </a-menu-item>
 
+      <a-menu-item key="8"  @click="$router.push('/member')">
+        <a-icon type="team" />
+        <span>成员管理</span>
+      </a-menu-item>
+
       <a-menu-item key="2"  @click="$router.push('/post')">
         <a-icon type="bars" />
         <span>动态查看</span>
@@ -32,11 +37,11 @@
       </a-menu-item>
 
       <a-menu-item key="6" @click="$router.push('/chat')">
-        <a-icon type="team" />
+        <a-icon type="message" />
         <span>群组聊天</span>
       </a-menu-item>
 
-      <a-menu-item key="7" disabled>
+      <a-menu-item key="7" @click="$router.push('/remind')">
         <a-icon type="bell" />
         <span>消息通知</span>
       </a-menu-item>
@@ -52,7 +57,7 @@ export default {
    data() {
      return {
 		collapsed: false,
-		keys:['4'],
+		keys:['1'],
     };
    },
    methods: {

@@ -2,7 +2,7 @@
    <div id="wrapper">
       <img src="http://funx.pro/resource/junk/17logo.svg" />
 
-      <div id="dropdown1">
+      <div id="dropdown1" v-if="$route.path !== '/home'">
          <a-dropdown :trigger="['hover']" style="color:black">
             <a class="ant-dropdown-link" @click="e => e.preventDefault()" :disabled="!login">
                项目：{{login?projectName:'无'}}
@@ -40,8 +40,13 @@
                         >切换</a-button>
                      </template>
                      请选择要切至的项目：
-                     <a-radio-group v-model="value" @change="onGroupChange">
-                        <a-radio :key="i.id" :value="i.id" v-for="i in changeProject">{{i.name}}</a-radio>
+                     <br/>
+                     <a-radio-group v-model="value" @change="onGroupChange" style="margin-left:30%">
+                        <a-radio 
+                           :key="i.id" 
+                           :value="i.id" 
+                           :style='radioStyleGroupChange'
+                           v-for="i in changeProject">{{i.name}}</a-radio>
                      </a-radio-group>
                   </a-modal>
                </a-menu-item>
@@ -51,9 +56,6 @@
             </a-menu>
          </a-dropdown>
       </div>
-
-
-
 
       <div id="dropdown2">
          <a-dropdown :trigger="['hover']" style="color:black">
@@ -117,18 +119,20 @@
                   @ok="infoHandleOk"
                   @cancel="infoHandleOk"
                >
-                  <p style="padding-left:10px">
-                     头像：
-                     <a-avatar :size="50" slot="avatar" :src="userInfo.photo"></a-avatar>
+                  <p style="padding-left:calc((100% - 60px)/2)">
                      <a-upload
-                        name="file"
+                        name="avatar"
                         :multiple="true"
+                        class="avatar-uploader"
+                        :show-upload-list="false"
                         action="http://47.99.132.18:9999/api/user/info/photo"
                         :headers="headers"
                         @change="photoHandleChange"
-                        style="float:right"
                      >
-                        <a-button style="width:100px;height:25px;margin-top:10px">上传头像</a-button>
+                     <img v-if="image" :src="image" alt="avatar" style="width:60px;height:60px;border-radius:50%"/>
+                     <div v-else>
+                        <a-avatar :size="60" slot="avatar" :src="userInfo.photo"></a-avatar>
+                     </div>
                      </a-upload>
                   </p>
                   
@@ -164,6 +168,8 @@
 
                </a-modal>
             </a-menu-item>
+            <a-menu-divider v-if="login" v-show="$route.path !== '/home'" />
+            <a-menu-item key="5" @click="$router.push('/home')" v-if="$route.path !== '/home'">返回主界面</a-menu-item>
             <a-menu-divider v-if="login" />
             <a-menu-item key="1" style="color:red" @click="toExit" v-if="login">退出登录</a-menu-item>
             <a-menu-item key="3" style @click="toLogin" v-if="!login">登录</a-menu-item>
@@ -177,6 +183,14 @@
 import { Modal } from 'ant-design-vue'
 import zhCN from 'ant-design-vue/es/locale-provider/zh_CN'
 import china from '../js/china'
+// import { resolve } from 'dns';
+
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
+
 export default {
    name: "Banner",
    computed: {
@@ -207,6 +221,7 @@ export default {
          value3: 1,
          newName: "",
          changeProject: [],
+         radioStyleGroupChange: {display: 'block',height: '30px',lineHeight: '30px',},
          userInfo: { photo: "", email: "", website: "", location: "" },
          memberVisible: false,
          addMemberVisible: false,
@@ -228,9 +243,12 @@ export default {
 			addText2:"",
 			mName:"",
 			mLocation:[],
-			mHome:"",
+         mHome:"",
+         
+         loading: false,
+         image: "",
 		};
-	},
+   },
 	methods: {
 		deleteMember(id){
 			this.$http.post(`/api/project/${this.$store.state.project.id}/user/remove`, { 
@@ -296,7 +314,7 @@ export default {
          this.$http.post(`/api/project`, { name: this.newName }).then(doc => {
             var code = doc.data.status;
             var msg = doc.data.msg;
-            if (code != 0) {
+            if (code !== 0) {
                this.$alert(msg, "false");
                this.createLoading = false;
             } else {
@@ -331,6 +349,7 @@ export default {
          });
          //proj
 			this.$store.commit("projectReload", { id, name });
+			console.log("任务ID："+this.$store.state.project.id)
          store.setItem(this.$cookies.get("session"), id);
          setTimeout(() => {
             this.exchangeVisible = false;
@@ -360,13 +379,14 @@ export default {
 					})
          		.then(doc => {
          		   var code = doc.data.status;
-         		   var msg = doc.data.msg;
+                  var msg = doc.data.msg;
 						if (code == 0)
 							self.$alert(msg,'true')
 						else
 							self.$alert(msg,'false')
 						self.$store.commit("taskUpdate");
-         		})
+               })
+               self.$router.push('/home');
             },
             onCancel() {
                console.log("Cancel");
@@ -477,15 +497,42 @@ export default {
 
       //修改个人信息部分
       photoHandleChange(info) {
-         if (info.file.status !== 'uploading') {
-         console.log(info.file, info.fileList);
+         if (info.file.status === 'uploading') {
+            this.loading = true;
+            return;
          }
          if (info.file.status === 'done') {
-         this.$message.success(`${info.file.name} file uploaded successfully`);
-         } else if (info.file.status === 'error') {
-         this.$message.error(`${info.file.name} file upload failed.`);
+            getBase64(info.file.originFileObj, image => {
+            this.image = image;
+            this.userInfo.photo = image;
+            this.loading = false;
+         });
          }
+         var image = this.image
+         console.log(info.file)
+         this.$http.post(`/api/user/info/photo`,image).then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+            if (code == 0) {
+               this.$alert(msg, "true");
+            } else {
+               this.$alert(msg, "false");
+            }
+            console.log(doc);
+         });
       },
+      beforeUpload(file) {
+         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+         if (!isJpgOrPng) {
+         this.$message.error('只能上传JPG或PNG格式的图片');
+         }
+         const isLt5M = file.size / 1024 / 1024 < 5;
+         if (!isLt5M) {
+         this.$message.error('图片不能超过5MB');
+         }
+         return isJpgOrPng && isLt5M;
+      },
+
       changeName() {
 			this.mName = this.name;
          this.changingName = 1;
@@ -543,13 +590,15 @@ export default {
             this.update();
             if (code == 0) {
                this.$alert(msg, "true");
+               this.$router.push('/login');
             } else {
                this.$alert(msg, "false");
             }
          });
       },
       update() {
-         this.$http.get(`/api/user/info`).then(doc => {
+			var fetchProjectId = new Promise((resolve,reject)=>{
+				this.$http.get(`/api/user/info`).then(doc => {
             var code = doc.data.status;
             if (code == 0) {
                this.$store.commit("bannerReload", {
@@ -562,44 +611,48 @@ export default {
 							this.changeProject = doc.data.data;
 							var id = window.localStorage[this.$cookies.get("session")];
 							this.exchangeHandleOk(id)
+							resolve()
                   }
                });
-               
-               //console.log('已分发'+ doc.data.data.username)
             } else {
                this.$store.commit("bannerReload", {
                   name: "未登录"
                });
-               this.$store.commit("loginReload", false);
+					this.$store.commit("loginReload", false);
+					reject();
             }
 			});
-			this.$http.get(`/api/user/info`).then(doc => {
-            var code = doc.data.status;
-            var msg = doc.data.msg;
-            if (code == 0) {
-               this.userInfo = doc.data.data;
-            }
-			});
-			this.$http
-         .get(`/api/project/${this.$store.state.project.id}`, {
-				project_id:this.$store.state.project.id,
 			})
-         .then(doc => {
-            var code = doc.data.status;
-            var msg = doc.data.msg;
-				if (code == 0){
-					this.projectMember = doc.data.data.member
-					this.$store.commit("memberUpdate", this.projectMember);	
-				}			
-         })
+			fetchProjectId.then(()=>{
+				this.$http.get(`/api/user/info`).then(doc => {
+            	var code = doc.data.status;
+            	var msg = doc.data.msg;
+            	if (code == 0) {
+               	this.userInfo = doc.data.data;
+            	}
+				});
+				this.$http.get(`/api/project/${this.$store.state.project.id}`, {
+					project_id:this.$store.state.project.id,
+				}).then(doc => {
+         	   var code = doc.data.status;
+					var msg = doc.data.msg;
+					console.log("任务ID："+this.$store.state.project.id)
+					if (code == 0){
+						this.projectMember = doc.data.data.member
+						this.$store.commit("memberUpdate", this.projectMember);	
+					}			
+         	})
+			},()=>{})
       }
    },
    mounted() {
 		this.update();
-		
 	},
 	watch: {
-    	'$store.state.userUpdate': function () {
+		'$store.state.userUpdate': function () {
+			this.update();
+   	},
+		'$store.state.project.id': function () {
 			this.update();
    	}
    },
@@ -622,6 +675,7 @@ export default {
    padding: 15px;
 }
 #dropdown2 {
+   display: none;
    float: left;
    padding: 15px;
 }
@@ -629,4 +683,13 @@ export default {
    padding: 15px;
    float: right;
 }
+
+.avatar-uploader{
+  width: 50px;
+  height: 50px;
+}
+
+
+
+
 </style>

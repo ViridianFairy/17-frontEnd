@@ -63,7 +63,7 @@ export default {
 					this.$alert(msg,'false')
 					this.$store.commit('loginReload',false)
 				}
-				console.log(doc)
+				// console.log(doc)
 
 			})
 			function getFirstMsg(obj){
@@ -99,11 +99,11 @@ export default {
 .logincontent{
     width: 30%;
     height: 100%;
-    margin: auto;
+    margin-left: calc((70% - 170px)/2);
     margin-top: 8%;
     overflow: hidden;
     text-align: center;
-	 min-width: 400px;
+	min-width: 300px;
 }
 
 .logincontent img:nth-child(1){

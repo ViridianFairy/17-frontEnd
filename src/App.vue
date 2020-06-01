@@ -1,10 +1,10 @@
 <template>
    <div id="main-app">
-      <div id="top">
+      <div id="top" class="top" v-if="isTopShow">
          <router-view name="top"></router-view>
       </div>
       <div id="main-wrapper">
-         <div id="left">
+         <div id="left" class="left" v-if="isLeftShow">
             <router-view name="left"></router-view>
          </div>
          <div id="right">
@@ -16,20 +16,51 @@
 
 
 <script>
+import top from './components/Banner'
+import left from './components/Options'
+
 export default {
    name: "App",
-   components: {},
+   components: { top, left },
    data() {
       return {
+         isTopShow: true,
+         isLeftShow: true,
          router: 0,
       };
    },
+   mounted() {
+      this.TopAndLeftHide()
+   },
+   watch: {
+      '$route.path'(to,from){
+			// console.log('path modified')
+         this.TopAndLeftHide()
+      }
+   },
 	created(){
-		//console.log(this.$store.state.banner.name)
+      //console.log(this.$store.state.banner.name)
 		var account= 'pixiaojiang@gov.cn'
 		var password = '123456'
-		this.$router.push({ path: '/login', query: {account,password} }).catch(()=>{})
-	},
+      this.$router.push({ path: '/login', query: {account,password} }).catch(()=>{})
+      // console.log(this.$route.path)
+   },
+   methods: {
+      TopAndLeftHide(){
+         if (this.$route.path === '/login' || this.$route.path === '/register') {
+            this.isTopShow = false
+            this.isLeftShow = false
+         }
+         else if (this.$route.path === '/home') {
+            this.isTopShow = true
+            this.isLeftShow = false
+         } 
+         else {
+            this.isTopShow = true
+            this.isLeftShow = true
+         }
+      }
+   },
 };
 </script>
 
@@ -59,6 +90,7 @@ body{
    background-color: #001529;
    position: fixed;
    margin-top: 50px;
+   z-index: 10;
 }
 #right {
    width: calc(100% - 170px);

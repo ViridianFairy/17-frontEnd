@@ -57,7 +57,7 @@ export default {
    data() {
      return {
 		collapsed: false,
-		keys:['4'],
+		keys:['1'],
     };
    },
    methods: {

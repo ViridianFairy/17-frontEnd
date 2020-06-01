@@ -40,7 +40,6 @@ const state = {
 		id:"",
 		name:""
 	},
-	tim: null,
 }
 const vuex = new Vuex.Store({
 	state,

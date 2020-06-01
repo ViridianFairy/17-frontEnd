@@ -1,241 +1,112 @@
 <template>
-<div id="wrapper">
-
-<div class="top">
-
-  <!-- 发起聊天 -->
-  <div v-if="showCreateButton==1" id="chatCreateButton">
-    <a-button type="link" icon="plus-circle" @click="showCreateList=1;showCreateButton=0">发起</a-button>
-  </div>
-
-  <div v-if="showCreateButton==0" id="backListButton">
-    <a-button type="link" icon="left" @click="showCreateList=0;showCreateButton=1">返回</a-button>
-  </div>
-
-  <!-- 显示当前群聊名称 -->
-  <div id="chatName">
-    <p>一根藤上七朵花</p>
-  </div>
-
-</div>
 
 
-<div class="main-content">
+    <div class="main-content" v-if="group">
+      <div id="chatName"  >
+        <p>{{group.name}}</p>
+      </div>
+      <div id="chatContent" >
 
-  <!-- 聊天列表 -->
-  <div v-if="showCreateList==0" id="chatList" style="border-right:1px solid #A9A9A9">
-  <div id="chatList-content">
-    <a-list itemLayout="horizontal" :dataSource="dataGroup">
-      <a-list-item slot="renderItem" slot-scope="item, index">
-
-        <a-list-item-meta description="xxxxxx">
-          <a slot="title" href="/schedule">{{ item.title }}</a><!-- 跳转测试 -->
-          <a-avatar slot="avatar">U</a-avatar>
-        </a-list-item-meta>
-
-      </a-list-item>
-    </a-list>
-  </div>
-  </div>
-
-
-  <div v-if="showCreateList==1" id="chatCreate" style="border-right:1px solid #A9A9A9">
-  <div id="chatCreate-content">
-
-    <a-input-search placeholder="搜索成员" style="width: 230px;margin: auto" @search="onSearch" />
-
-    <a-tabs default-active-key="1" @change="callback">
-      <a-tab-pane key="1" tab="私信">
-        <p style="color:#A9A9A9">合作过的成员</p>
-        <a-list itemLayout="horizontal" :dataSource="dataMember">
-          <a-list-item slot="renderItem" slot-scope="item, index">
-            <a-list-item-meta description="">
-              <a slot="title" href="/schedule">{{ item.title }}</a><!-- 跳转测试 -->
-              <a-avatar slot="avatar">U</a-avatar>
-            </a-list-item-meta>
-          </a-list-item>
-        </a-list>
-      </a-tab-pane>
-
-      <a-tab-pane key="2" tab="群聊" force-render>
-
-        <a-button type="primary" @click="showModal">
-          点击创建新群聊
-        </a-button>
-        <a-locale-provider :locale="zhCN">
-        <a-modal v-model="createGroupVisible" title="创建新群聊" @ok="handleOk">
-          <a-transfer
-            :data-source="mockData"
-            show-search
-            :operations="['加入', '移除']"
-            :target-keys="targetKeys"
-            :render="item => `${item.title}`"
-            @change="handleChange"
+        <div id="chatShow" ref="chatList">
+          <template
+            v-for="message in currentMessageList"
           >
-            <span slot="notFoundContent">
-              暂无成员
-            </span>
-          </a-transfer>
-        </a-modal>
-        </a-locale-provider>
-      </a-tab-pane>
-    </a-tabs>
-
-  </div>
-  </div>
-
-
-
-  <!-- 聊天内容显示+输入框 -->
-  <div id="chatContent" style="border-right:1px solid #A9A9A9">
-
-    <div id="chatShow">
-      <div id="chatIn">
-        <a-avatar :size="50" slot="avatar" style="float:left">U</a-avatar>
-        <div id="contentIn">
-          <p>
-            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
-          </p>
-        </div>
-      </div>
-
-      <div id="chatOut">
-        <a-avatar :size="50" slot="avatar" style="float:right">U</a-avatar>
-        <div id="contentOut" style="float:right;color:white">
-          <p>
-            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
-            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
-          </p>
-        </div>
-      </div>
-
-      <div id="chatIn">
-        <a-avatar :size="50" slot="avatar" style="float:left">U</a-avatar>
-        <div id="contentIn">
-          <p>
-            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
-            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
-          </p>
-        </div>
-      </div>
-
-      <div id="chatOut">
-        <a-avatar :size="50" slot="avatar" style="float:right">U</a-avatar>
-        <div id="contentOut" style="float:right;color:white">
-          <p style="float:right">
-            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
-          </p>
-        </div>
-      </div>
-
-      <div id="chatIn">
-        <a-avatar :size="50" slot="avatar" style="float:left">U</a-avatar>
-        <div id="contentIn">
-          <p>
-            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
-            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
-          </p>
-        </div>
-      </div>
-
-      <div id="chatIn">
-        <a-avatar :size="50" slot="avatar" style="float:left">U</a-avatar>
-        <div id="contentIn">
-          <p>
-            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
-            啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
-          </p>
-        </div>
-      </div>
-
-    </div>
-
-    <div id="chatInput">
-      <div id="chatInputText">
-        <a-textarea style="height:93px" placeholder="" :rows="5" />
-      </div>
-
-      <div id="chatInputOther">
-        <a-popover title="添加附件" trigger="click">
-          <template slot="content">
-            <p></p>
+            <div v-if="message.from === loginInfo.userID" class="chatOut">
+              <a-avatar :size="50" slot="avatar" style="float:right">U</a-avatar>
+              <div class="contentOut" style="float:right;color:white">
+                <p>
+                  {{message.payload.text}}
+                </p>
+              </div>
+              <br>
+              <br>
+            </div>
+            <div v-else class="chatIn">
+              <a-avatar :size="50" slot="avatar" style="float:left">U</a-avatar>
+              <div class="contentIn">
+                <p>
+                  {{message.payload.text}}
+                </p>
+              </div>
+            </div>
           </template>
-          <a-button type="link">
-            <a-icon style="fontSize:28px;color:white;padding-top:7px" type="paper-clip" />
-          </a-button>
-        </a-popover>
+        </div>
 
-        <a-popover title="表情" trigger="click">
-          <template slot="content">
-            <p><a-icon style="fontSize:20px" type="smile" /></p>
-            <p><a-icon style="fontSize:20px" type="frown" /></p>
-            <p><a-icon style="fontSize:20px" type="meh" /></p>
-          </template>
-          <a-button type="link">
-            <a-icon style="fontSize:28px;color:white;padding-top:7px" type="smile" />
-          </a-button>
-        </a-popover>
 
-        <a-button style="float:right" size="large">发送</a-button>
+
+
+      </div>
+      <div id="chatInput">
+        <div id="chatInputText">
+          <a-textarea v-model="chatText" style="height:93px" placeholder="" :rows="5" />
+        </div>
+
+        <div id="chatInputOther">
+          <a-popover title="添加附件" trigger="click">
+            <template slot="content">
+              <p></p>
+            </template>
+            <a-button type="link">
+              <a-icon style="fontSize:28px;color:white;padding-top:7px" type="paper-clip" />
+            </a-button>
+          </a-popover>
+
+          <a-popover title="表情" trigger="click">
+            <template slot="content">
+              <p><a-icon style="fontSize:20px" type="smile" /></p>
+              <p><a-icon style="fontSize:20px" type="frown" /></p>
+              <p><a-icon style="fontSize:20px" type="meh" /></p>
+            </template>
+            <a-button type="link">
+              <a-icon style="fontSize:28px;color:white;padding-top:7px" type="smile" />
+            </a-button>
+          </a-popover>
+
+          <a-button style="float:right" size="large" @click="sendMessage">发送</a-button>
+        </div>
+
       </div>
 
     </div>
 
 
-  </div>
- 
-
-</div>
-
-
-</div>
 </template>
 
 
 <script>
-const dataGroup = [
-  {
-    title: '一根藤上七朵花',
-  },
-  {
-    title: '前端小组',
-  },
-  {
-    title: '后端小组',
-  },
-];
-const dataMember = [
-  {
-    title: 'A',
-  },
-  {
-    title: 'B',
-  },
-  {
-    title: 'C',
-  },
-];
-import zhCN from 'ant-design-vue/es/locale-provider/zh_CN';
-import TIM from 'tim-js-sdk';
-// import COS from "cos-js-sdk-v5";
+  import zhCN from 'ant-design-vue/es/locale-provider/zh_CN';
+  import TIM from 'tim-js-sdk';
+  import COS from "cos-js-sdk-v5";
 
-export default {
+  export default {
     name: "Chat",
     components: {},
 
     data() {
-        return {
-            zhCN,
-            dataGroup,
-            dataMember,
-            showCreateButton:1,
-            showCreateList:0,
-            createGroupVisible:false,
-            mockData: [],
-            targetKeys: [],
-            project_id: 0,
-            tim_disabled: true,
-        };
+      return {
+        zhCN,
+        showCreate:0,
+        createGroupVisible:false,
+        mockData: [],
+        targetKeys: [],
+        project_id: 0,
+        timDisabled: true,
+        tim_is_login: false,
+        messageList: {},
+        currentMessageList: [],
+        conversationList: [],
+        groupsList: [],
+        conversationID: null,
+        chatSelect: null,
+        tim: null,
+        chatText: "",
+        group: null,
+        loginInfo:{
+          userID: null,
+          userSig: null,
+        },
+        messageBox: [],
+      }
     },
     mounted() {
       this.getMock();
@@ -244,47 +115,113 @@ export default {
     methods: {
       timLogin() {
         if (this.project_id !== this.$store.state.project.id) {
-          this.tim_disabled = true;
+          this.timDisabled = true;
           this.$http
                   .get(`/api/project/${this.$store.state.project.id}/chat/sig`, {})
                   .then(doc => {
                     var code = doc.data.status;
                     var msg = doc.data.msg;
                     if (code === 0) {
-                      let tim = this.$store.state.tim;
                       let data = doc.data.data;
-                      if (tim === null) {
-                        this.timInit(data.app_id)
+                      console.log(data)
+                      if (this.tim == null) {
+                        this.timInit(data.app_id);
                       }
-                      this.logout();
-                      this.login(data.user_id, data.user_sig);
+                      this.login(data.user_id, data.user_sig, this.$store.state.project.id);
                     }
                   });
         }
       },
       timInit(app_id) {
-        let tim = TIM.create({
+        this.tim = TIM.create({
           SDKAppID: app_id
         });
-        tim.setLogLevel(0);
-        // tim.registerPlugin({'cos-js-sdk': COS});
-        this.$store.commit('timReload', tim);
+        this.tim.setLogLevel(1);
+        this.tim.registerPlugin({'cos-js-sdk': COS});
       },
       logout() {
-        let promise = this.$store.state.tim.logout();
-        promise.then(function(imResponse) {
-          console.log(imResponse.data); // 登出成功
-        }).catch(function(imError) {
-          console.warn('logout error:', imError);
-        });
+        console.log(TIM.EVENT, this);
+        let promise = this.tim.logout();
+        if (promise){
+          promise.then(function (imResponse) {
+            console.log("logout success：", imResponse.data); // 登出成功
+          }).catch(function (imError) {
+            console.warn('logout error:', imError);
+          });
+        }
       },
-      login(user_id, user_sig) {
-        let promise = this.$store.state.tim.login({userID: user_id, userSig: user_sig});
-        promise.then(function(imResponse) {
-          console.log("im login success", imResponse.data); // 登录成功
-          this.tim_disabled = false;
+      login(user_id, user_sig, project_id) {
+        this.logout();
+        let promise = this.tim.login({userID: user_id, userSig: user_sig});
+        promise.then((imResponse)=> {
+          console.log("login success", imResponse.data); // 登录成功
+          this.project_id = project_id;
+          this.loginInfo.userID = user_id;
+          this.loginInfo.userSig = user_sig;
+          this.initListener();
         }).catch(function(imError) {
           console.warn('login error:', imError); // 登录失败的相关信息
+        });
+      },
+      initListener() {
+        this.tim.on(TIM.EVENT.SDK_READY, this.onReady);
+        this.tim.on(TIM.EVENT.MESSAGE_RECEIVED, this.onReceiveMessage);
+      },
+      onReady(event) {
+        this.getGroupList()
+      },
+      onReceiveMessage({ data: messageList }) {
+        this.updateMessageList(messageList)
+      },
+      updateMessageList(data) {
+        if (Array.isArray(data)) {
+          // 筛选出当前会话的消息
+          const result = data.filter(item => item.conversationID === this.conversationID)
+          this.currentMessageList = [...this.currentMessageList, ...result]
+        } else if (data.conversationID === this.conversationID) {
+          this.currentMessageList = [...this.currentMessageList, data]
+        }
+        this.$refs.chatList.scrollTop = this.$refs.chatList.scrollHeight;
+        console.log(this.$refs.chatList)
+      },
+      getGroupList () {
+        console.log("123123")
+        let promise = this.tim.getGroupList();
+        promise.then((imResponse) => {
+          console.log("group list:", imResponse.data.groupList); // 群组列表
+          this.groupsList = imResponse.data.groupList;
+          if(this.groupsList){
+            this.group = this.groupsList[0];
+            this.conversationID = "GROUP"+this.group.groupID;
+          }
+          this.getMessageList();
+        }).catch(function(imError) {
+          console.warn('getGroupList error:', imError); // 获取群组列表失败的相关信息
+        });
+
+
+
+      },
+      getConversation() {
+        let promise = this.tim.getConversationList();
+        promise.then(imResponse => {
+          const conversationList = imResponse.data.conversationList; // 会话列表，用该列表覆盖原有的会话列表
+          console.log("conversation list:", conversationList);
+          this.conversationList = conversationList;
+        }).catch(function(imError) {
+          console.warn('getConversationList error:', imError); // 获取会话列表失败的相关信息
+        });
+      },
+
+      getMessageList() {
+        let id = `GROUP${this.group.groupID}`;
+        let promise = this.tim.getMessageList({conversationID: id, count: 15});
+        promise.then((imResponse)=> {
+          const messageList = imResponse.data.messageList; // 消息列表。
+          const nextReqMessageID = imResponse.data.nextReqMessageID; // 用于续拉，分页续拉时需传入该字段。
+          const isCompleted = imResponse.data.isCompleted; // 表示是否已经拉完所有消息。
+          // this.messageList[group.groupID]=messageList;
+          this.currentMessageList = messageList;
         });
       },
       callback(key) {
@@ -319,102 +256,101 @@ export default {
         console.log(targetKeys, direction, moveKeys);
         this.targetKeys = targetKeys;
       },
-  },
-};
+      onSearch() {
+
+      },
+      sendMessage() {
+        if (this.chatText){
+          let message = this.tim.createTextMessage({
+            to: this.group.groupID,
+            conversationType: TIM.TYPES.CONV_GROUP,
+            payload: {
+              text: this.chatText
+            }
+          });
+          this.updateMessageList(message);
+          console.log(this.messageList)
+          this.tim.sendMessage(message);
+          this.chatText = "";
+        }
+      }
+    },
+  };
 </script>
 
 
 
 <style scoped>
-#wrapper{
-    margin-left: 30px; 
-    margin-right: 30px; 
-}
+  #wrapper{
+    margin-left: 30px;
+    margin-right: 30px;
+  }
 
-.top{
-    display: flex;
-    /* margin-top: 10px; */
+  #chatName{
     width: 100%;
-    height: 30px;
-}
-#chatCreateButton,#backListButton{
-    width: 250px;
-}
-#chatName{
-    width: calc(100% - 250px);
     text-align: center;
     font-size: 20px;
     background-color: #001529;
     color: white;
-}
+  }
 
-.main-content{
-    display: flex;
-}
-#chatList,#chatCreate{
-    width: 250px;
-    height: 520px;
-    overflow: auto;
-}
-#chatList-content{
+  .main-content{
 
-}
-#chatCreate-content{
-    width: 249px;
-    height: 520px;
-    /* background-color: #1890FF; */
-}
-#chatContent{
-    width: calc(100% - 250px);
-    height: 520px;
-}
-#chatShow{
+  }
+  #chatContent{
     width: 100%;
-    height: 390px;
-    overflow: auto;
+  }
+  #chatShow{
+    width: 100%;
+    height: 500px;
+    overflow: scroll;
     background-color: #F5F5F5;
-}
-#chatIn{
-    width: 100%;
+  }
+  .chatIn{
+    width: 80%;
     padding-left: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
-    display: flex; 
-}
-#chatOut{
+    display: flex;
+  }
+  .chatOut{
     width: 100%;
     padding-right: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
-}
-#contentIn{
+  }
+
+  .contentIn{
     max-width: 70%;
     margin-left: 10px;
     padding-top: 10px;
     padding-left: 10px;
     padding-right: 10px;
     background-color: white;
-}
-#contentOut{
+  }
+  .contentOut {
     max-width: 70%;
     margin-right: 10px;
     padding-top: 10px;
     padding-left: 10px;
     padding-right: 10px;
     background-color: #1890FF;
-}
+  }
 
-#chatInput{
-    height: 130px;
-}
-#chatInputOther{
+
+  #chatInput{
+    width: 100%;
+    bottom:0;
+  }
+  #chatInputOther{
     width: 100%;
     height: 40px;
     background-color: #001529;
-}
-#chatInputText{
+  }
+  #chatInputText{
     width: 100%;
     height: 90px;
-}
+  }
+
 </style>
  

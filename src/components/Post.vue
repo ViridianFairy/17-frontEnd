@@ -130,13 +130,9 @@ export default {
 <style scoped>
 #post{
     margin-left:40px;
-    height:calc(100vh - 50px - 112px);
+    height:calc(100vh - 50px - 120px);
     overflow-y: scroll;
     margin-top:-25px;
-}
-#send{
-    height:135px;
-
 }
 </style>
 

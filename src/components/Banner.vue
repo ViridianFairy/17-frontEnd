@@ -379,7 +379,7 @@ export default {
 					})
          		.then(doc => {
          		   var code = doc.data.status;
-         		   var msg = doc.data.msg;
+                  var msg = doc.data.msg;
 						if (code == 0)
 							self.$alert(msg,'true')
 						else

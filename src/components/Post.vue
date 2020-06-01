@@ -1,26 +1,27 @@
 <template>
    <div id="wrapper">
-       <p style="margin-left:35px;margin-top:25px;font-size:25px" >任务动态</p>
-       <a-divider style="margin-top:10px"/>
+      <p style="margin-left:35px;margin-top:25px;font-size:25px" >任务动态</p>
+      <a-divider style="margin-top:10px"/>
+
       <div id="post">
-          
-    <a-list item-layout="horizontal" :data-source="postData"><!---->
-    <a-list-item slot="renderItem" slot-scope="item">
-      <a-list-item-meta
-        :description="item.content"
-      >                            <!--//item.title-->
-        <a slot="title" :href="item.link">{{item.user.username}}{{item.action}}</a>
-        
-        <a-avatar
-          slot="avatar"
-          :src="item.photo"
-        />
-      </a-list-item-meta>
-      <div style="margin-right:30px;font-size:12px">{{item.time}}</div>
-    </a-list-item>
-  </a-list>
-  </div>
-  <a-divider style="margin-top:0px"/>
+        <a-list item-layout="horizontal" :data-source="postData"><!---->
+        <a-list-item slot="renderItem" slot-scope="item">
+          <a-list-item-meta
+            :description="item.content"
+          >                            <!--//item.title-->
+            <a slot="title" :href="item.link">{{item.user.username}}{{item.action}}</a>
+            
+            <a-avatar
+              slot="avatar"
+              :src="item.photo"
+            />
+          </a-list-item-meta>
+          <div style="margin-right:30px;font-size:12px">{{item.time}}</div>
+        </a-list-item>
+        </a-list>
+      </div>
+
+      <a-divider style="margin-top:0px"/>
   <!--消息框-->
   <!--div id="send">
       <a-textarea v-model="postValue" placeholder="@提及他人" id="postContent" :rows="5" style="font-size:15px;margin-top:-25px;width:1700px"/>
@@ -127,10 +128,9 @@ export default {
 </script>
 
 <style scoped>
-
 #post{
     margin-left:40px;
-    height:550px;
+    height:calc(100vh - 50px - 112px);
     overflow-y: scroll;
     margin-top:-25px;
 }

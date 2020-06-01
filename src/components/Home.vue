@@ -50,7 +50,7 @@ export default {
       };
     },
     mounted(){
-        this.showName();
+        this.getName();
     },
     computed:{
     },
@@ -70,6 +70,7 @@ export default {
                 } else {
                 this.createVisible = false;
                 this.createLoading = false;
+                this.getName();
                 }
             });
         },
@@ -78,7 +79,7 @@ export default {
         },
         
         //显示加入的项目
-        showName(){
+        getName(){
             this.$http.get(`/api/user/project`).then(doc => {
                 console.log(doc);
                 var code = doc.data.status;
@@ -89,7 +90,7 @@ export default {
 
         //进入项目
         enterProject(id){
-            console.log("checked", id);
+            //console.log("checked", id);
             var store = window.localStorage;
             this.$store.commit("enterProject", { id });
 			console.log("任务ID："+this.$store.state.project.id)

@@ -314,7 +314,7 @@ export default {
 }
 #right1{
     margin-left:600px;
-    width:600px;
+    width:calc(100vw - 600px - 170px);
     display: block;
     margin-top:-150px;
 }

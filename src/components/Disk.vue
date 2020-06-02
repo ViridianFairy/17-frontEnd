@@ -2,6 +2,10 @@
 <transition name="public-slide">
 	
    <div id="disk-wrapper">
+		<a-modal title="创建文件夹" :visible="visible" :confirm-loading="confirmLoading" @ok="foldConfirm"
+      	@cancel="foldCancel">
+      <a-input :addon-before="'根目录/'+pos" v-model="folderName"/>
+    </a-modal>
 		<!-- <a-input placeholder="Basic usage" /> -->
       <div class="header">
             <span class="header-addr">
@@ -71,19 +75,20 @@
                   </span>
                   <span class="name" v-else>{{item.name}}</span>
                   <span class="attach">
-                     <img @click="createFold()" class="oper-img" src="../assets/Disk/加话题.svg" draggable='false'>
+                     <img @click="showModal" class="oper-img" src="../assets/Disk/加话题.svg" draggable='false'>
                      <img @click="sort()" class="oper-img" src="../assets/Disk/排序.svg" draggable='false'>
                      <img @click="rename(index)" class="oper-img" src="../assets/Disk/修改.svg" draggable='false'>
                   </span>
                </td> 
                <td><span v-if="item.isFile">{{item.size}}</span><span v-else>--</span></td> 
                <td>
-						<img :src="item.avatar" style="width:24px;margin:-3px 6px 0 -6px;border-radius:7px;"/>
+						<img :src="item.avatar" style="width:24px;height:24px;margin:-3px 6px 0 -6px;border-radius:7px;"
+						v-if="item.avatar"/>
 						{{item.user||'--'}}
 					</td>
                <td class="oper">
                   <img v-if="item.isFile" @click="download(index,$event)" src="../assets/Disk/下移.svg" draggable='false'>
-                  <img @click="delet(index)" class="delete-icon" src="../assets/Disk/删除.svg" draggable='false'>
+                  <img @click="delet(index,item.name)" class="delete-icon" src="../assets/Disk/删除.svg" draggable='false'>
                   <img v-if="item.isFile" @click="share($event,index)" src="../assets/Disk/分享.svg" draggable='false'>
                </td>
                
@@ -116,6 +121,9 @@
       },
       data(){
          return {
+				folderName:"",
+				visible: false,
+      		confirmLoading: false,
             buttonRad:'0.4rem',
             files:[],
             pos:"",
@@ -145,6 +153,20 @@
          }
       },
       methods:{
+			showModal() {
+      		this.visible = true;
+    		},
+    		foldConfirm(e) {
+				this.getFiles({},true)
+   			this.confirmLoading = true;
+   			setTimeout(() => {
+   				this.visible = false;
+   				this.confirmLoading = false;
+   			}, 500);
+   		},
+   		foldCancel(e) {
+   		  this.visible = false;
+   		},
          protoChange(event, val){
             this.pos = ""
             var t = this.previewMode
@@ -233,38 +255,26 @@
                   })
                }
             })*/
-         },
+			},
          createFold(){
-            this.$http
-            .post("/disk/createFold",{
-               pos:this.pos,
-            })
-            .then(res => {
-               console.log(res.data.success)
-               this.choose.unshift(0)
-               this.refresh()
-               setTimeout(()=>{
-                  this.rename(0)
-               },100)
-            })
+				
          },
-         delet(index){
-//test
+         delet(index, name){
+				var path = this.pos + `${name}`
+				console.log(path)
             this.$http
-            .post("/disk/delete",{
-               pos:this.pos,
-               name:this.files[index].name,
-               isFile:this.files[index].isFile,
-               _id: this.Cookies.get("_id"),
-            })
-            .then(res => {
-               if(res.data.success==1){
-                  this.$alert(res.data.msg,"true");
-                  this.files.splice(index,1)
+            .post(`/api/project/${this.$store.state.project.id}/file/delete`,{path}).then(doc => {
+					var code = doc.data.status;
+					var msg = doc.data.msg;
+					console.log(msg)	
+					if (code == 0){
+						this.$alert("删除成功！","true-overload");
+						this.files.splice(index,1)
                   this.choose.splice(index,1)
-               }else{
-                  this.$alert(res.data.msg,"false");
-               }
+						this.refresh()
+					}else{
+						this.$alert(msg,"false");
+					}
             })
          },
          download(index,e){
@@ -327,7 +337,7 @@
             }
             else if(!item.isFile){
                this.transName = 'msg'
-               this.pos += '/' + item.filename
+               this.pos += '/' + item.name
                this.refresh(true)
             }else{
                //this.$alert("暂不支持预览哦","tips");
@@ -338,19 +348,18 @@
             // console.log(this.pos)
             this.$http.get(`/api/project/${this.$store.state.project.id}/file?path=${this.pos}`)
             .then(res => {
-					
 					var a = res.data.data
 					console.log(a)
-					this.files = [{
+					this.files = []
+					/*this.files = [{
 						name:"人家是默认的噢",
 							isFile:false,
 							size:"",time:"",changeTime:"",user:'',avatar:'',
-					}];
+					}];*/
 					a.directory.forEach(v=>{
-						console.log(v)
+						if(v.name.split('/')[0]!='')
 						this.files.push({
-							name:v.filename,
-							isFile:false,
+							name:v.name.split('/')[0],
 							size:"",time:"",changeTime:"",user:'ff',
 							user:"",
 							avatar:""
@@ -387,32 +396,33 @@
 					return realSize
 				}
          },
-         getFiles(e) {
-            e.preventDefault();
-            if(e.target.files[0].size >= 1024 * 1024 * 50){
-               this.$alert("大于50M啦","false");
-               return;
-				}
-				this.fileName = e.target.files[0].name
-				// console.log(e.target.files[0])
-				console.log(e.target.files[0])
-
-            var formData = new FormData()
-				formData.append('file', e.target.files[0])
-				formData.append('path', this.pos)
-            formData.append('name', e.target.files[0].name)
-            //this.$alert(`开始上传文件`,'tiny-overload',{x:e.pageX, y:e.pageY})
+         getFiles(e, isDirectory) {
+				console.log(this.pos + '/')
+				// if(!this.folderName) return
+				var formData = new FormData()
+				if(!isDirectory){
+					formData.append('path', this.pos + '/')
+					e.preventDefault();
+            	if(e.target.files[0].size >= 1024 * 1024 * 50){
+               	this.$alert("大于50M啦","false");
+               	return;
+					}
+					this.fileName = e.target.files[0].name
+					formData.append('file', e.target.files[0])
+					formData.append('name', e.target.files[0].name)
+					this.$alert(`开始上传文件`,'tiny-overload',{x:e.pageX, y:e.pageY})
+				}else
+					formData.append('path', this.pos + '/' + this.folderName)
             var config = {
                headers: { 'Content-Type': 'multipart/form-data' }
 				}
-				// formData.append('pos', this.pos)
-				//console.log(obj)
             this.$http.post(`/api/project/${this.$store.state.project.id}/file`,formData, config ).then(doc=>{
                var code = doc.data.status;
 					var msg = doc.data.msg;
 					console.log(msg)	
 					if (code == 0){
-					 	this.$alert("上传成功！","true-overload");
+						if(!isDirectory) this.$alert("上传成功！","true-overload");
+						else this.$alert("创建成功！","true-overload");
 						this.refresh()
 					}
             })
@@ -670,7 +680,7 @@
       }
    }
    #no-reviews-body {
-      margin-top: -1rem;
+      margin-top: 1rem;
       text-align: center;
       width:100%;
    }
@@ -680,7 +690,7 @@
       opacity: 0.35;
    }
    #no-reviews-body span{
-      vertical-align:6rem;
+      // vertical-align:6rem;
       margin-left: 1.5rem;
       font-size: 1.5rem;
       color:#ccc;

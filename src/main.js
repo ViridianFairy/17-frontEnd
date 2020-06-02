@@ -29,6 +29,7 @@ Vue.config.productionTip = false
 axios.defaults.withCredentials = true
 // ant-design
 Vue.component(Button.name, Button)
+Vue.component(Popconfirm.name, Popconfirm)
 Vue.component(Icon.name, Icon)
 Vue.component(Input.name, Input)
 Vue.component(Collapse.name, Collapse)
@@ -56,6 +57,7 @@ Vue.component(Cascader.name, Cascader)
 Vue.component(Form.name, Form)
 Vue.component(Upload.name, Upload)
 Vue.use(Button)
+Vue.use(Popconfirm)
 Vue.use(Input)
 Vue.use(Collapse)
 Vue.use(Avatar)

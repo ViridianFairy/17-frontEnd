@@ -272,12 +272,6 @@ export default {
           this.detailsId=id;
           this.scheName=this.doc[i].content;         
           this.scheLabelStr=this.doc[i].label;
-          
-          /*if(this.scheLabel.length===0&&this.scheLabelStr=="''"){
-            this.scheLabel.push("标签");
-            console.log("111");
-          }
-          else*/
           this.scheLabel=this.scheLabelStr.split(' ');  
           this.scheRemarks=this.doc[i].remarks;
           this.t_remind=this.doc[i].t_remind;
@@ -318,8 +312,16 @@ export default {
 				if (code == 0)
 					this.doc = doc.data.data	
 				this.doc.forEach(i=>{
-					var d = new Date(i.t_set)
-					i.time = (d.getMonth()+1)+'月'+d.getDate()+'日'
+          var d = new Date(i.t_set)
+          if(d.getMonth()+1<10){
+            i.time = '0'+(d.getMonth()+1)+'月'+d.getDate()+'日'  
+          }
+          if(d.getDate()<10){
+            i.time = '0'+(d.getMonth()+1)+'月'+'0'+d.getDate()+'日'  
+          }
+          else if(d.getMonth()+1>=10&&d.getDate()<=10)
+            i.time = (d.getMonth()+1)+'月'+d.getDate()+'日'
+          
 				})	
          })
 		},

@@ -194,7 +194,9 @@ export default {
         };
     },
     mounted() {
-      this.getData();
+		this.getData();
+		// var date = new Date()
+		// this.t_set = date
     },
     methods: {
         moment,

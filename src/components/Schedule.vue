@@ -26,8 +26,8 @@
 
         <div id="contentright">
         <a-input placeholder="填写日程内容" autoSize allowClear style="width:400px;" v-model="content"/>
-        <a-date-picker @change="onChange" style="margin-top:20px;width:400px" placeholder="请选择日期"/>
-        <a-date-picker @change="onChange2" style="margin-top:20px;width:400px" placeholder="请选择提醒时间"/>
+        <a-date-picker @change="onChange" style="margin-top:20px;width:400px" placeholder="请选择日期" :defaultValue="getCurrentMoment"/>
+        <a-date-picker @change="onChange2" style="margin-top:20px;width:400px" placeholder="请选择提醒时间" :defaultValue="getCurrentMoment"/>
         <p></p>
         <!-- <a-date-picker
             :mode="mode1"
@@ -88,7 +88,7 @@
         <div id="contentright">
         <a-input placeholder="日程内容" autoSize allowClear style="width:400px;" v-model="scheName"/>
         <a-input placeholder="发起人" style="margin-top:20px;width:400px;" v-model="scheCreator" disabled/>
-        <a-date-picker style="margin-top:20px;width:400px" :defaultValue="moment(this.t_set)"/>
+        <a-date-picker style="margin-top:20px;width:400px" :defaultPickerValue="moment(this.t_set)"/>
         <a-date-picker style="margin-top:20px;width:400px" :defaultValue="moment(this.t_remind)"/>
         <p></p>
             <p></p>
@@ -166,7 +166,12 @@ import {toDateTime,getFirstMsg} from '../js/code.js'
 import moment from 'moment';
 export default {
    name: "Schedule",
-   components: {},
+	components: {},
+	computed:{
+		getCurrentMoment(){
+			return moment(new Date().toLocaleDateString(),'YYYY-MM-DD')
+		}
+	},
    data() {
       return {
         detailsId:0,
@@ -195,6 +200,10 @@ export default {
 	}, 
 	mounted(){
 		this.update()
+		// var d = new Date()
+		// var str = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`
+		// this.t_set = str
+		// console.log(str)
 	},
    methods: {
      

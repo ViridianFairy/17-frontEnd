@@ -91,8 +91,8 @@
         <div id="contentright1">
         <a-input placeholder="日程内容" autoSize allowClear style="width:400px;" v-model="scheName"/>
         <a-input placeholder="发起人" style="margin-top:25px;width:400px;" v-model="scheCreator" disabled/>
-        <a-date-picker style="margin-top:25px;width:400px" @change="tSetChange" :defaultValue="moment(this.t_set)"/>
-        <a-date-picker style="margin-top:23px;width:400px" :defaultValue="moment(this.t_remind)" disabled/>
+        <a-date-picker style="margin-top:25px;width:400px" @change="tSetChange" :value="moment(t_set)"/>
+        <a-date-picker style="margin-top:23px;width:400px" :value="moment(t_remind)" disabled/>
         <p></p>
             <p></p>
         <a-input placeholder="填写备注" v-model="scheRemarks" autoSize allowClear style="margin-top:30px;width:400px"/>
@@ -173,6 +173,9 @@ export default {
    name: "Schedule",
 	components: {},
 	computed:{
+		// getDetailSet(){
+		// 	return 
+		// }
 		getCurrentMoment(){
 			return moment(new Date().toLocaleDateString(),'YYYY-MM-DD')
 		}
@@ -284,7 +287,8 @@ export default {
         }      
       }
       //console.log(toDateTime(this.t_set));
-      console.log(this.t_set);
+      console.log('set'+this.t_set);
+      console.log('remind'+this.t_remind);
       this.showDetails=true; 
     },
     delete(id){

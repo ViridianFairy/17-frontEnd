@@ -22,7 +22,7 @@
               <br>
             </div>
             <div v-else class="chatIn">
-              <a-avatar :size="50" slot="avatar" style="float:left"></a-avatar>
+              <a-avatar :size="50" slot="avatar" style="float:left" :src="getUserInfo(message.from).photo"></a-avatar>
               <div class="contentIn">
                 <p>
                   {{message.payload.text}}
@@ -98,6 +98,7 @@
         groupsList: [],
         conversationID: null,
         chatSelect: null,
+        memberData: [],
         tim: null,
         chatText: "",
         group: null,
@@ -113,11 +114,11 @@
       this.getMock();
       this.getInfo();
       this.timLogin();
+      this.getMember();
     },
     methods: {
       getInfo(){
         this.$http.get(`/api/user/info`).then(doc => {
-          console.log(doc);
           var code = doc.data.status;
           var msg = doc.data.msg;
           this.userInfo = doc.data.data;
@@ -133,7 +134,6 @@
                     var msg = doc.data.msg;
                     if (code === 0) {
                       let data = doc.data.data;
-                      console.log(data)
                       if (this.tim == null) {
                         this.timInit(data.app_id);
                       }
@@ -150,7 +150,6 @@
         this.tim.registerPlugin({'cos-js-sdk': COS});
       },
       logout() {
-        console.log(TIM.EVENT, this);
         let promise = this.tim.logout();
         if (promise){
           promise.then(function (imResponse) {
@@ -192,13 +191,10 @@
           this.currentMessageList = [...this.currentMessageList, data]
         }
         this.$refs.chatList.scrollTop = this.$refs.chatList.scrollHeight;
-        console.log(this.$refs.chatList)
       },
       getGroupList () {
-        console.log("123123")
         let promise = this.tim.getGroupList();
         promise.then((imResponse) => {
-          console.log("group list:", imResponse.data.groupList); // 群组列表
           this.groupsList = imResponse.data.groupList;
           if(this.groupsList){
             this.group = this.groupsList[0];
@@ -208,15 +204,11 @@
         }).catch(function(imError) {
           console.warn('getGroupList error:', imError); // 获取群组列表失败的相关信息
         });
-
-
-
       },
       getConversation() {
         let promise = this.tim.getConversationList();
         promise.then(imResponse => {
           const conversationList = imResponse.data.conversationList; // 会话列表，用该列表覆盖原有的会话列表
-          console.log("conversation list:", conversationList);
           this.conversationList = conversationList;
         }).catch(function(imError) {
           console.warn('getConversationList error:', imError); // 获取会话列表失败的相关信息
@@ -235,13 +227,11 @@
         });
       },
       callback(key) {
-        console.log(key);
       },
       showModal() {
         this.createGroupVisible = true;
       },
       handleOk(e) {
-        console.log(e);
         this.createGroupVisible = false;
       },
       getMock() {
@@ -263,11 +253,36 @@
         this.targetKeys = targetKeys;
       },
       handleChange(targetKeys, direction, moveKeys) {
-        console.log(targetKeys, direction, moveKeys);
         this.targetKeys = targetKeys;
       },
-      onSearch() {
-
+      getMember(){
+        this.$http.get(`/api/project/${this.$store.state.project.id}`,{params:{project_id:this.$store.state.project.id}})
+                .then(doc=>{
+                  var code = doc.data.status;
+                  var msg = doc.data.msg;
+                  if (code === 0){
+                    if(doc.data.data.member){
+                      let memberData={};
+                      let data = doc.data.data.member
+                      for(let i=0; i<data.length;i++){
+                        memberData[data[i].id] = {
+                          id: data[i].id,
+                          username: data[i].username,
+                          photo: data[i].photo
+                        }
+                      }
+                      this.memberData=memberData;
+                    }
+                    else
+                      this.memberData=[];
+                  }
+                }).catch(err=>{
+          this.$alert("未知错误", "false");  //服务器还没搭起来
+        })
+      },
+      getUserInfo(id) {
+        id = id.split('-')[1];
+        return this.memberData[id]
       },
       sendMessage() {
         if (this.chatText){
@@ -279,7 +294,6 @@
             }
           });
           this.updateMessageList(message);
-          console.log(this.messageList)
           this.tim.sendMessage(message);
           this.chatText = "";
         }

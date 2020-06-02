@@ -26,8 +26,8 @@
 
         <div id="contentright">
         <a-input placeholder="填写日程内容" autoSize allowClear style="width:400px;" v-model="content"/>
-        <a-date-picker @change="onChange" v-model="setTime" style="margin-top:20px;width:400px" placeholder="请选择日期"/>
-        <a-date-picker @change="onChange2" v-model="remindTime" style="margin-top:20px;width:400px" placeholder="请选择提醒时间"/>
+        <a-date-picker @change="onChange" style="margin-top:20px;width:400px" placeholder="请选择日期" :defaultValue="getCurrentMoment"/>
+        <a-date-picker @change="onChange2" style="margin-top:20px;width:400px" placeholder="请选择提醒时间" :defaultValue="getCurrentMoment"/>
         <p></p>
         <!-- <a-date-picker
             :mode="mode1"
@@ -91,8 +91,8 @@
         <div id="contentright1">
         <a-input placeholder="日程内容" autoSize allowClear style="width:400px;" v-model="scheName"/>
         <a-input placeholder="发起人" style="margin-top:25px;width:400px;" v-model="scheCreator" disabled/>
-        <a-date-picker style="margin-top:25px;width:400px" @change="tSetChange" :defaultValue="moment(this.t_set)"/>
-        <a-date-picker style="margin-top:23px;width:400px" :defaultValue="moment(this.t_remind)" disabled/>
+        <a-date-picker style="margin-top:25px;width:400px" @change="tSetChange" :value="moment(t_set)"/>
+        <a-date-picker style="margin-top:23px;width:400px" :value="moment(t_remind)" disabled/>
         <p></p>
             <p></p>
         <a-input placeholder="填写备注" v-model="scheRemarks" autoSize allowClear style="margin-top:30px;width:400px"/>
@@ -171,7 +171,15 @@ import moment from 'moment';
 import 'moment/locale/zh-cn';
 export default {
    name: "Schedule",
-   components: {},
+	components: {},
+	computed:{
+		// getDetailSet(){
+		// 	return 
+		// }
+		getCurrentMoment(){
+			return moment(new Date().toLocaleDateString(),'YYYY-MM-DD')
+		}
+	},
    data() {
       return {
         moment,
@@ -207,6 +215,10 @@ export default {
 	}, 
 	mounted(){
 		this.update()
+		// var d = new Date()
+		// var str = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`
+		// this.t_set = str
+		// console.log(str)
 	},
    methods: {
     tSetChange(value, dateString){
@@ -269,7 +281,8 @@ export default {
         }      
       }
       //console.log(toDateTime(this.t_set));
-      console.log(this.t_set);
+      console.log('set'+this.t_set);
+      console.log('remind'+this.t_remind);
       this.showDetails=true; 
     },
     delete(id){

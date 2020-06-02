@@ -26,8 +26,8 @@
 
         <div id="contentright">
         <a-input placeholder="填写日程内容" autoSize allowClear style="width:400px;" v-model="content"/>
-        <a-date-picker @change="onChange" style="margin-top:20px;width:400px" placeholder="请选择日期"/>
-        <a-date-picker @change="onChange2" style="margin-top:20px;width:400px" placeholder="请选择提醒时间"/>
+        <a-date-picker @change="onChange" v-model="setTime" style="margin-top:20px;width:400px" placeholder="请选择日期"/>
+        <a-date-picker @change="onChange2" v-model="remindTime" style="margin-top:20px;width:400px" placeholder="请选择提醒时间"/>
         <p></p>
         <!-- <a-date-picker
             :mode="mode1"
@@ -102,7 +102,7 @@
                 {{ `${tag.slice(0, 20)}...` }}
                 </a-tag>
             </a-tooltip>
-            <a-tag v-else :key="tag" :closable="index !== 0" color="#003366" style="font-size:15px;text-align:center;height:25px;margin-top:10px" @close="() => handleClose(tag)">
+            <a-tag v-else :key="tag" :closable="index !== 0" color="#003366" style="font-size:15px;text-align:center;height:25px;margin-top:10px" @close="() => handleClose1(tag)">
                 {{ tag }}
             </a-tag>
             </template>
@@ -200,6 +200,8 @@ export default {
         content:"",
         remarks:"",
         index1:0,
+        setTime:"",
+        remindTime:"",
       };
 	}, 
 	mounted(){
@@ -228,11 +230,8 @@ export default {
     },
     save(){
       this.scheLabelStr="";
-      var i=0;
-      for(i=0;i<this.scheLabel.length-1;i++){
-        this.scheLabelStr+=this.scheLabel[i]+" ";
-      }
-      this.scheLabelStr+=this.scheLabel[i];
+      this.scheLabelStr=this.scheLabel.join(' ');
+      console.log(this.scheLabelStr);
       this.$http.post(`/api/project/${this.$store.state.project.id}/schedule/update`, {
         project_id:this.$store.state.project.id,id:this.detailsId,t_set:toDateTime(this.t_set),content:this.scheName,
         remarks:this.scheRemarks,label:this.scheLabelStr
@@ -245,8 +244,12 @@ export default {
           this.showDetails=false;	
           this.update();
         }
-        else
+        else if(code == 9001){         
+          alert("标签长度过长，保存失败！");
+        }
+        else{
           alert("保存失败！");
+        }
          })
     },
     scheDetails(id){
@@ -324,13 +327,14 @@ export default {
     },
     handleClose(removedTag) {
       const tags = this.tags.filter(tag => tag !== removedTag);
-      console.log(tags);
+      //console.log(tags);
       this.tags = tags;
     },
     handleClose1(removedTag) {
-      const tags = this.scheLabel.filter(tag => tag !== removedTag);
-      console.log(tags);
+      const tags = this.scheLabel.filter(tag => tag !== removedTag);    
       this.scheLabel = tags;
+      this.scheLabelStr=this.scheLabel.join(' ');
+      
     },
     showInput() {
       this.inputVisible = true;
@@ -368,12 +372,13 @@ export default {
 
     handleInputConfirm1() {
       const inputValue1 = this.inputValue1;
-      let tags = this.scheLabel;
-      if (inputValue1 && tags.indexOf(inputValue1) === -1) {
-        tags = [...tags, inputValue1];
+      //console.log(inputValue1);
+      let scheLabel = this.scheLabel;
+      if (inputValue1 && scheLabel.indexOf(inputValue1) === -1) {
+        scheLabel = [...scheLabel, inputValue1];
       }
       Object.assign(this, {
-        tags,
+        scheLabel,
         inputVisible1: false,
         inputValue1: '',
       });
@@ -381,6 +386,11 @@ export default {
 
 
     showModal() {
+      this.content="";
+      this.remarks="";
+      this.tags=["标签"];
+      this.setTime='';
+      this.remindTime='';
       this.visible = true;
     },
 
@@ -411,18 +421,9 @@ export default {
         this.visible = false;
         this.confirmLoading = false;
       }, 0);
-      this.content="";
-      this.remarks="";
-      this.tags=["标签"];
     },
 
     handleCancel(e) {     
-      this.tags=['标签'];
-      this.content="";
-      this.remarks="";
-      this.dataString1="";
-      this.dateString2="";
-      this
       console.log('Clicked cancel button');
       this.visible = false;
     },
@@ -442,6 +443,7 @@ export default {
 }
 #f2{
     display: flex;
+    height:350px;
     margin-bottom:25px;
 }
 #contentright1{

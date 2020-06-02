@@ -88,7 +88,7 @@
 					</td>
                <td class="oper">
                   <img v-if="item.isFile" @click="download(index,$event)" src="../assets/Disk/下移.svg" draggable='false'>
-                  <img @click="delet(index,item.name)" class="delete-icon" src="../assets/Disk/删除.svg" draggable='false'>
+                  <img @click="delet(index,item.name,item.isFile)" class="delete-icon" src="../assets/Disk/删除.svg" draggable='false'>
                   <img v-if="item.isFile" @click="share($event,index)" src="../assets/Disk/分享.svg" draggable='false'>
                </td>
                
@@ -259,8 +259,9 @@
          createFold(){
 				
          },
-         delet(index, name){
+         delet(index, name, isFile){
 				var path = this.pos + `${name}`
+				if(!isFile) path += '/'
 				console.log(path)
             this.$http
             .post(`/api/project/${this.$store.state.project.id}/file/delete`,{path}).then(doc => {

@@ -341,9 +341,13 @@
                this.pos += '/' + item.name
                this.refresh(true)
             }else{
-               //this.$alert("暂不支持预览哦","tips");
-               window.open('http://funx.pro'+'/resource/junk'+this.pos+'/'+this.files[index].name);
-            }
+               this.$http.get(`/api/project/${this.$store.state.project.id}/file/download?path=${this.pos+'/'+item.name}`)
+            	.then(res => {
+						var a = res.data.data
+						if(a)
+               		window.open(a);
+					})
+				}
          },
          refresh(first){
             // console.log(this.pos)
@@ -606,8 +610,9 @@
          img:first-child{
             width:1.6rem;
             vertical-align: -0.2rem;
-            padding:0 1.2rem 0 0.4rem;
-            margin-right: 0;
+				padding-right: 2px;
+            // padding:0 1.2rem 0 0.4rem;
+            margin-right: 6px;
          }
          .attach{
             text-align: right;

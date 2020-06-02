@@ -262,7 +262,7 @@
          delet(index, name, isFile){
 				var path = this.pos + `${name}`
 				if(!isFile) path += '/'
-				console.log(path)
+				// console.log(path)
             this.$http
             .post(`/api/project/${this.$store.state.project.id}/file/delete`,{path}).then(doc => {
 					var code = doc.data.status;
@@ -331,14 +331,14 @@
                   console.log(i+":"+arr[i])
                   tpos += '/'+arr[i]
                }
-                  
-               console.log(tpos)
-               this.pos = tpos;
+					this.pos = tpos;
+					
                this.refresh(true)
             }
             else if(!item.isFile){
                this.transName = 'msg'
-               this.pos += '/' + item.name
+					this.pos += '/' + item.name
+					console.log('tpos：'+this.pos)
                this.refresh(true)
             }else{
                this.$http.get(`/api/project/${this.$store.state.project.id}/file/download?path=${this.pos+'/'+item.name}`)
@@ -350,11 +350,11 @@
 				}
          },
          refresh(first){
-            // console.log(this.pos)
+            console.log('传递的pos：'+this.pos)
             this.$http.get(`/api/project/${this.$store.state.project.id}/file?path=${this.pos}`)
             .then(res => {
 					var a = res.data.data
-					console.log(a)
+					// console.log(a)
 					this.files = []
 					/*this.files = [{
 						name:"人家是默认的噢",
@@ -365,7 +365,7 @@
 						if(v.name.split('/')[0]!='')
 						this.files.push({
 							name:v.name.split('/')[0],
-							size:"",time:"",changeTime:"",user:'ff',
+							size:"",time:"",changeTime:"",user:'',
 							user:"",
 							avatar:""
 						})
@@ -402,11 +402,12 @@
 				}
          },
          getFiles(e, isDirectory) {
-				console.log(this.pos + '/')
+				console.log('上传文件的path：'+this.pos)
+				// console.log('上传文件的file：'+e.target.files[0])
 				// if(!this.folderName) return
 				var formData = new FormData()
 				if(!isDirectory){
-					formData.append('path', this.pos + '/')
+					formData.append('path', this.pos)
 					e.preventDefault();
             	if(e.target.files[0].size >= 1024 * 1024 * 50){
                	this.$alert("大于50M啦","false");

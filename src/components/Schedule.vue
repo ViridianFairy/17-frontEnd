@@ -40,7 +40,7 @@
             <p></p>
         <a-input placeholder="填写备注" v-model="remarks" autoSize allowClear style="margin-top:30px;width:400px"/>
         <p></p>
-        <div id="tags">
+        <div class="tags1">
                 <div>
                 <template v-for="(tag, index) in tags">
                 <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
@@ -74,7 +74,7 @@
     </a-modal>
 
         <!--日程查看详情-->
-        <a-modal v-model="showDetails" title="查看日程" @ok="scheDelete()" cancelText="OK" okType="danger" okText="删除" style="width:500px;">
+        <a-modal v-model="showDetails" title="查看日程" @ok="save" @cancel="cancel" cancelText="取消" okText="保存" style="width:500px;">
         <div id="f2">
         <div id="iconleft">
             <a-icon type="edit" style="fontSize:22px;color:gray;margin:15px;"/>
@@ -88,13 +88,13 @@
         <div id="contentright">
         <a-input placeholder="日程内容" autoSize allowClear style="width:400px;" v-model="scheName"/>
         <a-input placeholder="发起人" style="margin-top:20px;width:400px;" v-model="scheCreator" disabled/>
-        <a-date-picker style="margin-top:20px;width:400px" :defaultValue="moment(this.t_set)"/>
-        <a-date-picker style="margin-top:20px;width:400px" :defaultValue="moment(this.t_remind)"/>
+        <a-date-picker style="margin-top:20px;width:400px" @change="tSetChange" :defaultValue="moment(this.t_set)"/>
+        <a-date-picker style="margin-top:20px;width:400px" :defaultValue="moment(this.t_remind)" disabled/>
         <p></p>
             <p></p>
         <a-input placeholder="填写备注" v-model="scheRemarks" autoSize allowClear style="margin-top:30px;width:400px"/>
         <p></p>
-        <div id="tags">
+        <div class="tags1">
                 <div>
                 <template v-for="(tag, index) in scheLabel">
                 <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
@@ -107,21 +107,24 @@
             </a-tag>
             </template>
             <a-input
-            v-if="inputVisible"
-            ref="input"
+            v-if="inputVisible1"
+            ref="input1"
             type="text"
             size="large"
             :style="{ width: '78px' }"
-            :value="inputValue"
-            @change="handleInputChange"
-            @blur="handleInputConfirm"
-            @keyup.enter="handleInputConfirm"
+            :value="inputValue1"
+            @change="handleInputChange1"
+            @blur="handleInputConfirm1"
+            @keyup.enter="handleInputConfirm1"
             />    
-            <a-tag v-else @click="showInput" style="background:#fff; height:25px;borderStyle: dashed;margin-top:12px">
+            <a-tag v-else @click="showInput1" style="background:#fff; height:25px;borderStyle: dashed;margin-top:12px">
             <a-icon type="plus" /> <em style="font-size:14px;font-style:normal;color:gray;padding-left:0">添加标签</em>
             </a-tag>   
         </div>      
-        </div>    
+        </div> 
+        <a-button type="danger" @click="scheDelete" style="margin-top:20px;">
+          删除日程
+        </a-button>   
     </div>   
 
 </div>
@@ -164,14 +167,17 @@
 <script>
 import {toDateTime,getFirstMsg} from '../js/code.js'
 import moment from 'moment';
+import 'moment/locale/zh-cn';
 export default {
    name: "Schedule",
    components: {},
    data() {
       return {
+        moment,
         detailsId:0,
         scheName:"",
-        scheLabel:[],
+        scheLabel:['标签'],
+        scheLabelStr:"",
         scheRemarks:"",
         t_remind:null,
         t_set:null,
@@ -184,21 +190,25 @@ export default {
         mode1: 'time',
         tags: ['标签'],
         inputVisible: false,
+        inputVisible1: false,
         inputValue: '',
+        inputValue1:'',
         doc:[],
         activeKey:"",
         dateString1:"",
         dateString2:"",
         content:"",
         remarks:"",
+        index1:0,
       };
 	}, 
 	mounted(){
 		this.update()
 	},
    methods: {
-     
-    moment,
+    tSetChange(value, dateString){
+      console.log('Selected Time: ', dateString);
+    },
     scheDelete(){
       var a=confirm("确认删除该日程吗？");
        if(a){
@@ -206,13 +216,53 @@ export default {
        }
        this.showDetails=false;
     },
-    
+    cancel(){//还原
+      /*var i=this.index;
+      this.scheName=this.doc[i].content;
+      this.scheLabel=this.doc[i].label;
+      this.scheRemarks=this.doc[i].remarks;
+      this.t_remind=this.doc[i].t_remind;
+      this.t_set=this.doc[i].t_set;
+      this.scheCreator=this.doc[i].creator.username;*/
+      this.update();
+    },
+    save(){
+      this.scheLabelStr="";
+      var i=0;
+      for(i=0;i<this.scheLabel.length-1;i++){
+        this.scheLabelStr+=this.scheLabel[i]+" ";
+      }
+      this.scheLabelStr+=this.scheLabel[i];
+      this.$http.post(`/api/project/${this.$store.state.project.id}/schedule/update`, {
+        project_id:this.$store.state.project.id,id:this.detailsId,t_set:toDateTime(this.t_set),content:this.scheName,
+        remarks:this.scheRemarks,label:this.scheLabelStr
+			})
+         .then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+				if (code == 0){
+          alert("已保存！");
+          this.showDetails=false;	
+          this.update();
+        }
+        else
+          alert("保存失败！");
+         })
+    },
     scheDetails(id){
       for(var i=0;i<this.doc.length;i++){
-        if(this.doc[i].id==id){         
+        if(this.doc[i].id==id){  
+          this.index1=i;       
           this.detailsId=id;
-          this.scheName=this.doc[i].content;
-          this.scheLabel=this.doc[i].label;
+          this.scheName=this.doc[i].content;         
+          this.scheLabelStr=this.doc[i].label;
+          
+          /*if(this.scheLabel.length===0&&this.scheLabelStr=="''"){
+            this.scheLabel.push("标签");
+            console.log("111");
+          }
+          else*/
+          this.scheLabel=this.scheLabelStr.split(' ');  
           this.scheRemarks=this.doc[i].remarks;
           this.t_remind=this.doc[i].t_remind;
           this.t_set=this.doc[i].t_set;
@@ -220,6 +270,8 @@ export default {
           break;
         }      
       }
+      //console.log(toDateTime(this.t_set));
+      console.log(this.t_set);
       this.showDetails=true; 
     },
     delete(id){
@@ -286,7 +338,12 @@ export default {
         this.$refs.input.focus();
       });
     },
-
+    showInput1() {
+      this.inputVisible1 = true;
+      this.$nextTick(function() {
+        this.$refs.input1.focus();
+      });
+    },
     handleInputChange(e) {
       this.inputValue = e.target.value;
     },
@@ -305,18 +362,40 @@ export default {
       });
     },
 
+    handleInputChange1(e) {
+      this.inputValue1 = e.target.value;
+    },
+
+    handleInputConfirm1() {
+      const inputValue1 = this.inputValue1;
+      let tags = this.scheLabel;
+      if (inputValue1 && tags.indexOf(inputValue1) === -1) {
+        tags = [...tags, inputValue1];
+      }
+      Object.assign(this, {
+        tags,
+        inputVisible1: false,
+        inputValue1: '',
+      });
+    },
+
+
     showModal() {
       this.visible = true;
     },
 
     handleOk(e) {
+      var tagsStr="";
+      tagsStr=this.tags.join(' ');
+      console.log(tagsStr);
       this.ModalText = 'The modal will be closed after two seconds';
-		this.confirmLoading = true;
-		this.$http
+      this.confirmLoading = true;
+      this.$http
          .post(`/api/project/${this.$store.state.project.id}/schedule`, {
 				project_id:this.$store.state.project.id,
 				t_set:toDateTime(this.dateString1),
-				t_remind:toDateTime(this.dateString2),
+        t_remind:toDateTime(this.dateString2),
+        label:tagsStr,
 				content:this.content,
 				remarks:this.remarks,
 				//label:this.$store.state.project.id,
@@ -332,9 +411,18 @@ export default {
         this.visible = false;
         this.confirmLoading = false;
       }, 0);
+      this.content="";
+      this.remarks="";
+      this.tags=["标签"];
     },
 
-    handleCancel(e) {
+    handleCancel(e) {     
+      this.tags=['标签'];
+      this.content="";
+      this.remarks="";
+      this.dataString1="";
+      this.dateString2="";
+      this
       console.log('Clicked cancel button');
       this.visible = false;
     },
@@ -354,7 +442,7 @@ export default {
 }
 #f2{
     display: flex;
-    margin-bottom: -10px;
+    margin-bottom:25px;
 }
 #contentright1{
    width: 500px;
@@ -389,7 +477,7 @@ p{
    margin-top:10px;
 }
 
-#tags{
+.tags1{
   margin-top:18px ;
 }
 </style>

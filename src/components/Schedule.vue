@@ -74,22 +74,25 @@
     </a-modal>
 
         <!--日程查看详情-->
-        <a-modal v-model="showDetails" title="查看日程" @ok="save" @cancel="cancel" cancelText="取消" okText="保存" style="width:500px;">
+        <a-modal v-model="showDetails" title="查看日程" @ok="save" @cancel="cancel" cancelText="取消" okText="保存" width="650px">
         <div id="f2">
-        <div id="iconleft">
-            <a-icon type="edit" style="fontSize:22px;color:gray;margin:15px;"/>
-            <a-icon type="user" style="fontSize:22px;color:gray;margin:15px;"/>
-            <a-icon type="calendar" style="fontSize:22px;color:gray;margin:15px;"/>
-            <a-icon type="clock-circle" style="fontSize:22px;color:gray;margin:15px;"/>
-            <a-icon type="pushpin" style="fontSize:22px;color:gray;margin:15px;"/>
-            <a-icon type="tag" style="fontSize:22px;color:gray;margin:15px;"/>
+        <div id="iconleft1">
+            <a-icon type="edit" style="fontSize:22px;color:gray;vertical-align:middle;margin:15px;margin-bottom:20px"/>日程内容
+            <a-icon type="user" style="fontSize:22px;color:gray;vertical-align:middle;margin:15px;margin-bottom:20px"/>发起人
+            <a-icon type="calendar" style="fontSize:22px;color:gray;margin:15px;vertical-align:middle;margin-bottom:20px"/>设置时间
+            <a-icon type="clock-circle" style="fontSize:22px;color:gray;margin:15px;vertical-align:middle;margin-bottom:16px"/>提醒时间
+            <a-icon type="pushpin" style="fontSize:22px;color:gray;margin:15px;vertical-align:middle;margin-bottom:16px"/>备注
+            <a-icon type="tag" style="fontSize:22px;color:gray;margin:15px;vertical-align:middle;margin-bottom:20px;"/>标签
+            <a-button type="danger" @click="scheDelete" style="margin-top:20px;margin-left:15px">
+              删除日程
+            </a-button>
         </div>
 
-        <div id="contentright">
+        <div id="contentright1">
         <a-input placeholder="日程内容" autoSize allowClear style="width:400px;" v-model="scheName"/>
-        <a-input placeholder="发起人" style="margin-top:20px;width:400px;" v-model="scheCreator" disabled/>
-        <a-date-picker style="margin-top:20px;width:400px" @change="tSetChange" :defaultValue="moment(this.t_set)"/>
-        <a-date-picker style="margin-top:20px;width:400px" :defaultValue="moment(this.t_remind)" disabled/>
+        <a-input placeholder="发起人" style="margin-top:25px;width:400px;" v-model="scheCreator" disabled/>
+        <a-date-picker style="margin-top:25px;width:400px" @change="tSetChange" :defaultValue="moment(this.t_set)"/>
+        <a-date-picker style="margin-top:23px;width:400px" :defaultValue="moment(this.t_remind)" disabled/>
         <p></p>
             <p></p>
         <a-input placeholder="填写备注" v-model="scheRemarks" autoSize allowClear style="margin-top:30px;width:400px"/>
@@ -102,7 +105,7 @@
                 {{ `${tag.slice(0, 20)}...` }}
                 </a-tag>
             </a-tooltip>
-            <a-tag v-else :key="tag" :closable="index !== 0" color="#003366" style="font-size:15px;text-align:center;height:25px;margin-top:10px" @close="() => handleClose1(tag)">
+            <a-tag v-else :key="tag" :closable="index !== 0" color="#003366" style="font-size:15px;text-align:center;height:25px;margin-top:15px" @close="() => handleClose1(tag)">
                 {{ tag }}
             </a-tag>
             </template>
@@ -122,9 +125,7 @@
             </a-tag>   
         </div>      
         </div> 
-        <a-button type="danger" @click="scheDelete" style="margin-top:20px;">
-          删除日程
-        </a-button>   
+           
     </div>   
 
 </div>
@@ -444,19 +445,16 @@ export default {
 #f2{
     display: flex;
     height:350px;
+    width:600px;
     margin-bottom:25px;
 }
 #contentright1{
    width: 500px;
    height: 300px;
    margin-top:12px ;
+   margin-left:20px;
 }
-#iconleft{
-   margin-left: 0px;
-   width: 150px;
-   color:gray;
-   
-}
+
 em{
     padding-left:40px;
     font-style: normal;
@@ -472,6 +470,11 @@ p{
 #iconleft{
    margin-left: 0px;
    width: 70px;
+}
+#iconleft1{
+   margin-left: 26px;
+   width: 150px;
+  color:gray;
 }
 #contentright{
    width: 500px;

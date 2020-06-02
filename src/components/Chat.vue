@@ -22,7 +22,7 @@
               <br>
             </div>
             <div v-else class="chatIn">
-              <a-avatar :size="50" slot="avatar" style="float:left" :src="userInfo.photo"></a-avatar>
+              <a-avatar :size="50" slot="avatar" style="float:left"></a-avatar>
               <div class="contentIn">
                 <p>
                   {{message.payload.text}}
@@ -111,9 +111,18 @@
     },
     mounted() {
       this.getMock();
+      this.getInfo();
       this.timLogin();
     },
     methods: {
+      getInfo(){
+        this.$http.get(`/api/user/info`).then(doc => {
+          console.log(doc);
+          var code = doc.data.status;
+          var msg = doc.data.msg;
+          this.userInfo = doc.data.data;
+        });
+      },
       timLogin() {
         if (this.project_id !== this.$store.state.project.id) {
           this.timDisabled = true;

@@ -4,7 +4,7 @@
       <a-divider style="margin-top:10px"/>
 
       <div id="post">
-        <a-list item-layout="horizontal" :data-source="postData"><!---->
+        <a-list item-layout="horizontal" :data-source="newPost"><!---->
         <a-list-item slot="renderItem" slot-scope="item">
           <a-list-item-meta
             :description="item.content"
@@ -43,6 +43,7 @@ export default {
    data() {
       return {
         postValue:"",
+        newPost:[],
         postData:[],/*{
           action: "成为了管理员",
           content: "AA",
@@ -76,10 +77,14 @@ export default {
      getData:function(){
        this.$http.get(`/api/project/${this.$store.state.project.id}/action`,{params:{project_id:this.$store.state.project.id}})
        .then(doc=>{
-			 if(doc.data.data)
-				 this.postData=doc.data.data;
-			else
-				this.postData=[];
+			 if(doc.data.data){
+         this.postData=doc.data.data;
+         this.newPost=this.postData.reverse();
+       }
+			else{
+        this.postData=[];
+        this.newPost=[];
+      }
        }).catch(err=>{
 				this.$alert("未知错误", "false");  //服务器还没搭起来
       })

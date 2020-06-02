@@ -260,12 +260,6 @@ export default {
           this.detailsId=id;
           this.scheName=this.doc[i].content;         
           this.scheLabelStr=this.doc[i].label;
-          
-          /*if(this.scheLabel.length===0&&this.scheLabelStr=="''"){
-            this.scheLabel.push("标签");
-            console.log("111");
-          }
-          else*/
           this.scheLabel=this.scheLabelStr.split(' ');  
           this.scheRemarks=this.doc[i].remarks;
           this.t_remind=this.doc[i].t_remind;

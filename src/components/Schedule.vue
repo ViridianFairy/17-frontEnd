@@ -40,7 +40,7 @@
             <p></p>
         <a-input placeholder="填写备注" v-model="remarks" autoSize allowClear style="margin-top:30px;width:400px"/>
         <p></p>
-        <div id="tags">
+        <div class="tags1">
                 <div>
                 <template v-for="(tag, index) in tags">
                 <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
@@ -74,27 +74,30 @@
     </a-modal>
 
         <!--日程查看详情-->
-        <a-modal v-model="showDetails" title="查看日程" @ok="scheDelete()" cancelText="OK" okType="danger" okText="删除" style="width:500px;">
+        <a-modal v-model="showDetails" title="查看日程" @ok="save" @cancel="cancel" cancelText="取消" okText="保存" width="650px">
         <div id="f2">
-        <div id="iconleft">
-            <a-icon type="edit" style="fontSize:22px;color:gray;margin:15px;"/>
-            <a-icon type="user" style="fontSize:22px;color:gray;margin:15px;"/>
-            <a-icon type="calendar" style="fontSize:22px;color:gray;margin:15px;"/>
-            <a-icon type="clock-circle" style="fontSize:22px;color:gray;margin:15px;"/>
-            <a-icon type="pushpin" style="fontSize:22px;color:gray;margin:15px;"/>
-            <a-icon type="tag" style="fontSize:22px;color:gray;margin:15px;"/>
+        <div id="iconleft1">
+            <a-icon type="edit" style="fontSize:22px;color:gray;vertical-align:middle;margin:15px;margin-bottom:20px"/>日程内容
+            <a-icon type="user" style="fontSize:22px;color:gray;vertical-align:middle;margin:15px;margin-bottom:20px"/>发起人
+            <a-icon type="calendar" style="fontSize:22px;color:gray;margin:15px;vertical-align:middle;margin-bottom:20px"/>设置时间
+            <a-icon type="clock-circle" style="fontSize:22px;color:gray;margin:15px;vertical-align:middle;margin-bottom:16px"/>提醒时间
+            <a-icon type="pushpin" style="fontSize:22px;color:gray;margin:15px;vertical-align:middle;margin-bottom:16px"/>备注
+            <a-icon type="tag" style="fontSize:22px;color:gray;margin:15px;vertical-align:middle;margin-bottom:20px;"/>标签
+            <a-button type="danger" @click="scheDelete" style="margin-top:20px;margin-left:15px">
+              删除日程
+            </a-button>
         </div>
 
-        <div id="contentright">
+        <div id="contentright1">
         <a-input placeholder="日程内容" autoSize allowClear style="width:400px;" v-model="scheName"/>
-        <a-input placeholder="发起人" style="margin-top:20px;width:400px;" v-model="scheCreator" disabled/>
-        <a-date-picker style="margin-top:20px;width:400px" :defaultPickerValue="moment(this.t_set)"/>
-        <a-date-picker style="margin-top:20px;width:400px" :defaultValue="moment(this.t_remind)"/>
+        <a-input placeholder="发起人" style="margin-top:25px;width:400px;" v-model="scheCreator" disabled/>
+        <a-date-picker style="margin-top:25px;width:400px" @change="tSetChange" :defaultValue="moment(this.t_set)"/>
+        <a-date-picker style="margin-top:23px;width:400px" :defaultValue="moment(this.t_remind)" disabled/>
         <p></p>
             <p></p>
         <a-input placeholder="填写备注" v-model="scheRemarks" autoSize allowClear style="margin-top:30px;width:400px"/>
         <p></p>
-        <div id="tags">
+        <div class="tags1">
                 <div>
                 <template v-for="(tag, index) in scheLabel">
                 <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
@@ -102,26 +105,27 @@
                 {{ `${tag.slice(0, 20)}...` }}
                 </a-tag>
             </a-tooltip>
-            <a-tag v-else :key="tag" :closable="index !== 0" color="#003366" style="font-size:15px;text-align:center;height:25px;margin-top:10px" @close="() => handleClose(tag)">
+            <a-tag v-else :key="tag" :closable="index !== 0" color="#003366" style="font-size:15px;text-align:center;height:25px;margin-top:15px" @close="() => handleClose1(tag)">
                 {{ tag }}
             </a-tag>
             </template>
             <a-input
-            v-if="inputVisible"
-            ref="input"
+            v-if="inputVisible1"
+            ref="input1"
             type="text"
             size="large"
             :style="{ width: '78px' }"
-            :value="inputValue"
-            @change="handleInputChange"
-            @blur="handleInputConfirm"
-            @keyup.enter="handleInputConfirm"
+            :value="inputValue1"
+            @change="handleInputChange1"
+            @blur="handleInputConfirm1"
+            @keyup.enter="handleInputConfirm1"
             />    
-            <a-tag v-else @click="showInput" style="background:#fff; height:25px;borderStyle: dashed;margin-top:12px">
+            <a-tag v-else @click="showInput1" style="background:#fff; height:25px;borderStyle: dashed;margin-top:12px">
             <a-icon type="plus" /> <em style="font-size:14px;font-style:normal;color:gray;padding-left:0">添加标签</em>
             </a-tag>   
         </div>      
-        </div>    
+        </div> 
+           
     </div>   
 
 </div>
@@ -164,6 +168,7 @@
 <script>
 import {toDateTime,getFirstMsg} from '../js/code.js'
 import moment from 'moment';
+import 'moment/locale/zh-cn';
 export default {
    name: "Schedule",
 	components: {},
@@ -174,9 +179,11 @@ export default {
 	},
    data() {
       return {
+        moment,
         detailsId:0,
         scheName:"",
-        scheLabel:[],
+        scheLabel:['标签'],
+        scheLabelStr:"",
         scheRemarks:"",
         t_remind:null,
         t_set:null,
@@ -189,13 +196,18 @@ export default {
         mode1: 'time',
         tags: ['标签'],
         inputVisible: false,
+        inputVisible1: false,
         inputValue: '',
+        inputValue1:'',
         doc:[],
         activeKey:"",
         dateString1:"",
         dateString2:"",
         content:"",
         remarks:"",
+        index1:0,
+        setTime:"",
+        remindTime:"",
       };
 	}, 
 	mounted(){
@@ -206,8 +218,9 @@ export default {
 		// console.log(str)
 	},
    methods: {
-     
-    moment,
+    tSetChange(value, dateString){
+      console.log('Selected Time: ', dateString);
+    },
     scheDelete(){
       var a=confirm("确认删除该日程吗？");
        if(a){
@@ -215,13 +228,54 @@ export default {
        }
        this.showDetails=false;
     },
-    
+    cancel(){//还原
+      /*var i=this.index;
+      this.scheName=this.doc[i].content;
+      this.scheLabel=this.doc[i].label;
+      this.scheRemarks=this.doc[i].remarks;
+      this.t_remind=this.doc[i].t_remind;
+      this.t_set=this.doc[i].t_set;
+      this.scheCreator=this.doc[i].creator.username;*/
+      this.update();
+    },
+    save(){
+      this.scheLabelStr="";
+      this.scheLabelStr=this.scheLabel.join(' ');
+      console.log(this.scheLabelStr);
+      this.$http.post(`/api/project/${this.$store.state.project.id}/schedule/update`, {
+        project_id:this.$store.state.project.id,id:this.detailsId,t_set:toDateTime(this.t_set),content:this.scheName,
+        remarks:this.scheRemarks,label:this.scheLabelStr
+			})
+         .then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+				if (code == 0){
+          alert("已保存！");
+          this.showDetails=false;	
+          this.update();
+        }
+        else if(code == 9001){         
+          alert("标签长度过长，保存失败！");
+        }
+        else{
+          alert("保存失败！");
+        }
+         })
+    },
     scheDetails(id){
       for(var i=0;i<this.doc.length;i++){
-        if(this.doc[i].id==id){         
+        if(this.doc[i].id==id){  
+          this.index1=i;       
           this.detailsId=id;
-          this.scheName=this.doc[i].content;
-          this.scheLabel=this.doc[i].label;
+          this.scheName=this.doc[i].content;         
+          this.scheLabelStr=this.doc[i].label;
+          
+          /*if(this.scheLabel.length===0&&this.scheLabelStr=="''"){
+            this.scheLabel.push("标签");
+            console.log("111");
+          }
+          else*/
+          this.scheLabel=this.scheLabelStr.split(' ');  
           this.scheRemarks=this.doc[i].remarks;
           this.t_remind=this.doc[i].t_remind;
           this.t_set=this.doc[i].t_set;
@@ -229,6 +283,8 @@ export default {
           break;
         }      
       }
+      //console.log(toDateTime(this.t_set));
+      console.log(this.t_set);
       this.showDetails=true; 
     },
     delete(id){
@@ -281,13 +337,14 @@ export default {
     },
     handleClose(removedTag) {
       const tags = this.tags.filter(tag => tag !== removedTag);
-      console.log(tags);
+      //console.log(tags);
       this.tags = tags;
     },
     handleClose1(removedTag) {
-      const tags = this.scheLabel.filter(tag => tag !== removedTag);
-      console.log(tags);
+      const tags = this.scheLabel.filter(tag => tag !== removedTag);    
       this.scheLabel = tags;
+      this.scheLabelStr=this.scheLabel.join(' ');
+      
     },
     showInput() {
       this.inputVisible = true;
@@ -295,7 +352,12 @@ export default {
         this.$refs.input.focus();
       });
     },
-
+    showInput1() {
+      this.inputVisible1 = true;
+      this.$nextTick(function() {
+        this.$refs.input1.focus();
+      });
+    },
     handleInputChange(e) {
       this.inputValue = e.target.value;
     },
@@ -314,18 +376,46 @@ export default {
       });
     },
 
+    handleInputChange1(e) {
+      this.inputValue1 = e.target.value;
+    },
+
+    handleInputConfirm1() {
+      const inputValue1 = this.inputValue1;
+      //console.log(inputValue1);
+      let scheLabel = this.scheLabel;
+      if (inputValue1 && scheLabel.indexOf(inputValue1) === -1) {
+        scheLabel = [...scheLabel, inputValue1];
+      }
+      Object.assign(this, {
+        scheLabel,
+        inputVisible1: false,
+        inputValue1: '',
+      });
+    },
+
+
     showModal() {
+      this.content="";
+      this.remarks="";
+      this.tags=["标签"];
+      this.setTime='';
+      this.remindTime='';
       this.visible = true;
     },
 
     handleOk(e) {
+      var tagsStr="";
+      tagsStr=this.tags.join(' ');
+      console.log(tagsStr);
       this.ModalText = 'The modal will be closed after two seconds';
-		this.confirmLoading = true;
-		this.$http
+      this.confirmLoading = true;
+      this.$http
          .post(`/api/project/${this.$store.state.project.id}/schedule`, {
 				project_id:this.$store.state.project.id,
 				t_set:toDateTime(this.dateString1),
-				t_remind:toDateTime(this.dateString2),
+        t_remind:toDateTime(this.dateString2),
+        label:tagsStr,
 				content:this.content,
 				remarks:this.remarks,
 				//label:this.$store.state.project.id,
@@ -343,7 +433,7 @@ export default {
       }, 0);
     },
 
-    handleCancel(e) {
+    handleCancel(e) {     
       console.log('Clicked cancel button');
       this.visible = false;
     },
@@ -363,19 +453,17 @@ export default {
 }
 #f2{
     display: flex;
-    margin-bottom: -10px;
+    height:350px;
+    width:600px;
+    margin-bottom:25px;
 }
 #contentright1{
    width: 500px;
    height: 300px;
    margin-top:12px ;
+   margin-left:20px;
 }
-#iconleft{
-   margin-left: 0px;
-   width: 150px;
-   color:gray;
-   
-}
+
 em{
     padding-left:40px;
     font-style: normal;
@@ -392,13 +480,18 @@ p{
    margin-left: 0px;
    width: 70px;
 }
+#iconleft1{
+   margin-left: 26px;
+   width: 150px;
+  color:gray;
+}
 #contentright{
    width: 500px;
    height: 300px;
    margin-top:10px;
 }
 
-#tags{
+.tags1{
   margin-top:18px ;
 }
 </style>

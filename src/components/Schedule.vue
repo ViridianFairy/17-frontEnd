@@ -312,8 +312,16 @@ export default {
 				if (code == 0)
 					this.doc = doc.data.data	
 				this.doc.forEach(i=>{
-					var d = new Date(i.t_set)
-					i.time = (d.getMonth()+1)+'月'+d.getDate()+'日'
+          var d = new Date(i.t_set)
+          if(d.getMonth()+1<10){
+            i.time = '0'+(d.getMonth()+1)+'月'+d.getDate()+'日'  
+          }
+          if(d.getDate()<10){
+            i.time = '0'+(d.getMonth()+1)+'月'+'0'+d.getDate()+'日'  
+          }
+          else if(d.getMonth()+1>=10&&d.getDate()<=10)
+            i.time = (d.getMonth()+1)+'月'+d.getDate()+'日'
+          
 				})	
          })
 		},

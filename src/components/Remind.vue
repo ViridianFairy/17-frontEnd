@@ -163,7 +163,7 @@ export default {
         return {
 			rightShow:false,
             defaultChecked:false,
-            remindData:[],/*{
+            remindData:[/*{
                 name: "任务3",
                 t_remind: "2020-05-30 21:00:00",
                 type: "task:22"
@@ -172,7 +172,7 @@ export default {
                 name: "日程4",
                 t_remind: "2020-05-30 21:00:00",
                 type: "schedule:22"
-            }*/
+            }*/],
             messageType:"",
             messageId:1,
             taskData:null,
@@ -317,15 +317,17 @@ export default {
 #contextright{
     width:363px;
     margin-top:9.5px;
+    
 }
 #all{
     margin-top:50px;
+    display: flex;
 }
 #right1{
-    margin-left:600px;
+    margin-left:200px;
     width:calc(100vw - 600px - 170px);
     display: block;
-    margin-top:-150px;
+    margin-top:0px;
 }
 #left1{
     margin-top:10px;

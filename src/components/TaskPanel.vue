@@ -9,7 +9,7 @@
                   {{i.name}}
                </a-button>
                <a-modal 
-                     title="任务:软件工程实践"
+                     :title="'任务：'+this.flowName"
                      v-model="visible"
                      @ok="handleOk"
                      cancelText="OK"
@@ -46,7 +46,7 @@
                   <em class="em11" style="margin-right:10px;font-size:15px;padding-left:0">完成情况</em>
                   <a-switch v-model="finish" @change="onChange" /><br />
                   <!---拉取头像  --->
-               <a-avatar icon="user" style="margin-top:-13px" :size="37"/>
+               <a-avatar icon="user" style="margin-top:-13px" :size="37" />
                <a-tooltip>
                      <template slot="title">添加参与者</template>
                      <a>
@@ -60,7 +60,7 @@
                   </a-tooltip>
                <br />
                <a-range-picker
-                  :defaultValue="[moment('2020-04-26', dateFormat), moment('2020-05-07', dateFormat)]"
+                  :value="[moment('2020-04-26', dateFormat), moment('2020-05-07', dateFormat)]"
                   style="margin-top:-4px;width:397px"
                />
                <br /><br />

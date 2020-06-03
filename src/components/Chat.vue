@@ -28,6 +28,7 @@
                   {{message.payload.text}}
                 </p>
               </div>
+
             </div>
           </template>
         </div>
@@ -42,26 +43,6 @@
         </div>
 
         <div id="chatInputOther">
-          <a-popover title="添加附件" trigger="click">
-            <template slot="content">
-              <p></p>
-            </template>
-            <a-button type="link">
-              <a-icon style="fontSize:28px;color:#001529;padding-top:7px" type="paper-clip" />
-            </a-button>
-          </a-popover>
-
-          <a-popover title="表情" trigger="click">
-            <template slot="content">
-              <p><a-icon style="fontSize:20px" type="smile" /></p>
-              <p><a-icon style="fontSize:20px" type="frown" /></p>
-              <p><a-icon style="fontSize:20px" type="meh" /></p>
-            </template>
-            <a-button type="link">
-              <a-icon style="fontSize:28px;color:#001529;padding-top:7px" type="smile" />
-            </a-button>
-          </a-popover>
-
           <a-button style="float:right" size="large" @click="sendMessage">发送</a-button>
         </div>
 
@@ -347,10 +328,11 @@
   .contentIn{
     max-width: 70%;
     margin-left: 10px;
-    padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 5px 10px;
     background-color: white;
+  }
+  .contentIn > p{
+    margin: 0;
   }
   .contentOut {
     max-width: 70%;
@@ -359,6 +341,7 @@
     padding-left: 10px;
     padding-right: 10px;
     background-color: #1890FF;
+    word-break: break-all;
   }
 
 

@@ -27,12 +27,12 @@
         </div>
 
         <div id="contentright1">
-        <a-input placeholder="日程内容" style="width:400px;" v-model="scheName" disabled/>
-        <a-input style="margin-top:25px;width:400px;" v-model="scheCreator" disabled/>
-        <a-date-picker style="margin-top:25px;width:400px" :value="moment(t_set)" disabled/>
-        <a-date-picker style="margin-top:23px;width:400px" :value="moment(t_remind)" disabled/>
+        <a-input placeholder="日程内容" style="width:100%;" v-model="scheName" disabled/><br>
+        <a-input style="margin-top:25px;width:100%;" v-model="scheCreator" disabled/><br>
+        <a-date-picker style="margin-top:25px;width:100%" :value="moment(t_set)" disabled/><br>
+        <a-date-picker style="margin-top:23px;width:100%" :value="moment(t_remind)" disabled/><br>
             
-        <a-input v-model="scheRemarks" disabled style="margin-top:23px;width:400px"/>
+        <a-input v-model="scheRemarks" disabled style="margin-top:23px;width:100%"/>
         <p></p>
         <div id="tags">
                 <div>
@@ -282,7 +282,7 @@ export default {
 
 <style scoped>
 #contentright1{
-   width: 500px;
+   width: calc(100% - 140px);
    height: 300px;
    margin-top:12px ;
 }
@@ -290,6 +290,7 @@ export default {
     display: flex;
 }
 #more1{
+	/* float:l */
     display: flex;
     
 }
@@ -324,15 +325,16 @@ export default {
     display: flex;
 }
 #right1{
-    margin-left:200px;
+    margin-left:5%;
     width:calc(100vw - 600px - 170px);
     display: block;
     margin-top:0px;
+	 
 }
 #left1{
     margin-top:10px;
     margin-left:50px;
-    width:400px;
+    width:350px;
     border:1px solid LightGrey;
 }
 .ant-list-item-meta-title > a {

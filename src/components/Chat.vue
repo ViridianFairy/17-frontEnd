@@ -12,7 +12,7 @@
             v-for="message in currentMessageList"
           >
             <div v-if="message.from === loginInfo.userID" class="chatOut">
-              <a-avatar :size="50" slot="avatar" style="float:right" :src="userInfo.photo"></a-avatar>
+              <a-avatar :size="50" slot="avatar" :src="userInfo.photo"></a-avatar>
               <div class="contentOut" style="float:right;color:white">
                 <p>
                   {{message.payload.text}}
@@ -21,13 +21,17 @@
               <br>
               <br>
             </div>
-            <div v-else class="chatIn">
-              <a-avatar :size="50" slot="avatar" style="float:left" :src="getUserInfo(message.from).photo"></a-avatar>
-              <div class="contentIn">
-                <p>
-                  {{message.payload.text}}
-                </p>
+            <div v-else class="chatIn" >
+              <a-avatar :size="50" slot="avatar":src="getUserInfo(message.from).photo"></a-avatar>
+              <div style="width: inherit;">
+                <div style="margin-left: 15px; margin-bottom: 3px">{{getUserInfo(message.from).username}}</div>
+                <div class="contentIn">
+                  <p>
+                    {{message.payload.text}}
+                  </p>
+                </div>
               </div>
+
 
             </div>
           </template>
@@ -205,6 +209,7 @@
           const isCompleted = imResponse.data.isCompleted; // 表示是否已经拉完所有消息。
           // this.messageList[group.groupID]=messageList;
           this.currentMessageList = messageList;
+          console.log(messageList)
         });
       },
       callback(key) {
@@ -256,14 +261,22 @@
                     }
                     else
                       this.memberData=[];
+                    console.log(this.memberData)
                   }
                 }).catch(err=>{
           this.$alert("未知错误", "false");  //服务器还没搭起来
         })
       },
       getUserInfo(id) {
+        console.log(id, this.memberData[id])
         id = id.split('-')[1];
-        return this.memberData[id]
+        if(id)
+          return this.memberData[id];
+        else
+          return {
+            username: "",
+            photo: "",
+          }
       },
       sendMessage() {
         if (this.chatText){
@@ -310,6 +323,8 @@
     height: calc(100vh - 50px - 53px - 130px);
     overflow: scroll;
     background-color: #F5F5F5;
+    display: flex;
+    flex-direction: column;
   }
   .chatIn{
     width: 80%;
@@ -317,31 +332,41 @@
     padding-top: 10px;
     padding-bottom: 10px;
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
   }
   .chatOut{
     width: 100%;
     padding-right: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
+    display: flex;
+    flex-direction: row-reverse;
   }
 
   .contentIn{
+    width: fit-content;
     max-width: 70%;
     margin-left: 10px;
     padding: 5px 10px;
     background-color: white;
+    word-break: break-all;
+    height: fit-content;
   }
   .contentIn > p{
     margin: 0;
   }
   .contentOut {
     max-width: 70%;
-    margin-right: 10px;
-    padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
+    margin: auto 10px;
+    padding: 5px 10px;
     background-color: #1890FF;
     word-break: break-all;
+    height: fit-content;
+  }
+  .contentOut >p{
+    margin: 0;
   }
 
 

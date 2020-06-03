@@ -267,7 +267,7 @@ export default {
             }
         })
     }
-    this.reload();//第一种刷新
+    //this.reload();//第一种刷新
     this.update();
     this.amendVisible=false;
     },
@@ -412,12 +412,8 @@ export default {
 }
 #post{
     margin-left:40px;
-    height: 340px;
-    overflow-y: scroll;
+    
+    
     margin-top:-25px;
-}
-#send{
-    height:135px;
-
 }
 </style>

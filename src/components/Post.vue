@@ -13,7 +13,7 @@
             
             <a-avatar
               slot="avatar"
-              :src="item.photo"
+              :src="item.user.photo"
             />
           </a-list-item-meta>
           <div style="margin-right:30px;font-size:12px">{{item.time}}</div>
@@ -44,28 +44,7 @@ export default {
       return {
         postValue:"",
         newPost:[],
-        postData:[],/*{
-          action: "成为了管理员",
-          content: "AA",
-          link: "task:16",
-          time: "2020-05-13 00:36:13",
-          user: {
-          id: 3,
-          photo: null,
-          username: "用户03",
-          }
-        },
-        {
-          action: "成为了管理员",
-          content: "BB",
-          link: "task:16",
-          time: "2020-05-23 00:36:13",
-          user: {
-          id: 2,
-          photo: null,
-          username: "用户02",
-          }
-        },],*/
+        postData:[],
       };
    },
 
@@ -99,7 +78,7 @@ export default {
         var seconds=date.getSeconds()<10 ? "0"+date.getSeconds() : date.getSeconds();
         return year+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds;
      },
-     postSomething(){
+     /*postSomething(){
        //var value=document.getElementById("postcontent").value;
        //this.postvalue=value;
        //this.postdata=[];
@@ -124,7 +103,7 @@ export default {
        this.postValue="";
        this.postData.push(postData1);      
        //console.log(postdata.content);
-     },
+     },*/
      
    }
     

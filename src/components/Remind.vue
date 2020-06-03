@@ -27,12 +27,12 @@
         </div>
 
         <div id="contentright1">
-        <a-input placeholder="日程内容" style="width:400px;" v-model="scheName" disabled/>
-        <a-input placeholder="发起人" style="margin-top:25px;width:400px;" v-model="scheCreator" disabled/>
-        <a-date-picker style="margin-top:25px;width:400px" :defaultValue="moment(this.t_set)" disabled/>
-        <a-date-picker style="margin-top:23px;width:400px" :defaultValue="moment(this.t_remind)" disabled/>
+        <a-input placeholder="日程内容" style="width:100%;" v-model="scheName" disabled/><br>
+        <a-input style="margin-top:25px;width:100%;" v-model="scheCreator" disabled/><br>
+        <a-date-picker style="margin-top:25px;width:100%" :value="moment(t_set)" disabled/><br>
+        <a-date-picker style="margin-top:23px;width:100%" :value="moment(t_remind)" disabled/><br>
             
-        <a-input v-model="scheRemarks" disabled style="margin-top:23px;width:400px"/>
+        <a-input v-model="scheRemarks" disabled style="margin-top:23px;width:100%"/>
         <p></p>
         <div id="tags">
                 <div>
@@ -87,7 +87,7 @@
                <a-avatar icon="user" style="margin-top:0px" :size="37" :src="this.taskPhoto"/>
                <br />
                <a-range-picker
-                  :defaultValue="[moment(this.t_begin), moment(this.t_end)]"
+                  :value="[moment(t_begin), moment(t_end)]"
                   style="margin-top:17px;width:397px"
                   disabled
                />
@@ -163,7 +163,7 @@ export default {
         return {
 			rightShow:false,
             defaultChecked:false,
-            remindData:[{
+            remindData:[/*{
                 name: "任务3",
                 t_remind: "2020-05-30 21:00:00",
                 type: "task:22"
@@ -172,11 +172,12 @@ export default {
                 name: "日程4",
                 t_remind: "2020-05-30 21:00:00",
                 type: "schedule:22"
-            }],
+            }*/],
             messageType:"",
             messageId:1,
             taskData:null,
             taskLabel:[],
+            taskLabelStr:"",
             taskPhoto:null,
             taskPriority:1,
             taskRemarks:"",
@@ -186,6 +187,7 @@ export default {
             scheData:null,
             scheName:"",
             scheLabel:[],
+            scheLabelStr:"",
             scheRemarks:"",
             t_remind:null,
             t_set:null,
@@ -204,16 +206,18 @@ export default {
             var a=type.split(':');
             this.messageType=a[0];
 				this.messageId=parseInt(a[1]);
-				if(!this.rightShow) this.rightShow = true;
-            this.getTaskData();
-            this.getScheData();
+                if(!this.rightShow) this.rightShow = true;
+            if(this.messageType=='task')
+                this.getTaskData();
+            if(this.messageType=='schedule')
+                this.getScheData();
             console.log(this.messageType);
         },
         getData:function(){
             this.$http.get(`/api/project/${this.$store.state.project.id}/remind`,{params:{project_id:this.$store.state.project.id}})
             .then(doc=>{
                     if(doc.data.data){
-                        //this.remindData=doc.data.data;                    
+                        this.remindData=doc.data.data;                    
                     }
                     else
                         this.remindData=[];
@@ -232,7 +236,8 @@ export default {
                         this.taskPriority=this.taskData.priority;
                         this.t_begin=this.taskData.t_begin;
                         this.t_end=this.taskData.t_end;
-                        this.taskLabel=this.taskData.label;
+                        this.taskLabelStr=this.taskData.label;
+                        this.taskLabel=this.taskLabelStr.split(' ');
                         this.taskPhoto=this.taskData.originator.photo;     
                         this.taskName=this.taskData.name;     
                     }                  
@@ -256,10 +261,12 @@ export default {
                         }                              
                         this.scheName=this.scheData.content;
                         this.scheRemarks=this.scheData.remarks;
-                        this.scheLabel=this.scheData.label;
+                        this.scheLabelStr=this.scheData.label;
+                        this.scheLabel=this.scheLabelStr.split(' ');
                         this.t_remind=this.scheData.t_remind;
                         this.t_set=this.scheData.t_set;
-                        this.scheCreator=this.taskData.creator.username; 
+                        this.scheCreator=this.scheData.creator.username; 
+                        console.log(this.scheCreator);
                     }                       
                     else
                         this.scheAllData=[];
@@ -275,7 +282,7 @@ export default {
 
 <style scoped>
 #contentright1{
-   width: 500px;
+   width: calc(100% - 140px);
    height: 300px;
    margin-top:12px ;
 }
@@ -283,6 +290,7 @@ export default {
     display: flex;
 }
 #more1{
+	/* float:l */
     display: flex;
     
 }
@@ -310,20 +318,23 @@ export default {
 #contextright{
     width:363px;
     margin-top:9.5px;
+    
 }
 #all{
     margin-top:50px;
+    display: flex;
 }
 #right1{
-    margin-left:600px;
+    margin-left:5%;
     width:calc(100vw - 600px - 170px);
     display: block;
-    margin-top:-150px;
+    margin-top:0px;
+	 
 }
 #left1{
     margin-top:10px;
     margin-left:50px;
-    width:400px;
+    width:350px;
     border:1px solid LightGrey;
 }
 .ant-list-item-meta-title > a {

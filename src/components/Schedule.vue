@@ -140,9 +140,12 @@
             <a-collapse v-model="activeKey">
             <!--   数据需要部分 以下为模拟  ---->
             <!--   任务面板key=123         ---->
-				<a-collapse-panel header="2020年5月" key="5">
+				<div v-for="(item,time) in docByTime" :key="time">
+					{{time}}
+				</div>
+				<a-collapse-panel header="2020年5月" key="5" >
                 <div class="content">
-						 	<div v-for="(i,index) in doc" style="margin:10px 0;">
+						 	<div v-for="(i,index) in doc" style="margin:10px 0;" :key="index">
 								 <a-divider v-if="index!=0"/>
                     		<p>{{i.time}}<em @click="scheDetails(i.id)">
 									  {{i.content}}
@@ -210,7 +213,8 @@ export default {
         remarks:"",
         index1:0,
         setTime:"",
-        remindTime:"",
+		  remindTime:"",
+		  docByTime:[],
       };
 	}, 
 	mounted(){
@@ -302,6 +306,7 @@ export default {
          })
     },
 		update(){
+			this.docByTime = []
 			this.$http
          .get(`/api/project/${this.$store.state.project.id}/schedule`, {
 				project_id:this.$store.state.project.id,
@@ -310,18 +315,26 @@ export default {
             var code = doc.data.status;
             var msg = doc.data.msg;
 				if (code == 0)
-					this.doc = doc.data.data	
+					this.doc = doc.data.data
+				
 				this.doc.forEach(i=>{
-          var d = new Date(i.t_set)
-          if(d.getMonth()+1<10){
-            i.time = '0'+(d.getMonth()+1)+'月'+d.getDate()+'日'  
-          }
-          if(d.getDate()<10){
-            i.time = '0'+(d.getMonth()+1)+'月'+'0'+d.getDate()+'日'  
-          }
-          else if(d.getMonth()+1>=10&&d.getDate()<=10)
-            i.time = (d.getMonth()+1)+'月'+d.getDate()+'日'
-          
+          		var d = new Date(i.t_set)
+          		if(d.getMonth()+1<10){
+          		  i.time = '0'+(d.getMonth()+1)+'月'+d.getDate()+'日'  
+          		}
+          		if(d.getDate()<10){
+          		  i.time = '0'+(d.getMonth()+1)+'月'+'0'+d.getDate()+'日'  
+          		}
+          		else if(d.getMonth()+1>=10&&d.getDate()<=10)
+          		  i.time = (d.getMonth()+1)+'月'+d.getDate()+'日'
+					if(!this.docByTime[i.time]){
+						this.$set(this.docByTime,i.time,[])
+						// this.docByTime[i.time] = []
+						this.docByTime[i.time].push(i)
+					}else{
+						this.docByTime[i.time].push(i)
+					}
+					console.log(this.docByTime)
 				})	
          })
 		},
@@ -431,7 +444,7 @@ export default {
             var msg = doc.data.msg;
 				if (code == 0)
 					this.update()	
-				console.log(this.doc)		
+				// console.log(this.doc)		
          })
       setTimeout(() => {
         this.visible = false;

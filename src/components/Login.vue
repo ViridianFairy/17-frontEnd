@@ -53,7 +53,8 @@ export default {
 				var msg = doc.data.msg
 				if(code==0){
 					this.$alert(msg,'true')
-					this.$router.push('/taskPanel').catch(()=>{})
+					//locate test
+					this.$router.push('/home').catch(()=>{})
 					//this.$store.commit('loginReload',true)
 					//this.update()
 					this.$store.commit("userUpdate")

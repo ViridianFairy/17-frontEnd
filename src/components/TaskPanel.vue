@@ -16,7 +16,6 @@
                      okType="danger"
                      okText="删除"
                      width="700px"
-                     
                   >
                   <div id="more">
                      <div id="contextleft">
@@ -536,7 +535,7 @@ export default {
       },
       getTaskDetails(id){
          this.$http
-         .get(`/api/project/${this.$store.state.project.id}/task/info?id=${this.id}`, {
+         .get(`/api/project/${this.$store.state.project.id}/task/info?id=${id}`, {
 				project_id:this.$store.state.project.id,task_id:id
 			})
          .then(doc => {
@@ -545,19 +544,23 @@ export default {
             
 				if (code == 0){
                //this.update()
-               this.flowMarks=doc.data.data.remarks;
-               this.value=doc.data.data.priority;
                this.taskDetails.id=doc.data.data.id;
                this.taskDetails.finish=doc.data.data.finish;
                this.taskDetails.name=doc.data.data.name;
                var labelStr=doc.data.data.label;
-               this.taskDetails.label=labelStr.split(' ');
-               this.tags=this.taskDetails.label;
+               if(labelStr!="")
+                  this.taskDetails.label=labelStr.split(' ');
+               else
+                  this.taskDetails.label=["任务"];
                this.taskDetails.t_begin=doc.data.data.t_begin;
                this.taskDetails.t_end=doc.data.data.t_end;
                this.taskDetails.priority=doc.data.data.priority;
                this.taskDetails.remarks=doc.data.data.remarks;
                this.taskDetails.creator=doc.data.data.originator.photo;
+               this.tags=this.taskDetails.label;
+               this.flowMarks=doc.data.data.remarks;
+               this.value=doc.data.data.priority;
+               console.log(doc.data.data.t_begin);
 				}else{
 					this.$alert(msg,'false')
 				}

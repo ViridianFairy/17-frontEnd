@@ -16,6 +16,7 @@
                      okType="danger"
                      okText="删除"
                      width="700px"
+                     @cancel="save"
                   >
                   <div id="more">
                      <div id="contextleft">
@@ -59,14 +60,14 @@
                      </a>
                   </a-tooltip>
                <br />
-               <a-range-picker
+               <a-range-picker v-if="taskDetails.t_begin!=null&&taskDetails.t_end!=null"
                   :value="[moment(taskDetails.t_begin), moment(taskDetails.t_end)]"
                   style="margin-top:-4px;width:397px"
                />
                <br /><br />
                <div>
-               <p>
-               <a-textarea v-model="flowMarks" @blur="flowMarksOn" placeholder="填写备注" autoSize  allowClear style="width:397px;" />
+               <p><!--@blur="flowMarksOn"-->
+               <a-textarea v-model="flowMarks" placeholder="填写备注" autoSize  allowClear style="width:397px;" />
                <br /><br />
 
                <a-radio-group v-model="value" @change="onChange0" style="width:700px">
@@ -488,6 +489,32 @@ export default {
    },
 
    methods: {
+      save(){        
+         var tagsStr=this.tags.join(' ');
+         console.log(tagsStr);
+         this.$http
+         .post(`/api/project/${this.$store.state.project.id}/task/update`, {
+				project_id:this.$store.state.project.id,
+				id:this.id,
+				remarks:this.flowMarks,
+				name:this.flowName,
+            finish:this.taskDetails.finish,
+            t_begin:this.taskDetails.t_begin,
+            t_end:this.taskDetails.t_end,
+            priority:this.taskDetails.priority,
+            label:tagsStr,
+			})
+         .then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+				if (code == 0){
+               this.update()
+               
+				}else{
+					this.$alert(msg,'false')
+				}
+         });
+      },
       onTaskMemberChange(checkedValues) {
          console.log('checked = ', checkedValues);
       },
@@ -520,16 +547,17 @@ export default {
          })*/
       },
       onChange0(e) {
+         this.taskDetails.priority=e.target.value;
          console.log('radio checked', e.target.value);
       },
       ////后缀带clock的是提醒时间的弹窗
       ////任务详情弹框
       showModal(obj) {
 			this.id = obj.id
-			/*this.flowName = obj.name
-			this.flowMarks = obj.remarks
-			this.finish = obj.finish
-			this.taskpriority = obj.priority
+			//this.flowName = obj.name
+			//this.flowMarks = obj.remarks
+			//this.finish = obj.finish
+			//this.taskpriority = obj.priority
 			//this.label = obj.priority  */
          this.getTaskDetails(this.id);
          this.visible = true;
@@ -547,22 +575,24 @@ export default {
 				if (code == 0){
                //this.update()
                console.log(this.id);
+               this.flowName = doc.data.data.name
                this.taskDetails.id=doc.data.data.id;
                this.taskDetails.finish=doc.data.data.finish;
                this.taskDetails.name=doc.data.data.name;
                var labelStr=doc.data.data.label;
                if(labelStr!="")
-                  this.taskDetails.label=labelStr.split(' ');
+                  this.taskDetails.labels=labelStr.split(' ');
                else
-                  this.taskDetails.label=["任务"];
+                  this.taskDetails.labels=["任务"];
                this.taskDetails.t_begin=doc.data.data.t_begin;
                this.taskDetails.t_end=doc.data.data.t_end;
                this.taskDetails.priority=doc.data.data.priority;
                this.taskDetails.remarks=doc.data.data.remarks;
                this.taskDetails.creator=doc.data.data.originator.photo;
-               this.tags=this.taskDetails.label;
+               this.tags=this.taskDetails.labels;
                this.flowMarks=doc.data.data.remarks;
                this.value=doc.data.data.priority;
+               this.taskpriority=doc.data.data.priority;
                console.log(doc.data.data.t_begin);
 				}else{
 					this.$alert(msg,'false')
@@ -591,7 +621,7 @@ export default {
          });
 		},
 		flowMarksOn(){
-         console.log(this.flowMarks);
+         console.log(this.flowName);
 			this.$http
          .post(`/api/project/${this.$store.state.project.id}/task/update`, {
 				project_id:this.$store.state.project.id,
@@ -613,27 +643,31 @@ export default {
 		},
       handleOk(e) {
          console.log(e);
-			this.visible = false;
-			this.$http
-         .post(`/api/project/${this.$store.state.project.id}/task/delete`, {
-				project_id:this.$store.state.project.id,
-				id:this.id
-			})
-         .then(doc => {
-            var code = doc.data.status;
-            var msg = doc.data.msg;
-				if (code == 0){
-					this.$alert(msg,'true')
-					this.update()
-				}
-				else
-					this.$alert(msg,'false')
-         });
+         var a=confirm("确定删除该任务吗？");
+         if(a){
+            this.visible = false;
+            this.$http
+            .post(`/api/project/${this.$store.state.project.id}/task/delete`, {
+               project_id:this.$store.state.project.id,
+               id:this.id
+            })
+            .then(doc => {
+               var code = doc.data.status;
+               var msg = doc.data.msg;
+               if (code == 0){
+                  this.$alert(msg,'true')
+                  this.update()
+               }
+               else
+                  this.$alert(msg,'false')
+            });
+         }
       },
       add(e) {
       console.log(e);
       },
       onChange(checked) {
+         this.taskDetails.finish=checked;
 			console.log(`a-switch to ${checked}`);
 			var obj = {
 				project_id:this.$store.state.project.id,

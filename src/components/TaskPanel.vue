@@ -69,7 +69,7 @@
                <a-textarea v-model="flowMarks" @blur="flowMarksOn" placeholder="填写备注" autoSize  allowClear style="width:397px;" />
                <br /><br />
 
-               <a-radio-group v-model="value" @change="onChange1" style="width:700px">
+               <a-radio-group v-model="value" @change="onChange0" style="width:700px">
                   <a-radio :value="1">
                   <a-tag color="gray" style="font-size:15px;text-align:center;width:50px;height:23px;margin-top:3px">较低</a-tag>
                   </a-radio>
@@ -519,19 +519,21 @@ export default {
 				}			
          })*/
       },
-
+      onChange0(e) {
+         console.log('radio checked', e.target.value);
+      },
       ////后缀带clock的是提醒时间的弹窗
       ////任务详情弹框
       showModal(obj) {
 			this.id = obj.id
-			this.flowName = obj.name
+			/*this.flowName = obj.name
 			this.flowMarks = obj.remarks
 			this.finish = obj.finish
 			this.taskpriority = obj.priority
-			//this.label = obj.priority  
+			//this.label = obj.priority  */
          this.getTaskDetails(this.id);
          this.visible = true;
-         console.log(obj.id);
+         //console.log(this.id);
       },
       getTaskDetails(id){
          this.$http
@@ -544,6 +546,7 @@ export default {
             
 				if (code == 0){
                //this.update()
+               console.log(this.id);
                this.taskDetails.id=doc.data.data.id;
                this.taskDetails.finish=doc.data.data.finish;
                this.taskDetails.name=doc.data.data.name;
@@ -588,6 +591,7 @@ export default {
          });
 		},
 		flowMarksOn(){
+         console.log(this.flowMarks);
 			this.$http
          .post(`/api/project/${this.$store.state.project.id}/task/update`, {
 				project_id:this.$store.state.project.id,
@@ -600,7 +604,8 @@ export default {
             var code = doc.data.status;
             var msg = doc.data.msg;
 				if (code == 0){
-					this.update()
+               this.update()
+               
 				}else{
 					this.$alert(msg,'false')
 				}

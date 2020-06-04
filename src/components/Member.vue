@@ -8,7 +8,7 @@
       <!--邀请新成员弹窗-->
       <a-modal v-model="addMemberVisible" title="邀请新成员" ok-text="确认" cancel-text="取消" @ok="addMemberHandleOk">
         <h3>账号邀请</h3>
-        <a-input placeholder="输入邮箱或电话直接邀请" style="width: 400px" v-model="addText1" />
+        <a-input placeholder="输入邮箱或电话或用户ID直接邀请" style="width: 400px" v-model="addText1" />
         <a-radio-group v-model="value2" @change="onMemberChange" style="margin-top:9px">
           <a-radio value="1">
             邮箱
@@ -235,8 +235,9 @@ export default {
             }
          })
          this.amendVisible=false;
+         this.update();
       }
-      
+      this.update();
     },
     okMessage(){//设置成员信息
     if(this.identityType=='member'){//身份为member

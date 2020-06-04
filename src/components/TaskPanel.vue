@@ -11,12 +11,10 @@
                <a-modal 
                      :title="'任务：'+this.taskDetails.name"
                      v-model="visible"
-                     @ok="handleOk"
-                     cancelText="OK"
-                     okType="danger"
-                     okText="删除"
+                     @ok="save"
+                     cancelText="取消"
+                     okText="保存"
                      width="700px"
-                     @cancel="save"
                   >
                   <div id="more">
                      <div id="contextleft">
@@ -63,6 +61,7 @@
                <a-range-picker v-if="taskDetails.t_begin!=null&&taskDetails.t_end!=null"
                   :value="[moment(taskDetails.t_begin), moment(taskDetails.t_end)]"
                   style="margin-top:-4px;width:397px"
+                  @change="timeChange"
                />
                <br /><br />
                <div>
@@ -133,6 +132,9 @@
          </div>
       </div>
    </div>
+   <a-button type="danger" @click="handleOk" style="margin-top:20px">
+      删除任务
+    </a-button>
 </a-modal>
 
             </div>
@@ -489,6 +491,11 @@ export default {
    },
 
    methods: {
+      timeChange(date, dateString){
+         //this.taskDetails.t_begin=date;
+         //this.taskDetails.t_end=dateString;
+         console.log(date, dateString);
+      },
       save(){        
          var tagsStr=this.tags.join(' ');
          console.log(tagsStr);
@@ -514,6 +521,7 @@ export default {
 					this.$alert(msg,'false')
 				}
          });
+         this.visible=false;
       },
       onTaskMemberChange(checkedValues) {
          console.log('checked = ', checkedValues);
@@ -592,7 +600,7 @@ export default {
                this.tags=this.taskDetails.labels;
                this.flowMarks=doc.data.data.remarks;
                this.value=doc.data.data.priority;
-               this.taskpriority=doc.data.data.priority;
+               //this.taskpriority=doc.data.data.priority;
                console.log(doc.data.data.t_begin);
 				}else{
 					this.$alert(msg,'false')

@@ -120,7 +120,7 @@
                     v-if="taskPriority=='4'"
                     color="red"
                     :visible="true"
-                    style="font-size:16px;text-align:center;width:60px;height:23px"
+                    style="font-size:16px;text-align:center;width:80px;height:23px"
                 >非常紧急</a-tag>
                <br /><br />
                <div style="margin-top:-10px">

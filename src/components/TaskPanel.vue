@@ -9,13 +9,14 @@
                   {{i.name}}
                </a-button>
                <a-modal 
-                     :title="'任务：'+this.flowName"
+                     :title="'任务：'+this.taskDetails.name"
                      v-model="visible"
                      @ok="handleOk"
                      cancelText="OK"
                      okType="danger"
                      okText="删除"
                      width="700px"
+                     
                   >
                   <div id="more">
                      <div id="contextleft">
@@ -44,9 +45,9 @@
                   
                   <!--   数据需要部分 以下为模拟  ---->
                   <em class="em11" style="margin-right:10px;font-size:15px;padding-left:0">完成情况</em>
-                  <a-switch v-model="finish" @change="onChange" /><br />
+                  <a-switch v-model="taskDetails.finish" @change="onChange" /><br />
                   <!---拉取头像  --->
-               <a-avatar icon="user" style="margin-top:-13px" :size="37" />
+               <a-avatar icon="user" style="margin-top:-13px" :size="37" :src="taskDetails.creator"/>
                <a-tooltip>
                      <template slot="title">添加参与者</template>
                      <a>
@@ -60,7 +61,7 @@
                   </a-tooltip>
                <br />
                <a-range-picker
-                  :value="[moment('2020-04-26', dateFormat), moment('2020-05-07', dateFormat)]"
+                  :value="[moment(taskDetails.t_begin), moment(taskDetails.t_end)]"
                   style="margin-top:-4px;width:397px"
                />
                <br /><br />
@@ -463,7 +464,18 @@ export default {
 			id:0,
 			flowMarks:"",
 			flowName:"",
-			finish:false,
+         finish:false,
+         taskDetails:{
+            id:0,
+            finish:false,
+            name:"",
+            creator:"",
+            t_begin:null,
+            t_end:null,
+            remarks:"",
+            priority:0,
+            labels:["任务"],
+         },
       };
       this.dateFormat = 'YYYY-MM-DD';
    },
@@ -480,9 +492,9 @@ export default {
       onTaskMemberChange(checkedValues) {
          console.log('checked = ', checkedValues);
       },
-      onChange1(e) {
+      /*onChange1(e) {
          console.log('radio checked', e.target.value);
-      },
+      },*/
       moment,
       update(){
 			this.$http
@@ -516,11 +528,41 @@ export default {
 			this.flowName = obj.name
 			this.flowMarks = obj.remarks
 			this.finish = obj.finish
-			this.id = obj.id
 			this.taskpriority = obj.priority
-			this.label = obj.priority
+			//this.label = obj.priority  
+         this.getTaskDetails(this.id);
          this.visible = true;
-		},
+         console.log(obj.id);
+      },
+      getTaskDetails(id){
+         this.$http
+         .get(`/api/project/${this.$store.state.project.id}/task/info?id=${this.id}`, {
+				project_id:this.$store.state.project.id,task_id:id
+			})
+         .then(doc => {
+            var code = doc.data.status;
+            var msg = doc.data.msg;
+            
+				if (code == 0){
+               //this.update()
+               this.flowMarks=doc.data.data.remarks;
+               this.value=doc.data.data.priority;
+               this.taskDetails.id=doc.data.data.id;
+               this.taskDetails.finish=doc.data.data.finish;
+               this.taskDetails.name=doc.data.data.name;
+               var labelStr=doc.data.data.label;
+               this.taskDetails.label=labelStr.split(' ');
+               this.tags=this.taskDetails.label;
+               this.taskDetails.t_begin=doc.data.data.t_begin;
+               this.taskDetails.t_end=doc.data.data.t_end;
+               this.taskDetails.priority=doc.data.data.priority;
+               this.taskDetails.remarks=doc.data.data.remarks;
+               this.taskDetails.creator=doc.data.data.originator.photo;
+				}else{
+					this.$alert(msg,'false')
+				}
+         });
+      },
 		onFlowPri(pri){
 			this.taskpriority = pri
 			this.$http

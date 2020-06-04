@@ -30,7 +30,19 @@ export default {
       };
    },
    mounted() {
-      this.TopAndLeftHide()
+		// console.log(this.$route.hash)
+		this.TopAndLeftHide()
+		// this.$cookies.set("session2","1111111111")
+		// console.log(this.$cookies.get("session"))
+		// console.log(this.$cookies.get("session2"))
+		if(this.$cookies.get("session"))
+			this.$router.push({ path: '/home' }).catch(()=>{})
+		else{
+			if(this.$route.hash=='#test')
+				this.$router.push({ path: '/login',hash:'#test'}).catch(()=>{})
+			else
+				this.$router.push({ path: '/login'}).catch(()=>{})
+		}
    },
    watch: {
       '$route.path'(to,from){
@@ -40,9 +52,10 @@ export default {
    },
 	created(){
       //console.log(this.$store.state.banner.name)
-		var account= 'pixiaojiang@gov.cn'
-		var password = '123456'
-      this.$router.push({ path: '/login', query: {account,password} }).catch(()=>{})
+		// var account= 'pixiaojiang@gov.cn'
+		// var password = '123456'
+		// this.$router.push({ path: '/login', query: {account,password} }).catch(()=>{})
+		
       // console.log(this.$route.path)
    },
    methods: {

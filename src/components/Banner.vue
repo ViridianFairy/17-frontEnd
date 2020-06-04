@@ -350,7 +350,7 @@ export default {
          });
          //proj
 			this.$store.commit("projectReload", { id, name });
-			console.log("任务ID："+this.$store.state.project.id)
+			// console.log("任务ID："+this.$store.state.project.id)
          store.setItem(this.$cookies.get("session"), id);
          setTimeout(() => {
             this.exchangeVisible = false;
@@ -637,7 +637,7 @@ export default {
 				}).then(doc => {
          	   var code = doc.data.status;
 					var msg = doc.data.msg;
-					console.log("任务ID："+this.$store.state.project.id)
+					// console.log("任务ID："+this.$store.state.project.id)
 					if (code == 0){
 						this.projectMember = doc.data.data.member
 						this.$store.commit("memberUpdate", this.projectMember);	

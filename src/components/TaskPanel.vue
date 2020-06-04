@@ -492,9 +492,10 @@ export default {
 
    methods: {
       timeChange(date, dateString){
-         //this.taskDetails.t_begin=date;
-         //this.taskDetails.t_end=dateString;
-         console.log(date, dateString);
+         this.taskDetails.t_begin=dateString[0];
+         this.taskDetails.t_end=dateString[1];
+
+         console.log(dateString[0]);
       },
       save(){        
          var tagsStr=this.tags.join(' ');
@@ -506,8 +507,8 @@ export default {
 				remarks:this.flowMarks,
 				name:this.flowName,
             finish:this.taskDetails.finish,
-            t_begin:this.taskDetails.t_begin,
-            t_end:this.taskDetails.t_end,
+            t_begin:toDateTime(this.taskDetails.t_begin),
+            t_end:toDateTime(this.taskDetails.t_end),
             priority:this.taskDetails.priority,
             label:tagsStr,
 			})

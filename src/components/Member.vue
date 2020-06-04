@@ -220,6 +220,7 @@ export default {
     showConfirm(){//确认是否删除
       var a=confirm("确认移除该成员吗？");
        if(a){
+        
       this.$http.post(`/api/project/${this.$store.state.project.id}/user/remove`, { 
 				account_type: 'id',
 				account:this.nowId,
@@ -236,6 +237,8 @@ export default {
          })
          this.amendVisible=false;
          this.update();
+         
+         
       }
       this.update();
     },
@@ -267,10 +270,10 @@ export default {
               this.$alert(msg, "false");
             }
         })
-    }
-    //this.reload();//第一种刷新
-    this.update();
+    }    
     this.amendVisible=false;
+    this.reload();//第一种刷新
+    this.update();
     },
     update(){
       this.$http
@@ -347,11 +350,14 @@ export default {
             var code = doc.data.status;
             var msg = doc.data.msg;
             if (code == 0) {
-					this.$alert(msg,'true')
-					this.addMemberVisible = false;
+          this.$alert(msg,'true')
+          
+          this.addMemberVisible = false;
+          this.update();
             } else 
 					this.$alert(msg,'false')
          });
+         this.addMemberVisible=false;
       },
       onMemberChange(e) {
 			
@@ -377,7 +383,9 @@ export default {
             var msg = doc.data.msg;
             if (code == 0) {
 					this.$alert(msg,'true')
-					this.addAdminVisible = false;
+          this.addAdminVisible = false;
+          this.addMemberVisible=false;
+          this.update();
             } else 
 					this.$alert(msg,'false')
          });

@@ -517,7 +517,7 @@ export default {
             var msg = doc.data.msg;
 				if (code == 0){
                this.update()
-               
+               alert("保存成功!");
 				}else{
 					this.$alert(msg,'false')
 				}

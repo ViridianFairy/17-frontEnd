@@ -288,11 +288,14 @@ export default {
 }
 #more{
     display: flex;
+    margin-left:38px;
+    margin-top:9px;
 }
 #more1{
 	/* float:l */
     display: flex;
-    
+    margin-left:18px;
+    margin-top:5px;
 }
 #iconleft{
    margin-left: 0px;
@@ -321,12 +324,12 @@ export default {
     
 }
 #all{
-    margin-top:50px;
+    margin-top:20px;
     display: flex;
 }
 #right1{
     margin-left:5%;
-    width:calc(100vw - 600px - 170px);
+    width:calc(100vw - 600px - 300px);
     display: block;
     margin-top:0px;
 	 
@@ -336,6 +339,8 @@ export default {
     margin-left:50px;
     width:350px;
     border:1px solid LightGrey;
+    overflow-y: scroll;
+    height:500px;
 }
 .ant-list-item-meta-title > a {
     color: rgba(0, 0, 0, 0.65);

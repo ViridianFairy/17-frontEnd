@@ -335,7 +335,7 @@ export default {
 			this.value2 = '1'
       this.addMemberVisible = true;
     },
-      addMemberHandleOk(e) {
+    addMemberHandleOk(e) {
 		  var val = this.value2
 			if(val == '1')
 				val = 'email'

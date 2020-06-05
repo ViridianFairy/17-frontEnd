@@ -11,7 +11,7 @@
           <template
             v-for="message in currentMessageList"
           >
-            <div v-if="message.from === loginInfo.userID" class="chatOut">
+            <div v-if="message.from === $store.state.timLoginInfo.userID" class="chatOut">
               <a-avatar :size="50" slot="avatar" :src="userInfo.photo"></a-avatar>
               <div class="contentOut" style="float:right;color:white">
                 <p>
@@ -62,6 +62,7 @@
   import zhCN from 'ant-design-vue/es/locale-provider/zh_CN';
   import TIM from 'tim-js-sdk';
   import COS from "cos-js-sdk-v5";
+  import Vue from 'vue'
 
   export default {
     name: "Chat",
@@ -75,8 +76,6 @@
         mockData: [],
         targetKeys: [],
         project_id: 0,
-        timDisabled: true,
-        tim_is_login: false,
         messageList: {},
         currentMessageList: [],
         conversationList: [],
@@ -84,7 +83,6 @@
         conversationID: null,
         chatSelect: null,
         memberData: [],
-        tim: null,
         chatText: "",
         group: null,
         loginInfo:{
@@ -100,6 +98,7 @@
       this.getInfo();
       this.timLogin();
       this.getMember();
+      this.getGroupList();
     },
     methods: {
       getInfo(){
@@ -110,8 +109,8 @@
         });
       },
       timLogin() {
-        if (this.project_id !== this.$store.state.project.id) {
-          this.timDisabled = true;
+        if (this.$store.state.timProjectId === null || this.$store.state.timProjectId !== this.$store.state.project.id) {
+          this.$store.state.timProjectId = null;
           this.$http
                   .get(`/api/project/${this.$store.state.project.id}/chat/sig`, {})
                   .then(doc => {
@@ -128,11 +127,15 @@
         }
       },
       timInit(app_id) {
-        this.tim = TIM.create({
-          SDKAppID: app_id
-        });
-        this.tim.setLogLevel(1);
-        this.tim.registerPlugin({'cos-js-sdk': COS});
+        if(this.tim === undefined){
+          let tim = TIM.create({
+            SDKAppID: app_id
+          });
+          tim.setLogLevel(1);
+          tim.registerPlugin({'cos-js-sdk': COS});
+          Vue.prototype.tim = tim
+        }
+
       },
       logout() {
         let promise = this.tim.logout();
@@ -143,15 +146,16 @@
             console.warn('logout error:', imError);
           });
         }
+
       },
       login(user_id, user_sig, project_id) {
         this.logout();
         let promise = this.tim.login({userID: user_id, userSig: user_sig});
         promise.then((imResponse)=> {
           console.log("login success", imResponse.data); // 登录成功
-          this.project_id = project_id;
+          this.$store.commit("setIMProjectId", project_id);
           this.loginInfo.userID = user_id;
-          this.loginInfo.userSig = user_sig;
+          this.$store.commit("setIMUserId", user_id);
           this.initListener();
         }).catch(function(imError) {
           console.warn('login error:', imError); // 登录失败的相关信息
@@ -209,7 +213,6 @@
           const isCompleted = imResponse.data.isCompleted; // 表示是否已经拉完所有消息。
           // this.messageList[group.groupID]=messageList;
           this.currentMessageList = messageList;
-          console.log(messageList)
         });
       },
       callback(key) {
@@ -261,22 +264,22 @@
                     }
                     else
                       this.memberData=[];
-                    console.log(this.memberData)
                   }
                 }).catch(err=>{
           this.$alert("未知错误", "false");  //服务器还没搭起来
         })
       },
       getUserInfo(id) {
-        console.log(id, this.memberData[id])
         id = id.split('-')[1];
-        if(id)
-          return this.memberData[id];
-        else
+        if(this.memberData[id] === undefined)
           return {
             username: "",
             photo: "",
           }
+        let info = this.memberData[id]
+        if (info.username === undefined) info.username = "";
+        if (info.photo === undefined) info.photo = "";
+        return info
       },
       sendMessage() {
         if (this.chatText){

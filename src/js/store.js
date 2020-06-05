@@ -25,6 +25,12 @@ const mutations = {
 	taskUpdate(state){
 		state.taskUpdate++
 	},
+	setIMProjectId(state, id){
+    	state.timProjectId = id;
+	},
+	setIMUserId(state, id){
+    	state.timLoginInfo.userID = id;
+	}
 }
 const state = {
 		banner:{
@@ -38,6 +44,10 @@ const state = {
 		project:{
 			id:"",
 			name:""
+		},
+		timProjectId: null,
+		timLoginInfo: {
+			userID: ""
 		}
    }
 const vuex = new Vuex.Store({

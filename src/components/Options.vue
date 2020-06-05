@@ -21,11 +21,6 @@
         <span>动态查看</span>
       </a-menu-item>
 
-      <a-menu-item key="3" disabled>
-        <a-icon type="edit" />
-        <span>文档协作</span>
-      </a-menu-item>
-
       <a-menu-item key="4" @click="$router.push('/disk')">
         <a-icon type="table" />
         <span>文件管理</span>

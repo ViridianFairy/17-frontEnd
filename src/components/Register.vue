@@ -2,11 +2,11 @@
    <div class="logincontent">
       <img src="http://funx.pro/resource/junk/17logo.svg" >
       <br /><br />
-      <a-input placeholder="邮箱" v-model="account" ref="userNameInput" />
+      <a-input placeholder="注册用的邮箱" v-model="account" ref="userNameInput" />
       <br /><br />
-      <a-input placeholder="用户名" v-model="userName" ref="userNameInput" />
+      <a-input placeholder="2-20位用户名（中文/数字/字母/下划线）" v-model="userName" ref="userNameInput" />
       <br /><br />
-      <a-input-password v-model="password" placeholder="6-16位密码，区分大小写" />
+      <a-input-password v-model="password" placeholder="6-20位密码（区分大小写）" />
       <br /><br />
       <a-input-password v-model="password2" placeholder="确认密码" />
       <br /><br />

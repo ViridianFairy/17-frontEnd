@@ -63,7 +63,8 @@ export default {
             this.createLoading = true;
             this.$http.post(`/api/project`, { name: this.newName }).then(doc => {
                 var code = doc.data.status;
-                var msg = doc.data.msg;
+					 var msg = doc.data.msg;
+					 this.getName();
                 if (code != 0) {
                 this.$alert(msg, "false");
                 this.createLoading = false;

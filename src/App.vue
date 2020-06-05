@@ -1,14 +1,20 @@
 <template>
    <div id="main-app">
+		<transition name="public-slide">
       <div id="top" class="top" v-if="isTopShow">
-         <router-view name="top"></router-view>
+         	<router-view name="top"></router-view>
       </div>
+		</transition>
       <div id="main-wrapper">
+			<transition name="public-slide" >
          <div id="left" class="left" v-if="isLeftShow">
             <router-view name="left"></router-view>
          </div>
+			</transition>
          <div id="right">
+				<transition name="public-slide" mode="out-in">
             <router-view name="right"></router-view>
+				</transition>
          </div>
       </div>
    </div>
@@ -43,6 +49,7 @@ export default {
 			else
 				this.$router.push({ path: '/login'}).catch(()=>{})
 		}
+		
    },
    watch: {
       '$route.path'(to,from){
@@ -110,4 +117,18 @@ body{
    margin-left: 170px;
    margin-top: 50px;
 }
+   .public-slide-enter-active {
+      transition: all 0.45s ease-in-out;
+   }
+   .public-slide-leave-active {
+      transition: all 0.15s ease-in-out;
+   }
+   .public-slide-enter{
+      transform: translateX(15px);
+      opacity: 0;
+   }
+   .public-slide-leave-to{
+      transform: translateX(-15px);
+      opacity: 0;
+   }
 </style>

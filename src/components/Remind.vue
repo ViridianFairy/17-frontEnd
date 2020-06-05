@@ -339,7 +339,7 @@ export default {
     margin-left:50px;
     width:350px;
     border:1px solid LightGrey;
-    overflow-y: scroll;
+    overflow-y: auto;
     height:500px;
 }
 .ant-list-item-meta-title > a {

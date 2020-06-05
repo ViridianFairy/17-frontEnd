@@ -11,6 +11,7 @@
                <a-modal 
                      :title="'任务：'+this.taskDetails.name"
                      v-model="visible"
+                     style="top: 30px;"
                      @ok="save"
                      cancelText="取消"
                      okText="保存"
@@ -24,7 +25,10 @@
                   <em class="em11" style="margin-left:1px">状态</em><br />
 
                   <a-icon type="user" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
-                  <em class="em11" style="margin-left:2px">执行者</em><br />
+                  <em class="em11" style="margin-left:2px">创建者</em><br />
+
+                  <a-icon type="team" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
+                  <em class="em11" style="margin-left:2px">参与者</em><br />
                   
                   <a-icon type="calendar" style="fontSize:20px;color:gray;margin-top:30px;vertical-align:bottom"/>
                   <em class="em11" style="margin-left:4.5px">执行时间</em><br />
@@ -43,17 +47,35 @@
                   
                   <!--   数据需要部分 以下为模拟  ---->
                   <em class="em11" style="margin-right:10px;font-size:15px;padding-left:0">完成情况</em>
-                  <a-switch v-model="taskDetails.finish" @change="onChange" /><br />
+                  <a-switch v-model="taskDetails.finish" @change="onChange" /><br /><br />
                   <!---拉取头像  --->
+               <a-avatar icon="user" style="margin-top:-6.5px" :size="37" :src="taskDetails.creator"/>
+               <br />
                <a-avatar icon="user" style="margin-top:-13px" :size="37" :src="taskDetails.creator"/>
                <a-tooltip>
-                     <template slot="title">添加参与者</template>
+                     <template slot="title">添加/移除参与者</template>
                      <a>
-                        <a-icon
-                           type="plus-circle"
-                           theme="filled"
-                           style="fontSize:30px;color:#003366;margin-left:10px;margin-top:22px"
-                        />
+                        <a-popover title="添加/移除参与者" trigger="click" placement="right">
+                           <template slot="content">
+                           <a-checkbox-group 
+                              name="checkboxgroup" 
+                              @change="onTaskMemberChange"
+                           >
+                              <div style="max-height:100px;width:150px;overflow:auto">
+                                 <a-checkbox style="margin:5px" :value="i.id" v-for="i in this.projectMember">
+												{{i.username}}
+											</a-checkbox>
+											
+										</div>
+                           </a-checkbox-group>
+                           <br /><a-button type="primary" block>确认</a-button>
+                           </template>
+                           <a-icon
+                              type="plus-circle"
+                              theme="filled"
+                              style="fontSize:30px;color:#003366;margin-left:10px;margin-top:22px"
+                           />
+                        </a-popover>
                         <br />
                      </a>
                   </a-tooltip>
@@ -147,12 +169,7 @@
                   <a-input placeholder="输入任务备注" v-model="remarks" 
 						style="margin-top:12px;"/>
                   <!-- 菜单  -->
-                  <p style="margin-top:20px">
-                     <a-avatar :size="30" icon="user" />
-                     <em
-                        style="font-style:normal;font-family:'Microsoft YaHei';color:gray;font-size:15px;margin-left:14.5px"
-                     >用户</em>
-                  </p>
+                  <p/>
                   <!-- 起止日期 -->
                   <a-icon
                      type="calendar"
@@ -239,15 +256,30 @@
                         <br />
                      </p>
                      <p style="font-size:16px;margin-top:-15px">提醒对象</p>
-                     <a-avatar :size="35" icon="user" style="margin-top:-20px" />
                      <a-tooltip>
                         <template slot="title">添加提醒对象</template>
                         <a>
+                           <a-popover title="添加提醒对象" trigger="click">
+                           <template slot="content">
+                           <a-checkbox-group 
+                              name="checkboxgroup" 
+                              @change="onTaskMemberChange"
+                           >
+                              <div style="max-height:100px;width:150px;overflow:auto">
+                                 <a-checkbox style="margin:5px" :value="i.id" v-for="i in this.projectMember">
+												{{i.username}}
+											</a-checkbox>
+											
+										</div>
+                           </a-checkbox-group>
+                           <br /><a-button type="primary" block>确认</a-button>
+                           </template>
                            <a-icon
                               type="plus-circle"
                               theme="filled"
                               style="margin-top:-8px;fontSize:30px;color:#003366;margin-left:10px;"
                            />
+                           </a-popover>
                            <br />
                         </a>
                      </a-tooltip>
@@ -357,16 +389,19 @@
                      </div>
                   </div>
                   <a-divider style="margin-top:15px" />
-                  <p style="margin-top:-15px;font-size:16px;margin-left:5px">参与者 · 1</p>
-                  <a-avatar :size="35" icon="user" style="margin-top:-18px" />
+                  <p style="margin-top:-15px;font-size:16px;margin-left:5px">参与者 · {{this.taskDetails.memberNum}}</p>
+                  <a-avatar :size="35" :src="userInfo.photo" style="margin-top:-18px" />
                   <a-tooltip>
                      <template slot="title">添加/移除参与者</template>
                      <a>
                         <a-popover title="添加/移除参与者" trigger="click">
                            <template slot="content">
-                           <a-checkbox-group name="checkboxgroup" @change="onTaskMemberChange">
+                           <a-checkbox-group 
+                              name="checkboxgroup" 
+                              @change="onTaskMemberChange"
+                           >
                               <div style="max-height:100px;width:150px;overflow:auto">
-                                 <a-checkbox :value="i.id" v-for="i in this.projectMember">
+                                 <a-checkbox style="margin:5px" :value="i.id" v-for="i in this.projectMember">
 												{{i.username}}
 											</a-checkbox>
 											
@@ -430,7 +465,8 @@ export default {
 		}
 	},
    mounted() {
-		this.update()
+      this.update();
+      this.getInfo();
    },
    data() {
       return {
@@ -477,7 +513,10 @@ export default {
             remarks:"",
             priority:0,
             labels:["任务"],
+            member:[],
+            memberNum:1,
          },
+         userInfo: { photo: "", email: "", website: "", location: "" },
       };
       this.dateFormat = 'YYYY-MM-DD';
    },
@@ -491,6 +530,13 @@ export default {
    },
 
    methods: {
+      getInfo(){
+        this.$http.get(`/api/user/info`).then(doc => {
+          var code = doc.data.status;
+          var msg = doc.data.msg;
+          this.userInfo = doc.data.data;
+        });
+      },
       timeChange(date, dateString){
          this.taskDetails.t_begin=dateString[0];
          this.taskDetails.t_end=dateString[1];
@@ -541,19 +587,18 @@ export default {
 					this.projectData = doc.data.data;
             // console.log(this.projectData)
 			});
-			/*this.$http
-         .get(`/api/project/${this.$store.state.project.id}`, {
-				project_id:this.$store.state.project.id,
-			})
-         .then(doc => {
-            var code = doc.data.status;
-            var msg = doc.data.msg;
-				if (code == 0){
-					this.projectMember = doc.data.data.member
-					this.$store.commit("memberUpdate", this.projectMember);	
-					
-				}			
-         })*/
+         this.$http
+            .get(`/api/project/${this.$store.state.project.id}`, {
+            project_id:this.$store.state.project.id,
+         })
+            .then(doc => {
+               var code = doc.data.status;
+               var msg = doc.data.msg;
+            if (code == 0){
+               this.projectMember = doc.data.data.member
+               this.$store.commit("memberUpdate", this.projectMember);	
+            }			
+            })
       },
       onChange0(e) {
          this.taskDetails.priority=e.target.value;

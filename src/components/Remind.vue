@@ -329,7 +329,7 @@ export default {
 }
 #right1{
     margin-left:5%;
-    width:calc(100vw - 600px - 300px);
+    width:calc(100vw - 600px - 50px);
     display: block;
     margin-top:0px;
 	 

@@ -251,6 +251,9 @@ export default {
             var code = doc.data.status;
             var msg = doc.data.msg;
             if (code == 0) {
+					this.amendVisible=false;
+    				this.reload();//第一种刷新
+    				this.update();
           this.$alert(msg, "true");
             } else {
               this.$alert(msg, "false");
@@ -265,15 +268,16 @@ export default {
             var code = doc.data.status;
             var msg = doc.data.msg;
             if (code == 0) {
+					this.amendVisible=false;
+    				this.reload();//第一种刷新
+    				this.update();
           this.$alert(msg, "true");
             } else {
               this.$alert(msg, "false");
             }
         })
     }    
-    this.amendVisible=false;
-    this.reload();//第一种刷新
-    this.update();
+
     },
     update(){
       this.$http

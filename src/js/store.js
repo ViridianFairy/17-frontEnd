@@ -19,6 +19,9 @@ const mutations = {
     memberUpdate(state, obj){
 		state.member = obj
 	},
+	// taskMemberUpdate(state, obj){
+	// 	state.project.task.participants = obj
+	// },
 	userUpdate(state){
 		state.userUpdate++
 	},
@@ -43,7 +46,12 @@ const state = {
 		member:[],
 		project:{
 			id:"",
-			name:""
+			name:"",
+			// task:{
+			// 	id:"",
+			// 	name:"",
+			// 	participants:[],
+			// }
 		},
 		timProjectId: null,
 		timLoginInfo: {

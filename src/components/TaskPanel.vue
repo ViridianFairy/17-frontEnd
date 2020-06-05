@@ -69,7 +69,7 @@
 											
 										</div>
                            </a-checkbox-group>
-                           <br /><a-button type="primary" block>确认</a-button>
+                           <br /><a-button type="primary" @click="addTaskMember" block>确认</a-button>
                            </template>
                            <a-icon
                               type="plus-circle"
@@ -410,7 +410,7 @@
 											
 										</div>
                            </a-checkbox-group>
-                           <br /><a-button type="primary" block>确认</a-button>
+                           <br /><a-button type="primary" @click="addTaskMember" block>确认</a-button>
                            </template>
                            <a-icon
                               type="plus-circle"
@@ -576,6 +576,9 @@ export default {
       onTaskMemberChange(checkedValues) {
          console.log('checked = ', checkedValues);
       },
+      addTaskMember() {
+         
+      },
       /*onChange1(e) {
          console.log('radio checked', e.target.value);
       },*/
@@ -601,7 +604,20 @@ export default {
                this.projectMember = doc.data.data.member
                this.$store.commit("memberUpdate", this.projectMember);	
             }			
-            })
+         });
+         // this.$http
+         //    .get(`/api/project/${this.$store.state.project.id}/task/info?id=${this.$store.state.project.task.id}`, {
+         //       project_id:this.$store.state.project.id,
+         //       task_id:this.$store.state.project.task.id,
+         // })
+         //    .then(doc => {
+         //       var code = doc.data.status;
+         //       var msg = doc.data.msg;
+         //    if (code == 0){
+         //       this.taskDetails.member = doc.data.participants;
+         //       this.$store.commit("taskMemberUpdate", this.taskDetails.member);
+         //    }			
+         // });
       },
       onChange0(e) {
          this.taskDetails.priority=e.target.value;
@@ -623,7 +639,8 @@ export default {
       getTaskDetails(id){
          this.$http
          .get(`/api/project/${this.$store.state.project.id}/task/info?id=${id}`, {
-				project_id:this.$store.state.project.id,task_id:id
+            project_id:this.$store.state.project.id,
+            task_id:id
 			})
          .then(doc => {
             var code = doc.data.status;

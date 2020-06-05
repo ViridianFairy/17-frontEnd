@@ -2,14 +2,13 @@
    <div class="logincontent">
       <img src="http://funx.pro/resource/junk/17logo.svg" >
       <br /><br />
-      <a-input placeholder="请输入手机号码或邮箱" v-model="userName" ref="userNameInput">
+      <a-input placeholder="请输入邮箱" v-model="userName" ref="userNameInput">
          <a-icon slot="prefix" type="user" />
       </a-input>
       <br /><br />
       <a-input-password  v-model="password" placeholder="请输入密码" />
       <br /><br />
       <a-checkbox v-model="autoLogin" style="float: left">自动登录</a-checkbox>
-      <a-button type="link" style="float: right">忘记密码</a-button>
       <a-button type="link" @click="toRegister" style="float: right">注册账户</a-button>
       <br /><br />
       <a-button type="primary" @click="enter" block>登录</a-button>

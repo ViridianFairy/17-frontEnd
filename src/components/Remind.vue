@@ -340,7 +340,7 @@ export default {
     width:350px;
     border:1px solid LightGrey;
     overflow-y: auto;
-    height:500px;
+    max-height:400px;
 }
 .ant-list-item-meta-title > a {
     color: rgba(0, 0, 0, 0.65);

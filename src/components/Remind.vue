@@ -62,7 +62,7 @@
                   <em class="em11" style="margin-left:1px">状态</em><br />
 
                   <a-icon type="user" style="fontSize:22px;color:gray;margin-top:30px;vertical-align:bottom"/>
-                  <em class="em11" style="margin-left:2px">执行者</em><br />
+                  <em class="em11" style="margin-left:2px">创建者</em><br />
                   
                   <a-icon type="calendar" style="fontSize:20px;color:gray;margin-bottom:2px;margin-top:30px;vertical-align:bottom"/>
                   <em class="em11" style="margin-left:4.5px;">执行时间</em><br />

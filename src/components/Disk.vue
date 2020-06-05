@@ -87,9 +87,10 @@
 						{{item.user||'--'}}
 					</td>
                <td class="oper">
-                  <img v-if="item.isFile" @click="download(index,$event)" src="../assets/Disk/下移.svg" draggable='false'>
+                  <img v-if="item.isFile" @click="explore(item,index)" src="../assets/Disk/下移.svg" draggable='false'>
                   <img @click="delet(index,item.name,item.isFile)" class="delete-icon" src="../assets/Disk/删除.svg" draggable='false'>
-                  <img v-if="item.isFile" @click="share($event,index)" src="../assets/Disk/分享.svg" draggable='false'>
+                  <img v-if="item.isFile" src="../assets/Disk/分享.svg" draggable='false'>
+						<!-- share($event,index)  download(index,$event)-->
                </td>
                
             </tr>
@@ -260,9 +261,9 @@
 				
          },
          delet(index, name, isFile){
-				var path = this.pos + `${name}`
+				var path = this.pos + '/'+ `${name}`
 				if(!isFile) path += '/'
-				// console.log(path)
+				console.log(path)
             this.$http
             .post(`/api/project/${this.$store.state.project.id}/file/delete`,{path}).then(doc => {
 					var code = doc.data.status;
@@ -279,6 +280,7 @@
             })
          },
          download(index,e){
+				/*
             var hasFile = false;
             if(Array.isArray(index)){
                index = this.choose
@@ -319,7 +321,7 @@
             }
             x.send();
             this.$alert(`开始下载文件`,'tiny-overload',{x:e.pageX, y:e.pageY})
-            }
+            }*/
            
          },
          explore(item,index){
@@ -338,19 +340,22 @@
             else if(!item.isFile){
                this.transName = 'msg'
 					this.pos += '/' + item.name
-					console.log('tpos：'+this.pos)
+					// console.log('tpos：'+this.pos)
                this.refresh(true)
             }else{
-               this.$http.get(`/api/project/${this.$store.state.project.id}/file/download?path=${this.pos+'/'+item.name}`)
+					var path = this.pos+'/'+item.name
+					console.log(path)
+               this.$http.get(`/api/project/${this.$store.state.project.id}/file/download?path=${path}`)
             	.then(res => {
 						var a = res.data.data
+						console.log(res.data)
 						if(a)
                		window.open(a);
 					})
 				}
          },
          refresh(first){
-            console.log('传递的pos：'+this.pos)
+            // console.log('传递的pos：'+this.pos)
             this.$http.get(`/api/project/${this.$store.state.project.id}/file?path=${this.pos}`)
             .then(res => {
 					var a = res.data.data
@@ -459,7 +464,7 @@
                var config = {
                   headers: { 'Content-Type': 'multipart/form-data' }
                }
-               this.$http.post('/disk/uploadPublic', formData, config ).then(res=>{
+               /*this.$http.post('/disk/uploadPublic', formData, config ).then(res=>{
                   count++;
                   if(res.data.success==1){
                      success_count++;
@@ -478,7 +483,7 @@
                      else
                         this.$alert(`成功上传${success_count}个文件，失败${count-success_count}个\n`+msg,"tips-overload");
                   }
-               })
+               })*/
             }
   
          })

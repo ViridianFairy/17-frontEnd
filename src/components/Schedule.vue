@@ -26,8 +26,9 @@
 
         <div id="contentright">
         <a-input placeholder="填写日程内容" autoSize allowClear style="width:400px;" v-model="content"/>
-        <a-date-picker @change="onChange" style="margin-top:20px;width:400px" placeholder="请选择日期" :defaultValue="getCurrentMoment"/>
-        <a-date-picker @change="onChange2" style="margin-top:20px;width:400px" placeholder="请选择提醒时间" :defaultValue="getCurrentMoment"/>
+        <a-date-picker @change="onChange" style="margin-top:20px;width:400px" placeholder="请选择日期"/>
+        <a-date-picker @change="onChange2" style="margin-top:20px;width:400px" placeholder="请选择提醒时间"/>
+		  <!-- :defaultValue="getCurrentMoment -->
         <p></p>
         <!-- <a-date-picker
             :mode="mode1"
@@ -140,12 +141,10 @@
             <a-collapse v-model="activeKey">
             <!--   数据需要部分 以下为模拟  ---->
             <!--   任务面板key=123         ---->
-				<div v-for="(item,time) in docByTime" :key="time">
-					{{time}}
-				</div>
-				<a-collapse-panel header="2020年5月" key="5" >
+				
+				<a-collapse-panel :header="time" v-for="(item,time) in docByTime" :key="time">
                 <div class="content">
-						 	<div v-for="(i,index) in doc" style="margin:10px 0;" :key="index">
+						 	<div v-for="(i,index) in item" style="margin:10px 0;" :key="index">
 								 <a-divider v-if="index!=0"/>
                     		<p>{{i.time}}<em @click="scheDetails(i.id)">
 									  {{i.content}}
@@ -246,16 +245,18 @@ export default {
       this.update();
     },
     save(){
+		//  console.log("1")
       this.scheLabelStr="";
       this.scheLabelStr=this.scheLabel.join(' ');
-      console.log(this.scheLabelStr);
+      // console.log(this.scheLabelStr);
       this.$http.post(`/api/project/${this.$store.state.project.id}/schedule/update`, {
         project_id:this.$store.state.project.id,id:this.detailsId,t_set:toDateTime(this.t_set),content:this.scheName,
         remarks:this.scheRemarks,label:this.scheLabelStr
 			})
          .then(doc => {
             var code = doc.data.status;
-            var msg = doc.data.msg;
+				var msg = doc.data.msg;
+				
 				if (code == 0){
           alert("已保存！");
           this.showDetails=false;	
@@ -306,7 +307,7 @@ export default {
          })
     },
 		update(){
-			this.docByTime = []
+			this.docByTime = {}
 			this.$http
          .get(`/api/project/${this.$store.state.project.id}/schedule`, {
 				project_id:this.$store.state.project.id,
@@ -318,25 +319,43 @@ export default {
 					this.doc = doc.data.data
 				
 				this.doc.forEach(i=>{
-          		var d = new Date(i.t_set)
+					var d = new Date(i.t_set)
+					i.sortTime = getSortTime(i.t_set) 
           		if(d.getMonth()+1<10){
-          		  i.time = '0'+(d.getMonth()+1)+'月'+d.getDate()+'日'  
+						i.time = '0'+(d.getMonth()+1)+'月'+d.getDate()+'日'
           		}
           		if(d.getDate()<10){
           		  i.time = '0'+(d.getMonth()+1)+'月'+'0'+d.getDate()+'日'  
           		}
           		else if(d.getMonth()+1>=10&&d.getDate()<=10)
           		  i.time = (d.getMonth()+1)+'月'+d.getDate()+'日'
-					if(!this.docByTime[i.time]){
-						this.$set(this.docByTime,i.time,[])
-						// this.docByTime[i.time] = []
-						this.docByTime[i.time].push(i)
+					if(find(this.docByTime, i.sortTime)){
+						this.docByTime[i.sortTime].push(i)
 					}else{
-						this.docByTime[i.time].push(i)
+						this.$set(this.docByTime,i.sortTime,[])
+						this.docByTime[i.sortTime].push(i)
 					}
-					console.log(this.docByTime)
-				})	
-         })
+					// console.log(this.docByTime)
+				})
+			})
+			function find(obj, time){
+				if(obj.length == 0) return 0;
+				for(var i in obj){
+					if(time == i)
+						return 1
+				}
+				return 0
+			}
+			function getSortTime(time) {
+         	var date = new Date(time);
+         	var month = date.getMonth() + 1;
+         	var strDate = date.getDate();
+         	if (month >= 1 && month <= 9) {
+         	   month = "0" + month;
+         	}
+         	var currentDate = date.getFullYear() + '年' + month + '月';
+         	return currentDate;
+    		}
 		},
     onChange(date, dateString) {
 		this.dateString1 = dateString
@@ -426,7 +445,7 @@ export default {
     handleOk(e) {
       var tagsStr="";
       tagsStr=this.tags.join(' ');
-      console.log(tagsStr);
+      // console.log(tagsStr);
       this.ModalText = 'The modal will be closed after two seconds';
       this.confirmLoading = true;
       this.$http
@@ -441,7 +460,8 @@ export default {
 			})
          .then(doc => {
             var code = doc.data.status;
-            var msg = doc.data.msg;
+				var msg = doc.data.msg;
+				console.log(doc)
 				if (code == 0)
 					this.update()	
 				// console.log(this.doc)		

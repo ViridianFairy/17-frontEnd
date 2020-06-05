@@ -28,11 +28,15 @@ export default {
       };
 	},
 	mounted(){
-		console.log(this.$route.query)
+		/*console.log(this.$route.query)
 		if(this.$route.query.account)
 			this.userName = this.$route.query.account
 		if(this.$route.query.password)
-			this.password = this.$route.query.password
+			this.password = this.$route.query.password*/
+		if(this.$route.hash == '#test'){
+			this.userName = 'pixiaojiang@gov.cn'
+			this.password = '123456'
+		}
 	},
    methods: {
 		toRegister(){

@@ -63,6 +63,7 @@
                            >
                               <div style="max-height:100px;width:150px;overflow:auto">
                                  <a-checkbox style="margin:5px" :value="i.id" v-for="i in this.projectMember">
+                                    <a-avatar :size="16" :src="i.photo"/>
 												{{i.username}}
 											</a-checkbox>
 											
@@ -267,6 +268,7 @@
                            >
                               <div style="max-height:100px;width:150px;overflow:auto">
                                  <a-checkbox style="margin:5px" :value="i.id" v-for="i in this.projectMember">
+                                    <a-avatar :size="16" :src="i.photo"/>
 												{{i.username}}
 											</a-checkbox>
 											
@@ -402,6 +404,7 @@
                            >
                               <div style="max-height:100px;width:150px;overflow:auto">
                                  <a-checkbox style="margin:5px" :value="i.id" v-for="i in this.projectMember">
+                                    <a-avatar :size="16" :src="i.photo"/>
 												{{i.username}}
 											</a-checkbox>
 											

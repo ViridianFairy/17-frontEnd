@@ -181,9 +181,12 @@
 </template>
 
 <script>
-import { Modal } from 'ant-design-vue'
+/*import { Modal } from 'ant-design-vue'
 import zhCN from 'ant-design-vue/es/locale-provider/zh_CN'
-import china from '../js/china'
+import china from '../js/china'*/
+const Modal = ()=>import('ant-design-vue')
+const zhCN = ()=>import('ant-design-vue/es/locale-provider/zh_CN')
+const china = ()=>import('../js/china')
 // import { resolve } from 'dns';
 
 function getBase64(img, callback) {

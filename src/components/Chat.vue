@@ -63,7 +63,10 @@
   import TIM from 'tim-js-sdk';
   import COS from "cos-js-sdk-v5";
   import Vue from 'vue'
-
+  /*const zhCN  = ()=>import('ant-design-vue/es/locale-provider/zh_CN')
+  const TIM  = ()=>import('tim-js-sdk')
+  const COS  = ()=>import("cos-js-sdk-v5")*/
+  
   export default {
     name: "Chat",
     components: {},

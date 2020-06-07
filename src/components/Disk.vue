@@ -111,7 +111,7 @@
             </div>
          </transition>
       </div>
-      <div class="files-wrapper" v-if="previewMode==1" key="2">
+      <div class="files-wrapper" v-if="previewMode==1" key="2" >
          <water :imgs="getWaterFiles" :path="getPath" :col=waterColNum ></water>
       </div>
       </transition-group>
@@ -120,7 +120,7 @@
 </template>
 
 <script>
-   import water from './attach/water'
+	const water  = () => import('./attach/water')
    export default {
       name: "disk",
       components: {

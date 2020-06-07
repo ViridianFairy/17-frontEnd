@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Options from '../components/Options'
+//
+/*import Options from '../components/Options'
 import Tasks from '../components/Tasks'
 import Disk from '../components/Disk'
 import Banner from '../components/Banner'
@@ -15,8 +16,24 @@ import Post from '../components/Post'
 import Member from '../components/Member'
 import Home from '../components/Home'
 import Remind from '../components/Remind'
-
-import Test from '../components/Test'
+import Test from '../components/Test'*/
+//
+const Options = () => import('../components/Options')
+const Disk = () => import('../components/Disk')
+const Banner = () => import('../components/Banner')
+const TaskPanel = () => import('../components/TaskPanel')
+const TaskDetails = () => import('../components/TaskDetails')
+const Schedule = () => import('../components/Schedule')
+const ScheduleAdd = () => import('../components/ScheduleAdd')
+const Chat = () => import('../components/Chat')
+const Login = () => import('../components/Login')
+const Register = () => import('../components/Register')
+const Post = () => import('../components/Post')
+const Member = () => import('../components/Member')
+const Home = () => import('../components/Home')
+const Remind = () => import('../components/Remind')
+const Test = () => import('../components/Test')
+//
 const routerPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
   return routerPush.call(this, location).catch(error=> error)
@@ -31,7 +48,7 @@ const routes = [
       components: {
 			top: Banner,
          left: Options,
-         right: Tasks,
+         right: null,
       }
 	}, //一样哒！
 	{

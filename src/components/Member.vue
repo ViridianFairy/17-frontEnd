@@ -14,7 +14,7 @@
             邮箱
           </a-radio>
           <a-radio value="2" disabled>手机号</a-radio>
-          <a-radio value="3">
+          <a-radio value="3" disabled>
             用户ID
           </a-radio>
         </a-radio-group>

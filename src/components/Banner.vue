@@ -82,7 +82,7 @@
                      <a-radio-group v-model="value2" @change="onMemberChange">
                         <a-radio value="1">按邮箱</a-radio>
                         <a-radio value="2" disabled>按手机号</a-radio>
-                        <a-radio value="3">按用户ID</a-radio>
+                        <a-radio value="3" disabled>按用户ID</a-radio>
                      </a-radio-group>
                   </a-modal>
                </a-menu-item>
@@ -93,9 +93,9 @@
                   <a-modal v-model="addAdminVisible" title="添加项目管理员" ok-text="确认" cancel-text="取消" @ok="addAdminHandleOk">
                   <p>请输入要操作的成员：<a-input v-model="addText2" style="width:300px" /></p>
                      <a-radio-group v-model="value3" @change="onAdminChange">
-                        <a-radio value="1" disabled>按邮箱</a-radio>
+                        <a-radio value="1" >按邮箱</a-radio>
                         <a-radio value="2" disabled>按手机号</a-radio>
-                        <a-radio value="3" >按用户ID</a-radio>
+                        <a-radio value="3" disabled>按用户ID</a-radio>
                      </a-radio-group>
                   </a-modal>
                </a-menu-item>

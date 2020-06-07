@@ -6,7 +6,7 @@
          <a-icon slot="prefix" type="user" />
       </a-input>
       <br /><br />
-      <a-input-password  v-model="password" placeholder="请输入密码" />
+      <a-input-password  v-model="password" placeholder="请输入密码" @keydown.enter="enter"/>
       <br /><br />
       <a-checkbox v-model="autoLogin" style="float: left">自动登录</a-checkbox>
       <a-button type="link" @click="toRegister" style="float: right">注册账户</a-button>

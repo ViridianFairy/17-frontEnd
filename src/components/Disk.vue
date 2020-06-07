@@ -14,22 +14,28 @@
                previewMode=0;buttonRad = '0.4rem';">{{index==0?'根目录':' / '+item}}</span>
             </span>
             <span class="delete-icon">文件数：{{files.length}}</span>
-            <span class="header-text">拖动文件上传</span><!--  -->
-            <div class="upload-wrapper" style="margin:0 1.6rem 0 0.2rem" >
-               <input type="file" @change="getFiles" name="avatar" ref="upload" width="2.5"/>
-               <!-- <input class="upload-text" disabled :placeholder="fileName"> -->
-               <div class="upload" title="拖动也可以上传噢" >
-						<a-button @click="$refs.upload.click()">上传</a-button>
-               </div>
+            <span class="header-text">双击文件下载 拖动文件上传</span><!--  -->
+            <div class="upload-wrapper" style=" margin:0 1.6rem 0 0.2rem" >
+                <input type="file" @change="getFiles" name="avatar" ref="upload" width="2.5"/>
+                <!-- <input class="upload-text" disabled :placeholder="fileName"> -->
+                <div class="upload" title="拖动也可以上传噢" >
+                    <a-button @click="$refs.upload.click()">上传</a-button>
+                </div>
             </div>
-				<a-button-group v-if="previewMode==1">
-					<a-button type="primary" @click="addColNum(-1)" >-</a-button>
-					<a-button type="primary" id="prev" :style="{'border-radius':buttonRad}"
-               @click="previewChange($event)">{{previewText[previewMode]}}</a-button>
-            	<a-button type="primary" v-if="previewMode==1" @click="addColNum(1)">+</a-button>
-				</a-button-group>
-				<a-button type="primary" id="prev" :style="{'border-radius':buttonRad}" v-else
-            @click="previewChange($event)">{{previewText[previewMode]}}</a-button>
+            <div class="upload-wrapper" style=" margin:0 1.6rem 0 0.2rem" >
+                <!-- <input class="upload-text" disabled :placeholder="fileName"> -->
+
+                <a-button @click="showModal">创建目录</a-button>
+
+          </div>
+<!--				<a-button-group v-if="previewMode==1">-->
+<!--					<a-button type="primary" @click="addColNum(-1)" >-</a-button>-->
+<!--					<a-button type="primary" id="prev" :style="{'border-radius':buttonRad}"-->
+<!--               @click="previewChange($event)">{{previewText[previewMode]}}</a-button>-->
+<!--            	<a-button type="primary" v-if="previewMode==1" @click="addColNum(1)">+</a-button>-->
+<!--				</a-button-group>-->
+<!--				<a-button type="primary" id="prev" :style="{'border-radius':buttonRad}" v-else-->
+<!--            @click="previewChange($event)">{{previewText[previewMode]}}</a-button>-->
             
             <!--<button class="simp-green" id="proto" style="margin-left:1.6rem" :style="{color:buttonColor}"
                @click="protoChange($event)">{{protoText[proto]}}</button>-->
@@ -45,9 +51,9 @@
                <span v-if="choose.filter(val=>val>0).length==0">文件名</span>
                <span v-else>
                已选中 {{choose.filter(val=>val>0).length}} 个文件&nbsp;
-                <img @click="download([],$event)" class="oper-img" src="../assets/Disk/下移.svg" draggable='false'>&nbsp;
+<!--                <img @click="download([],$event)" class="oper-img" src="../assets/Disk/下移.svg" draggable='false'>&nbsp;-->
                 <img @click="delet([])" class="oper-img" src="../assets/Disk/删除.svg" draggable='false'>&nbsp;
-                <img @click="share($event,[])" class="oper-img" src="../assets/Disk/分享.svg" draggable='false'>&nbsp;
+<!--                <img @click="share($event,[])" class="oper-img" src="../assets/Disk/分享.svg" draggable='false'>&nbsp;-->
             </span>
             </th>
             <th>大小</th><th>上传者</th><th>操作</th></tr>
@@ -74,11 +80,11 @@
                      <a-input v-model="renameData" id="rename-input" style="width:calc(100% - 14rem)" />
                   </span>
                   <span class="name" v-else>{{item.name}}</span>
-                  <span class="attach">
-                     <img @click="showModal" class="oper-img" src="../assets/Disk/加话题.svg" draggable='false'>
-                     <img @click="sort()" class="oper-img" src="../assets/Disk/排序.svg" draggable='false'>
-                     <img @click="rename(index)" class="oper-img" src="../assets/Disk/修改.svg" draggable='false'>
-                  </span>
+<!--                  <span class="attach">-->
+<!--                     <img @click="showModal" class="oper-img" src="../assets/Disk/加话题.svg" draggable='false'>-->
+<!--                     <img @click="sort()" class="oper-img" src="../assets/Disk/排序.svg" draggable='false'>-->
+<!--                     <img @click="rename(index)" class="oper-img" src="../assets/Disk/修改.svg" draggable='false'>-->
+<!--                  </span>-->
                </td> 
                <td><span v-if="item.isFile">{{item.size}}</span><span v-else>--</span></td> 
                <td>
@@ -89,7 +95,7 @@
                <td class="oper">
                   <img v-if="item.isFile" @click="explore(item,index)" src="../assets/Disk/下移.svg" draggable='false'>
                   <img @click="delet(index,item.name,item.isFile)" class="delete-icon" src="../assets/Disk/删除.svg" draggable='false'>
-                  <img v-if="item.isFile" src="../assets/Disk/分享.svg" draggable='false'>
+<!--                  <img v-if="item.isFile" src="../assets/Disk/分享.svg" draggable='false'>-->
 						<!-- share($event,index)  download(index,$event)-->
                </td>
                

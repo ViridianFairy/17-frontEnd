@@ -101,7 +101,14 @@
       this.getInfo();
       this.timLogin();
       this.getMember();
-      this.getGroupList();
+      // this.getGroupList();
+    },
+    watch:{
+        currentMessageList: function(){
+            this.$nextTick(function(){
+                this.$refs.chatList.scrollTop = 99999999;
+            })
+        }
     },
     methods: {
       getInfo(){
@@ -129,17 +136,17 @@
                   });
         }
       },
-      timInit(app_id) {
-        if(this.tim === undefined){
-          let tim = TIM.create({
-            SDKAppID: app_id
-          });
-          tim.setLogLevel(1);
-          tim.registerPlugin({'cos-js-sdk': COS});
-          Vue.prototype.tim = tim
-        }
-
-      },
+        timInit(app_id) {
+            if(this.tim === undefined){
+                let tim = TIM.create({
+                    SDKAppID: app_id
+                });
+                tim.setLogLevel(1);
+                tim.registerPlugin({'cos-js-sdk': COS});
+                Vue.prototype.tim = tim;
+                this.initListener();
+            }
+        },
       logout() {
         let promise = this.tim.logout();
         if (promise){
@@ -182,7 +189,6 @@
         } else if (data.conversationID === this.conversationID) {
           this.currentMessageList = [...this.currentMessageList, data]
         }
-        this.$refs.chatList.scrollTop = this.$refs.chatList.scrollHeight;
       },
       getGroupList () {
         let promise = this.tim.getGroupList();
